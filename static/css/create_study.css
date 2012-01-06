@@ -1,0 +1,18 @@
+#map {
+width: 896px;
+height: 672px;
+margin-top: 24px;
+}
+
+#mapInterface {
+	display:none; /* Hide at first. */
+}
+
+.mapInterfaceAction {
+    cursor:pointer;
+	color:rgb(200,200,255);
+	display:block;
+}
+.mapInterfaceAction:hover {
+	text-decoration:underline;
+}

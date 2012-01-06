@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="/static/js/create_study.js"></script>
+
+<link href="/static/css/create_study.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+
+<h2>Create a study</h2>
+
+<div id="createStudyForm">
+	<div>
+		<div>
+			Study question, eg. "Which place looks safer?"
+			<div>
+				<input type="text" id="studyName" size="100"/>
+			</div>
+		</div>
+	</div>
+
+	<div>
+		<div>
+			<div>
+				Number of votes needed for study to finish
+			</div>
+			<div>
+				<input type="text" id="maxStudyVotes" value="100"/>
+			</div>
+		</div>
+	</div>
+
+	<div>
+		<input type="submit" id="finishStudyForm" value="Next"/>
+	</div>
+</div>
+
+<div id="mapInterface">
+	<div>
+		Click to draw points on a polygon.
+		<div>
+			<span class="mapInterfaceAction" id="removeLastPoint">Remove last point</span>
+			<span class="mapInterfaceAction" id="clearCurrentSelection">Clear current selection</span>
+		</div>
+	</div>
+	<div id="map">
+	</div>
+	<div>
+		<input type="submit" id="submitPolygon" value="Next step"/>
+	</div>
+</div>
+
+{% endblock %}
