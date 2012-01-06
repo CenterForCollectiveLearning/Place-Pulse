@@ -1,4 +1,5 @@
-== Place Pulse ==
+Place Pulse
+============
 
     source setupEnv.sh
     python main.py
