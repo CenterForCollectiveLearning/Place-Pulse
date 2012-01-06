@@ -9,8 +9,8 @@ def main():
     return render_template('main.html')
     
 @app.route("/study/create")
-def main():
-    return render_template('study/create.html')
+def create_study():
+    return render_template('createstudy.html')
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
