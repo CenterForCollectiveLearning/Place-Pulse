@@ -41,12 +41,17 @@ def serve_populate_study(study_id):
 @app.route('/study/populate/<study_id>',methods=['POST'])
 def populate_study(study_id):
     Database.places.insert({
-        'lat': request.form['lat'],
-        'lng': request.form['lng'],
+        'loc': [request.form['lat'],request.form['lng']],
         'study_id': request.form['study_id']
     })
     return jsonifyResponse({
         'success': True
+    })
+    
+def buildIndices():
+    # Build spatial index
+    Database.places.ensureIndex({
+        'loc': '2d'
     })
 
 if __name__ == "__main__":
