@@ -17,7 +17,8 @@ class database(object):
     @property
     def db(self):
         if not hasattr(self, '_db'):
-            self._db = self.conn.placepulse
+            dbName = os.environ['MONGO_DBNAME']
+            self._db = self.conn[dbName]
             if os.environ['MONGO_USER'] and os.environ['MONGO_PASSWORD']:
                 self._db.authenticate(os.environ['MONGO_USER'],os.environ['MONGO_PASSWORD'])
         return self._db
@@ -25,10 +26,7 @@ class database(object):
     @property
     def conn(self):
         if not hasattr(self, '_conn'):
-            if os.environ['MONGO_URI']:
-                self._conn = pymongo.Connection(host=os.environ['MONGO_URI'])
-            else:                
-                self._conn = pymongo.Connection(os.environ['MONGO_HOSTNAME'], port=int(os.environ['MONGO_PORT']))
+            self._conn = pymongo.Connection(os.environ['MONGO_HOSTNAME'], port=int(os.environ['MONGO_PORT']))
         return self._conn
 
 Database = database()
