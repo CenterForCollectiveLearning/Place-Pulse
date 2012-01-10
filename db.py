@@ -19,7 +19,7 @@ class database(object):
         if not hasattr(self, '_db'):
             dbName = os.environ['MONGO_DBNAME']
             self._db = self.conn[dbName]
-            if os.environ['MONGO_USER'] and os.environ['MONGO_PASSWORD']:
+            if os.environ.get('MONGO_USER') and os.environ.get('MONGO_PASSWORD'):
                 self._db.authenticate(os.environ['MONGO_USER'],os.environ['MONGO_PASSWORD'])
         return self._db
     

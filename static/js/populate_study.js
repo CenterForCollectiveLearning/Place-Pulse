@@ -20,7 +20,7 @@ function startPopulatingStudy(_studyID, polygonStr) {
     var polyArray = polygonStr.split(',');
     // polygonStr is formatted like x1,y1,x2,y2, etc...
     for (var polyArrayIdx = 0; polyArrayIdx < polyArray.length; polyArrayIdx+=2) {
-        studyPolygon.push(new google.maps.LatLng(polyArray[polyArrayIdx],polyArray[polyArrayIdx+1]));
+        studyPolygon.push(new google.maps.LatLng(polyArray[polyArrayIdx+1],polyArray[polyArrayIdx],true));
     }
 
     // TODO: comment this out once populating is working again.
@@ -136,6 +136,7 @@ function processSVData(data, status)
 }
 function updateDB(lat,lng)
 {
+	console.log('updateDB')
 	$.ajax({
 		type: "POST",
 		url: window.location.href,
@@ -169,7 +170,7 @@ function refreshMap(lat,lng)
 		position: new google.maps.LatLng(lat, lng),
 		map: map
 	});
-	$("#amount").text("Getting image " + completed + " of " + pointsToAdd);
+	$("#amount").html("Getting image " + completed + " of " + pointsToAdd);
 }
 
 // Gmaps API extension
