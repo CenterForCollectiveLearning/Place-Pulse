@@ -18,6 +18,8 @@ class database(object):
     def db(self):
         if not hasattr(self, '_db'):
             self._db = self.conn.placepulse
+            if os.environ['MONGO_USER'] and os.environ['MONGO_PASSWORD']:
+                self._db.authenticate(os.environ['MONGO_USER'],os.environ['MONGO_PASSWORD'])
         return self._db
     
     @property
