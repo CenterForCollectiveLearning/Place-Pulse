@@ -59,7 +59,7 @@ def buildIndices():
     })
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PLACEPULSE_PORT", 8000))
+    port = int(os.environ.get("PORT", 8000))
     app.logger.setLevel(logging.DEBUG)
     app.config.update(DEBUG=True,PROPAGATE_EXCEPTIONS=True,TESTING=True)
     app.run(debug=True,host='0.0.0.0',port=port)
