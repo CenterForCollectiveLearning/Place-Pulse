@@ -23,7 +23,10 @@ class database(object):
     @property
     def conn(self):
         if not hasattr(self, '_conn'):
-            self._conn = pymongo.Connection(os.environ['MONGO_HOSTNAME'], port=int(os.environ['MONGO_PORT']))
+            if os.environ['MONGO_URI']:
+                self._conn = pymongo.Connection(host=os.environ['MONGO_URI'])
+            else:                
+                self._conn = pymongo.Connection(os.environ['MONGO_HOSTNAME'], port=int(os.environ['MONGO_PORT']))
         return self._conn
 
 Database = database()
