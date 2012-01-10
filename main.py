@@ -16,7 +16,11 @@ def jsonifyResponse(obj):
 @app.route("/")
 def main():
     return render_template('main.html')
-    
+
+@app.route("/study/view/<study_id>",methods=['GET'])
+def server_view_study(study_id):
+    return render_template('view_study.html',study_id=study_id)
+
 @app.route("/study/create")
 def serve_create_study():
     return render_template('create_study.html')
@@ -55,7 +59,7 @@ def buildIndices():
     })
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PLACEPULSE_PORT", 8000))
     app.logger.setLevel(logging.DEBUG)
     app.config.update(DEBUG=True,PROPAGATE_EXCEPTIONS=True,TESTING=True)
     app.run(debug=True,host='0.0.0.0',port=port)
