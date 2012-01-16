@@ -56,7 +56,7 @@ function setupUI() {
         }
         
         $.ajax({
-            url:'/study/create',
+            url:'/study/create/',
             // Expect JSON to be returned. This is also enforced on the server via mimetype.
             dataType: 'json',
             data: {
@@ -86,19 +86,17 @@ function startMap() {
     markers = [];
 	path = new google.maps.MVCArray;
 	markerIcon = '/static/images/yellow.png';
-	var point = jQuery.parseJSON('{"nelat":100,"nelng":70,"swlat":-100,"swlng":-70}');
-    var start = "42.368,-71.057";
     var varzoom = 10;
-    panMap(point, start, varzoom);
+    panMap(varzoom);
 }
 
-function panMap(point, start, varzoom)
+function panMap(varzoom)
  {
-    var newLoc = new google.maps.LatLng(start);
+    // var newLoc = new google.maps.LatLng(start);
 
     map = new google.maps.Map($('#map').get()[0], {
         zoom: varzoom,
-        center: newLoc,
+        // center: newLoc,
         draggableCursor: 'crosshair',
         mapTypeId: google.maps.MapTypeId.HYBRID
     });
@@ -110,15 +108,17 @@ function panMap(point, start, varzoom)
         fillColor: '#eeb44b'
     });
 
-	var swpoint = new google.maps.LatLng(point.swlat, point.swlng); //Google adds lat then lng, even though lat is Y coord and Lng is X
-    var nepoint = new google.maps.LatLng(point.nelat, point.nelng);
-    var bounds = new google.maps.LatLngBounds(swpoint, nepoint);
-    map.fitBounds(bounds);
+    // var swpoint = new google.maps.LatLng(point.swlat, point.swlng); //Google adds lat then lng, even though lat is Y coord and Lng is X
+    //     var nepoint = new google.maps.LatLng(point.nelat, point.nelng);
+    //     var bounds = new google.maps.LatLngBounds(swpoint, nepoint);
+    
+    map.fitBounds(new google.maps.LatLngBounds(new google.maps.LatLng(7.188100871179058,-129.39241035029778),new google.maps.LatLng(55.07836723201517,-50.64241035029778) ));
+    // map.fitBounds(bounds);
 
-    addPointLatLng(swpoint.lat(), swpoint.lng());
-    addPointLatLng(nepoint.lat(), swpoint.lng());
-    addPointLatLng(nepoint.lat(), nepoint.lng());
-    addPointLatLng(swpoint.lat(), nepoint.lng());
+    // addPointLatLng(swpoint.lat(), swpoint.lng());
+    // addPointLatLng(nepoint.lat(), swpoint.lng());
+    // addPointLatLng(nepoint.lat(), nepoint.lng());
+    // addPointLatLng(swpoint.lat(), nepoint.lng());
 
     poly.setMap(map);
     poly.setPaths(new google.maps.MVCArray([path]));
@@ -134,7 +134,7 @@ function clearLast() {
 }
 function addPointLatLng(lat, lng) {
     var point = new google.maps.LatLng(lat, lng);
-    path.insertAt(path.length, point);
+    // path.insertAt(path.length, point);
     var marker = new google.maps.Marker({
         position: point,
         map: map,

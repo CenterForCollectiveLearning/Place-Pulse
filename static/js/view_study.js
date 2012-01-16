@@ -1,38 +1,46 @@
+var locs;
+
+var uiLocked = true;
+
 function onStreetViewChoice() {
-		$.ajax({
-			url: '/study/update',
-			type: 'POST',
-			data: {
-				option_left: $('#sv1').attr('place'),
-				option_right: $('#sv2').attr('place'),
-				choice: $(this).attr('place')
-			}
-		});
-	$('.streetViewChoice').unbind(onStreetViewChoice);		
+    if (uiLocked) return;
+    uiLocked = true;
+	$.ajax({
+		type: 'POST',
+		url: '/study/vote/' + study_id + '/',
+		data: {
+            study_id: study_id,
+            left: locs[0].id,
+            right: locs[1].id,
+            choice: $(this).hasClass('left') ? 'left' : 'right'
+		},
+		success: function(data) {
+	    	newPrompt();
+		}
+	});
 }
 
 function newPrompt() {
 	$.ajax({
-		url: '/study/get_prompt',
+		url: '/study/getpair/' + study_id,
 		type: 'GET',
-		data: {
-			'studyID': studyID
-		},
 		success: function(data) {
-			var leftPlace = {
-			  position: new google.maps.LatLng(data.place[0].loc[0],data.place[0].loc[1])
-			};
-			
-			var rightPlace = {
-			  position: new google.maps.LatLng(data.place[1].loc[0],data.place[1].loc[1])
-			};
-			
-			var panorama = new  google.maps.StreetViewPanorama(document.getElementById("pano"), panoramaOptions);
-			map.setStreetView(panorama);
+		    
+		    locs = data.locs;
+		    
+		    function getSVURL(lat,lng) {
+		        // TODO: re-add this SV-specific data: &fov=90&heading=235&pitch=10
+		        return "http://maps.googleapis.com/maps/api/streetview?size=400x400&location=" + lat + "," + lng + "&sensor=false";
+		    }
+		    
+		    $('#sv1 img.place').attr('src',getSVURL(data.locs[0].loc[0],data.locs[0].loc[1]));
+		    $('#sv2 img.place').attr('src',getSVURL(data.locs[1].loc[0],data.locs[1].loc[1]));
+		    
+		    uiLocked = false;
 		}
 	});
 	
-	$('.streetViewChoice').click(onStreetViewChoice);
+    $('img.place').click(onStreetViewChoice);
 
 }
 

@@ -5,7 +5,8 @@ margin-top: 24px;
 }
 
 #mapInterface {
-	display:none; /* Hide at first. */
+  /* Hide at first. */
+  display:none; 
 }
 
 .mapInterfaceAction {

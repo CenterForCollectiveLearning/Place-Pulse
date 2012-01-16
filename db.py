@@ -5,6 +5,10 @@ from pymongo.objectid import ObjectId
 class database(object):
     def getStudy(self,study_id):
         return self.studies.find_one(ObjectId(study_id))
+
+    @property
+    def votes(self):
+        return self.db.votes
     
     @property
     def studies(self):

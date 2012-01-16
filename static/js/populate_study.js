@@ -10,10 +10,13 @@ var completed = 0;
 var virgin = 0;
 var pointsToAdd = 100;
 var studyID = ''
-var markerIcon = '/images/icons/yellow.png';
+var markerIcon = '/static/images/yellow.png';
+
+
 
 function startPopulatingStudy(_studyID, polygonStr) {
     studyID = _studyID;
+    pointsToAdd = 100;
     extendGmaps();
     
     studyPolygon = [];
@@ -127,16 +130,16 @@ function processSVData(data, status)
 		{
 			updateDB(data.location.latLng.lat(), data.location.latLng.lng());
 		}
-		else
-		{
-			window.location = "/start/generate";
-		}
+        else
+        {
+         window.location = "/study/view/" + studyID;
+        }
 	}
 	newPoint();
 }
 function updateDB(lat,lng)
 {
-	console.log('updateDB')
+	console.log('updateDB: ' + completed)
 	$.ajax({
 		type: "POST",
 		url: window.location.href,
@@ -145,8 +148,9 @@ function updateDB(lat,lng)
 			'lng': lng,
 			'study_id': studyID },
 		success: function(result) {
-			if(result == "TRUE")
+			if(result.success)
 			{
+			    console.log(completed + ' places sent.');
 				completed++;
 				if(completed<=pointsToAdd)
 				{
@@ -156,7 +160,7 @@ function updateDB(lat,lng)
 		},
 		error: function(data){
 			//alert(data.responseText);
-		    },
+		},
 		complete: function(data){
 			newPoint();
 		}
@@ -175,7 +179,7 @@ function refreshMap(lat,lng)
 
 // Gmaps API extension
 
-// Poygon getBounds extension - google-maps-extensions
+// Polygon getBounds extension - google-maps-extensions
 // http://code.google.com/p/google-maps-extensions/source/browse/google.maps.Polygon.getBounds.js
 function extendGmaps() {
 
