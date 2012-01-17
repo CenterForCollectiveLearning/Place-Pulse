@@ -30,22 +30,18 @@ def main():
 
 @app.route("/study/vote/<study_id>/",methods=['POST'])
 def post_new_vote(study_id):
-    leftObj = Database.places.find_one({
-        '_id' : request.form['left']
-    })
-    rightObj = Database.places.find_one({
-        '_id' : request.form['right']
-    })
+    leftObj = Database.getPlace(request.form['left'])
+    rightObj = Database.getPlace(request.form['right'])
     if leftObj is None or rightObj is None:
         return jsonifyResponse({
             'error': "Locations don't exist!"
         })
-    leftObj.votes += 1
-    rightObj.votes += 1
-    leftObj.bucket = Buckets.Queue
-    rightObj.bucket = Buckets.Queue
-    db.places.save(leftObj)
-    db.places.save(rightObj)
+    leftObj['votes'] += 1
+    rightObj['votes'] += 1
+    leftObj['bucket'] = Buckets.Queue
+    rightObj['bucket'] = Buckets.Queue
+    Database.places.save(leftObj)
+    Database.places.save(rightObj)
     Database.votes.insert({
         'study_id' : request.form['study_id'],
         'left' : request.form['left'],
@@ -104,8 +100,6 @@ def get_study_pairing(study_id):
     return jsonifyResponse({
         'locs' : map(objifyPlace, placesToDisplay)
     })
-    
-        
 
 @app.route("/study/view/<study_id>/",methods=['GET'])
 def server_view_study(study_id):

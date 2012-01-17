@@ -5,6 +5,9 @@ from pymongo.objectid import ObjectId
 class database(object):
     def getStudy(self,study_id):
         return self.studies.find_one(ObjectId(study_id))
+        
+    def getPlace(self,place_id):
+        return self.places.find_one(ObjectId(place_id))
 
     @property
     def votes(self):

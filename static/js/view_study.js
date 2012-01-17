@@ -5,6 +5,7 @@ var uiLocked = true;
 function onStreetViewChoice() {
     if (uiLocked) return;
     uiLocked = true;
+    $('img.place').hide();
 	$.ajax({
 		type: 'POST',
 		url: '/study/vote/' + study_id + '/',
@@ -36,11 +37,12 @@ function newPrompt() {
 		    $('#sv1 img.place').attr('src',getSVURL(data.locs[0].loc[0],data.locs[0].loc[1]));
 		    $('#sv2 img.place').attr('src',getSVURL(data.locs[1].loc[0],data.locs[1].loc[1]));
 		    
+	        $('img.place').show();
 		    uiLocked = false;
 		}
 	});
 	
-    $('img.place').click(onStreetViewChoice);
+    $('.streetViewChoice').click(onStreetViewChoice);
 
 }
 
