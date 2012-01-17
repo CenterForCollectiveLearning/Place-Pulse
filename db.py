@@ -4,10 +4,16 @@ from pymongo.objectid import ObjectId
 
 class database(object):
     def getStudy(self,study_id):
-        return self.studies.find_one(ObjectId(study_id))
+        try:
+            return self.studies.find_one(ObjectId(study_id))
+        except:
+            return None
         
     def getPlace(self,place_id):
-        return self.places.find_one(ObjectId(place_id))
+        try:
+            return self.places.find_one(ObjectId(place_id))
+        except:
+            return None
 
     @property
     def votes(self):

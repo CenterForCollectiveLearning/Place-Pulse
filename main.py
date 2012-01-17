@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask,render_template,request
+from flask import Flask,redirect,render_template,request
 
 from random import random, randint, shuffle, choice
 
@@ -103,7 +103,10 @@ def get_study_pairing(study_id):
 
 @app.route("/study/view/<study_id>/",methods=['GET'])
 def server_view_study(study_id):
-    return render_template('view_study.html',study_id=study_id)
+    studyObj = Database.getStudy(study_id)
+    if studyObj is None:
+        return redirect('/')
+    return render_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('question'))
 
 @app.route("/study/create/")
 def serve_create_study():
