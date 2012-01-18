@@ -31,7 +31,7 @@ function newPrompt() {
 		    
 		    function getSVURL(lat,lng) {
 		        // TODO: re-add this SV-specific data: &fov=90&heading=235&pitch=10
-		        return "http://maps.googleapis.com/maps/api/streetview?size=400x400&location=" + lat + "," + lng + "&sensor=false";
+		        return "http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false";
 		    }
 		    
 		    $('#sv1 img.place').attr('src',getSVURL(data.locs[0].loc[0],data.locs[0].loc[1]));
