@@ -1,5 +1,6 @@
 import os
 import pymongo
+import random
 from pymongo.objectid import ObjectId
 
 class database(object):
@@ -8,13 +9,27 @@ class database(object):
             return self.studies.find_one(ObjectId(study_id))
         except:
             return None
-        
+
+    def getRandomStudy(self):
+        try:
+			count = self.studies.count()
+			randomNumber = random.randint(0,count-1)
+			return self.studies.find().limit(-1).skip(randomNumber).next()
+        except:
+            return None
+
+    def getVotes(self):
+        try:
+			return self.votes.count()
+        except:
+            return None
+	
     def getPlace(self,place_id):
         try:
             return self.places.find_one(ObjectId(place_id))
         except:
             return None
-
+			
     @property
     def votes(self):
         return self.db.votes

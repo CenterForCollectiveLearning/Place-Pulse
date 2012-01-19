@@ -34,8 +34,8 @@ function newPrompt() {
 		        return "http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false";
 		    }
 		    
-		    $('#sv1 img.place').attr('src',getSVURL(data.locs[0].loc[0],data.locs[0].loc[1]));
-		    $('#sv2 img.place').attr('src',getSVURL(data.locs[1].loc[0],data.locs[1].loc[1]));
+		    $('#pano_left img.place').attr('src',getSVURL(data.locs[0].loc[0],data.locs[0].loc[1]));
+		    $('#pano_right img.place').attr('src',getSVURL(data.locs[1].loc[0],data.locs[1].loc[1]));
 		    
 	        $('img.place').show();
 		    uiLocked = false;
@@ -45,8 +45,6 @@ function newPrompt() {
     $('.streetViewChoice').click(onStreetViewChoice);
 
 }
-
-
 function init() {
 	newPrompt();
 }
