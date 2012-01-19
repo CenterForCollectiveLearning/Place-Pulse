@@ -1,14 +1,7 @@
 {% extends "base.html" %}
 
-{% block head %}
-<script src="/static/js/main.js"></script>
-
-<link href="/static/css/main.css" type="text/css" rel="stylesheet">
-{% endblock %}
-
 {% block footer %}
-<script src="/static/js/view_study.js"></script>
-
+<script src="/static/js/main.js"></script>
 <script>
 var study_id = "{{ study_id }}";
 $(document).ready(function() {
@@ -25,5 +18,5 @@ $(document).ready(function() {
 });
 </script>
 
-<link href="/static/css/view_study.css" type="text/css" rel="stylesheet">
+<link href="/static/css/main.css" type="text/css" rel="stylesheet">
 {% endblock %}
