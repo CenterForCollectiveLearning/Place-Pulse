@@ -5,3 +5,25 @@
 
 <link href="/static/css/main.css" type="text/css" rel="stylesheet">
 {% endblock %}
+
+{% block footer %}
+<script src="/static/js/view_study.js"></script>
+
+<script>
+var study_id = "{{ study_id }}";
+$(document).ready(function() {
+	
+	// On page load, load the GMaps API. Once that's loaded, callback to init()
+    function loadScript() {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init";
+      document.body.appendChild(script);
+    }
+
+	loadScript();
+});
+</script>
+
+<link href="/static/css/view_study.css" type="text/css" rel="stylesheet">
+{% endblock %}

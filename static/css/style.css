@@ -335,10 +335,9 @@ body {
 	margin: 0 auto;
 }
 #question {
-	text-align:left;
+	text-align:center;
 	padding-left: 24px;
 	padding-right: 24px;
-	border: 1px solid #CCC;
 	cursor: pointer;
 	width: 618px;
 	margin-left: 92px;
@@ -838,7 +837,7 @@ margin-top: 48px;
 	border: #EA4839 solid 1px;	
 }
 
-#pano_left, #pano_right {
+#pano_left, #pano_right, #sv1, #sv2 {
 	margin-top:2px;
 	margin-left:2px;
 	width: 404px;

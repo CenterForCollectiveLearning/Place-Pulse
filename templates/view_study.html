@@ -1,16 +1,7 @@
-{% extends "sub.html" %}
+{% extends "base.html" %}
 
 {% block footer %}
 <script src="/static/js/view_study.js"></script>
-<style>
-.streetViewChoice {
-	float:left;
-}
-
-.streetViewChoice {
-	padding:10px;
-}
-</style>
 <script>
 var study_id = "{{ study_id }}";
 $(document).ready(function() {
@@ -28,16 +19,4 @@ $(document).ready(function() {
 </script>
 
 <link href="/static/css/view_study.css" type="text/css" rel="stylesheet">
-{% endblock %}
-
-{% block body %}
-<h1>{{ study_prompt }}</h1>
-<div>
-	<div id="sv1" class="streetViewChoice left">
-		<img src="" class="place"/>
-	</div>
-	<div id="sv2" class="streetViewChoice right">
-		<img src="" class="place"/>
-	</div>
-</div>
 {% endblock %}

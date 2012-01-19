@@ -24,33 +24,37 @@
 			<a href="/" id="logo"><img src="/static/images/logo.png" alt="Place Pulse Logo" /></a>
 		</header>
 		<article>
-	<div id="instructions"><h4 id="current_votes">Total votes contributed: 577463</h4><p id="results"><a id="current_results" href="/results/">view results</a></p>
+	<div id="instructions"><h4 id="current_votes">Total votes contributed: {{ votes_contributed }}</h4><p id="results"><a id="current_results" href="/results/">view results</a></p>
 	</div>
 	<section id="voting_box">
 		<div class="splash">
-			<div id="question"><h2>Which place looks more unique?</h2></div>
+			<div id="question"><h2>{{ study_prompt }}</h2></div>
 		</div>
 
 		<div id="leftColumnHalf">
-			<div id="leftLink" onclick="cast(3,15862,12580,15862)">&nbsp;</div>
-			<div id="pano_left"></div>
-			<image id="key_1" height="70" width="67" src="/static/images/key_1.png" onclick="cast(3,15862,12580,15862)" alt="Button 1" />
+			<div id="leftLink" class="streetViewChoice">&nbsp;</div>
+			<div id="pano_left">
+				<img class="place" />
+			</div>
+			<image id="key_1" height="70" width="67" src="/static/images/key_1.png" alt="Button 1" />
 			<div class="clear"></div>
-			<div id="report_left"><a onclick="report(15862);">report bad image</a></div>
+			<div id="report_left"><a>report bad image</a></div>
 		</div>
 
 		<div id="rightColumnHalf">
-			<div id="rightLink" onclick="cast(3,15862,12580,12580)">&nbsp;</div>
-			<div id="pano_right"></div>
-			<image id="key_2" height="70" width="67" src="/static/images/key_2.png" onclick="cast(3,15862,12580,12580)" alt="Button 2" />
+			<div id="rightLink" class="streetViewChoice">&nbsp;</div>
+			<div id="pano_right">
+				<img class="place" />
+			</div>
+			<image id="key_2" height="70" width="67" src="/static/images/key_2.png" alt="Button 2" />
 			<div class="clear"></div>
-			<div id="report_right"><a onclick="report(12580);">report bad image</a></div>
+			<div id="report_right"><a>report bad image</a></div>
 		</div>
 		
 		
 		<div class="clear"></div>
 		
-		<div id="equal"><a id="equal_a" onclick="cast(3,15862,12580,0)">photos are equal</a></div>
+		<div id="equal"><a id="equal_a">photos are equal</a></div>
 	</section>
 </article>
 <div class="clear"></div>
@@ -69,6 +73,9 @@
 <script>!window.jQuery && document.write(unescape('%3Cscript src="/js/lib/jquery-1.7.1.min.js"%3E%3C/script%3E'))</script>
 <script src="/static/js/lib/jquery-ui-1.8.9.custom.min.js"></script> 
 <script src="/static/js/lib/script.js"></script>
+
+{% block footer %}
+{% endblock %}
 
 <!--[if lt IE 7 ]>
 <script src="js/libs/dd_belatedpng.js"></script>

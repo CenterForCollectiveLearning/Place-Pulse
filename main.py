@@ -26,7 +26,11 @@ def objifyPlace(place):
 
 @app.route("/")
 def main():
-    return render_template('main.html')
+	studyObj = Database.getRandomStudy()
+	if studyObj is None:
+		return redirect('/')
+	votesCount = Database.getVotes()
+	return render_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('question'), votes_contributed=votesCount)
 
 @app.route("/study/vote/<study_id>/",methods=['POST'])
 def post_new_vote(study_id):
