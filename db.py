@@ -3,6 +3,8 @@ import pymongo
 import random
 from pymongo.objectid import ObjectId
 
+from random import choice
+
 class database(object):
     def getStudy(self,study_id):
         try:
@@ -29,7 +31,7 @@ class database(object):
             return self.places.find_one(ObjectId(place_id))
         except:
             return None
-			
+
     @property
     def votes(self):
         return self.db.votes

@@ -2,14 +2,23 @@ import os
 import logging
 from flask import Flask,redirect,render_template,request
 
-from random import random, randint, shuffle, choice
+from random import random, randint, shuffle, choice, sample
 
 from db import Database
 
 import json
 
+
+"""
+Add a places field to each study.
+On populating, use mongodb's update append to add it
+To pull a random place, simply load the study obj, look at the places, and choose a random ID.
+
+"""
+
 class Buckets:
     Unknown, Queue, Archive = range(3)
+    QueueSize = 100
 
 app = Flask(__name__)
 
@@ -34,18 +43,24 @@ def main():
 
 @app.route("/study/vote/<study_id>/",methods=['POST'])
 def post_new_vote(study_id):
+    def incVotes(obj):
+        obj['votes'] += 1
+        if obj['votes'] > 30:
+            obj.bucket = Buckets.Archive
+            
+            newForQueue = Database.places.find_one({ 'bucket': Buckets.Unknown })
+            newForQueue['bucket'] = Buckets.Queue
+            Database.places.save(newForQueue)
+        Database.places.save(obj)
+        
+    
     leftObj = Database.getPlace(request.form['left'])
     rightObj = Database.getPlace(request.form['right'])
     if leftObj is None or rightObj is None:
         return jsonifyResponse({
             'error': "Locations don't exist!"
         })
-    leftObj['votes'] += 1
-    rightObj['votes'] += 1
-    leftObj['bucket'] = Buckets.Queue
-    rightObj['bucket'] = Buckets.Queue
-    Database.places.save(leftObj)
-    Database.places.save(rightObj)
+    map(incVotes, [leftObj,rightObj])
     Database.votes.insert({
         'study_id' : request.form['study_id'],
         'left' : request.form['left'],
@@ -58,49 +73,11 @@ def post_new_vote(study_id):
 
 @app.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
-    unknownPlace = Database.places.find_one({
-        'study_id' : study_id,
-        'bucket' : Buckets.Unknown,
-        'random' : {
-            '$gte' : random()
-        }
-    })
-    if unknownPlace is None:
-        otherPlace = Database.places.find_one({
-            'study_id' : study_id
-        })
-        if otherPlace is None:
-            return jsonifyResponse({
-                'error' : 'Could not find places for study!'
-            })
-        else:
-            return jsonifyResponse({
-                'error' : 'Study finished!',
-                'study_finished' : True
-            })
-    knownPlace = Database.places.find_one({
-        'study_id' : study_id,
-        'bucket' : choice([Buckets.Queue, Buckets.Queue, Buckets.Archive]),
-        'random' : {
-            '$gte' : random()
-        }
-    })
-    if knownPlace is None:
-        # No known places yet. Grab another unknown.
-        knownPlace = Database.places.find_one({
-            'study_id' : study_id,
-            'random' : {
-                '$gte' : random()
-        }
-    })
-    placesToDisplay = [knownPlace, unknownPlace]
-    def reRandomize(place):
-        place['random'] = random()
-        Database.places.save(place)
-    map(reRandomize,placesToDisplay)
-    print placesToDisplay
-    # Ensure that the known doesn't always appear on the left/unknown on the right
-    shuffle(placesToDisplay)
+    placesInQueueCursor = Database.places.find({ 'bucket': Buckets.Queue, 
+                            'study_id': study_id }).limit(Buckets.QueueSize)
+    placesInQueue = [place for place in placesInQueueCursor]
+    
+    placesToDisplay = sample(placesInQueue,2)
     return jsonifyResponse({
         'locs' : map(objifyPlace, placesToDisplay)
     })
@@ -139,13 +116,37 @@ def populate_study(study_id):
         'loc': [request.form['lat'],request.form['lng']],
         'study_id': request.form['study_id'],
         'bucket' : Buckets.Unknown,
-        'random' : random(),
         'votes' : 0
     })
     return jsonifyResponse({
         'success': True
     })
+
+@app.route('/study/finish_populate/<study_id>/',methods=['POST'])
+def finish_populate_study(study_id):
+    if Database.getStudy(study_id) is None:
+        return jsonifyResponse({
+            'error': 'Study doesn\'t exist!'
+        })
+    placesInQueue = Database.places.find({
+        'study_id': study_id,
+        'bucket': Buckets.Queue
+    })
+    placesToGet = Buckets.QueueSize-placesInQueue.count()
+
+    # TODO: See if Mongo lets you do this in one update call.
+    for i in range(placesToGet):
+        place = Database.places.find_one({
+            'study_id': study_id,
+            'bucket': Buckets.Unknown
+        })
+        place['bucket'] = Buckets.Queue
+        Database.places.save(place)
     
+    return jsonifyResponse({
+        'success': True
+    })
+
 def buildIndices():
     # Build spatial index
     Database.places.ensureIndex({

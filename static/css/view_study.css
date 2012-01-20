@@ -1,3 +1,9 @@
-img.streetViewChoice:hover {
+img.place:hover {
     cursor:pointer;
+}
+
+img.place {
+    width:404px;
+    height:296px;
+    size:fixed;
 }

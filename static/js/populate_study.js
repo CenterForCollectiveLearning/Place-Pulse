@@ -11,7 +11,7 @@ var virgin = 0;
 var pointsToAdd = 100;
 var studyID = ''
 var markerIcon = '/static/images/yellow.png';
-
+var waitingForFinish = false;
 
 
 function startPopulatingStudy(_studyID, polygonStr) {
@@ -132,7 +132,22 @@ function processSVData(data, status)
 		}
         else
         {
-         window.location = "/study/view/" + studyID;
+            // Only call /study/finish_populate once
+            if (waitingForFinish) return;
+
+            $.ajax({
+                dataType: 'json',
+                url: "/study/finish_populate/" + studyID + '/',
+                type: "POST",
+                data: {
+                    'study_id': studyID
+                },
+                success: function(e) {
+                    window.location = "/study/view/" + studyID;
+                }
+            });
+            
+            waitingForFinish = true;
         }
 	}
 	newPoint();
