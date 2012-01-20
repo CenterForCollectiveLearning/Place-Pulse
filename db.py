@@ -31,7 +31,7 @@ class database(object):
             return self.places.find_one(ObjectId(place_id))
         except:
             return None
-
+			
     @property
     def votes(self):
         return self.db.votes
