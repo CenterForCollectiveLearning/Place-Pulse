@@ -2,3 +2,4 @@
 /include/
 /lib/
 .Python
+*.pyc

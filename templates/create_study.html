@@ -3,39 +3,41 @@
 {% block footer %}
 <script src="/static/js/create_study.js"></script>
 <link href="/static/css/create_study.css" type="text/css" rel="stylesheet">
+<link href="/static/css/form.css" type="text/css" rel="stylesheet">
 {% endblock %}
 
 
 {% block body %}
-
 <h2>Create a study</h2>
-
 <div id="createStudyForm">
 	<div>
 		<div>
-			Study question, eg. "Which place looks safer?"
+			What attribute would you like to study?
 			<div>
-				<input type="text" id="studyName" size="100"/>
+				<input type="text" id="question_attribute" />
 			</div>
 		</div>
 	</div>
-
 	<div>
 		<div>
 			<div>
-				Number of votes needed for study to finish
+				Number of locations requested
 			</div>
 			<div>
-				<input type="text" id="maxStudyVotes" value="100"/>
+				<select name="locations_requested">
+					<option value="100">100</option>
+					<option value="200">200</option>
+					<option value="300">300</option>
+					<option value="400">400</option>
+					<option value="500">500</option>
+				</select>
 			</div>
 		</div>
 	</div>
-
 	<div>
 		<input type="submit" id="finishStudyForm" value="Next"/>
 	</div>
 </div>
-
 <div id="mapInterface">
 	<div>
 		Click to draw points on a polygon.
@@ -50,5 +52,4 @@
 		<input type="submit" id="submitPolygon" value="Next step"/>
 	</div>
 </div>
-
 {% endblock %}

@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
-<html lang="en" class="no-js">
-<!--<![endif]-->
 <head>
 	<meta charset="utf-8">
 	<title>Place Pulse | The Collaborative Image of the City</title>
@@ -24,40 +17,41 @@
 			<a href="/" id="logo"><img src="/static/images/logo.png" alt="Place Pulse Logo" /></a>
 		</header>
 		<article>
-	<div id="instructions"><h4 id="current_votes">Total votes contributed: {{ votes_contributed }}</h4><p id="results"><a id="current_results" href="/results/">view results</a></p>
-	</div>
-	<section id="voting_box">
-		<div class="splash">
-			<div id="question"><h2>{{ study_prompt }}</h2></div>
-		</div>
-
-		<div id="leftColumnHalf">
-			<div id="leftLink" class="streetViewChoice">&nbsp;</div>
-			<div id="pano_left">
-				<img class="place" />
+			<div id="instructions">
+				<h4 id="current_votes">Total votes contributed: {{ votes_contributed }}</h4>
+				<p id="results"><a id="current_results" href="/results/">view results</a></p>
 			</div>
-			<image id="key_1" height="70" width="67" src="/static/images/key_1.png" alt="Button 1" />
-			<div class="clear"></div>
-			<div id="report_left"><a>report bad image</a></div>
-		</div>
-
-		<div id="rightColumnHalf">
-			<div id="rightLink" class="streetViewChoice">&nbsp;</div>
-			<div id="pano_right">
-				<img class="place" />
-			</div>
-			<image id="key_2" height="70" width="67" src="/static/images/key_2.png" alt="Button 2" />
-			<div class="clear"></div>
-			<div id="report_right"><a>report bad image</a></div>
-		</div>
-		
-		
+			<section id="voting_box">
+				<div class="splash">
+					<div id="question">
+						<h2>{{ study_prompt }}</h2>
+					</div>
+				</div>
+				<div id="leftColumnHalf">
+					<div id="leftLink" class="streetViewChoice">&nbsp;</div>
+					<div id="pano_left">
+						<img class="place" />
+					</div>
+					<image id="key_1" height="70" width="67" src="/static/images/key_1.png" alt="Button 1" />
+					<div class="clear"></div>
+					<div id="report_left"><a>report bad image</a></div>
+				</div>
+				<div id="rightColumnHalf">
+					<div id="rightLink" class="streetViewChoice">&nbsp;</div>
+					<div id="pano_right">
+						<img class="place" />
+					</div>
+					<image id="key_2" height="70" width="67" src="/static/images/key_2.png" alt="Button 2" />
+					<div class="clear"></div>
+					<div id="report_right"><a>report bad image</a></div>
+				</div>				
+				<div class="clear"></div>		
+				<div id="equal">
+					<a id="equal_a">photos are equal</a>
+				</div>
+			</section>
+		</article>
 		<div class="clear"></div>
-		
-		<div id="equal"><a id="equal_a">photos are equal</a></div>
-	</section>
-</article>
-<div class="clear"></div>
 		<footer id="footer">
 			<section id="copyright">
 				<p>&copy; 2011 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
@@ -67,24 +61,7 @@
 		</footer>
 	</div>
 </div>
-	
-<!-- Scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-<script>!window.jQuery && document.write(unescape('%3Cscript src="/js/lib/jquery-1.7.1.min.js"%3E%3C/script%3E'))</script>
-<script src="/static/js/lib/jquery-ui-1.8.9.custom.min.js"></script> 
-<script src="/static/js/lib/script.js"></script>
-
-{% block footer %}
-{% endblock %}
-
-<!--[if lt IE 7 ]>
-<script src="js/libs/dd_belatedpng.js"></script>
-<script> DD_belatedPNG.fix('img, .png_bg'); </script>
-<![endif]--> 
-
-<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script><script type="text/javascript">stLight.options({publisher:'8f51752b-16bf-45d7-9f87-b2762c7acd5b'});</script>
-
-<!-- Google Analytics --> 
 <script>
   	var _gaq = [['_setAccount', 'UA-21313433-1'], ['_trackPageview']];
    	(function(d, t) {
@@ -95,5 +72,7 @@
 	    s.parentNode.insertBefore(g, s);
 	 })(document, 'script');
 </script>
+{% block footer %}
+{% endblock %}
 </body>
 </html>
