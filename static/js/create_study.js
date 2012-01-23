@@ -61,8 +61,8 @@ function setupUI() {
             dataType: 'json',
             data: {
                 polygon: polyArray.toString(),
-                question: $('#studyName').val(),
-                maxVotes: $('#maxStudyVotes').val()
+                study_question: $('#study_question').val(),
+                locations_requested: $('#locations_requested').val()
             },
             type: 'POST',
             success: function(data) {

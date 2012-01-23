@@ -39,7 +39,7 @@ def main():
 	if studyObj is None:
 		return redirect('/')
 	votesCount = Database.getVotes()
-	return render_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('question'), votes_contributed=votesCount)
+	return render_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
 
 @app.route("/study/vote/<study_id>/",methods=['POST'])
 def post_new_vote(study_id):
@@ -87,7 +87,7 @@ def server_view_study(study_id):
     studyObj = Database.getStudy(study_id)
     if studyObj is None:
         return redirect('/')
-    return render_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('question'))
+    return render_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'))
 
 @app.route("/study/create/")
 def serve_create_study():
@@ -97,8 +97,8 @@ def serve_create_study():
 def create_study():    
     # Insert the new study into Mongo
     newStudyID = Database.studies.insert({
-        'question': request.form['question'],
-        'maxVotes': request.form['maxVotes'],
+        'study_question': request.form['study_question'],
+        'locations_requested': request.form['locations_requested'],
         'polygon': request.form['polygon']})
     # Return the ID for the client to rendezvous at /study/populate/<id>
     return jsonifyResponse({

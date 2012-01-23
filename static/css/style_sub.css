@@ -324,8 +324,6 @@ nav ul {
 list-style: none;
 float: right;
 }
-SELECT { border: solid 1px #20242F; font-weight: bold; height:48px;}
-OPTION { background:#FFFFFF; font-style: normal; }
 nav ul li {
 display: inline;
 margin-left: 24px;

@@ -3,7 +3,6 @@
 {% block footer %}
 <script src="/static/js/create_study.js"></script>
 <link href="/static/css/create_study.css" type="text/css" rel="stylesheet">
-<link href="/static/css/form.css" type="text/css" rel="stylesheet">
 {% endblock %}
 
 
@@ -14,7 +13,7 @@
 		<div>
 			What attribute would you like to study?
 			<div>
-				<input type="text" id="question_attribute" />
+				<input type="text" id="study_question" />
 			</div>
 		</div>
 	</div>
@@ -24,7 +23,7 @@
 				Number of locations requested
 			</div>
 			<div>
-				<select name="locations_requested">
+				<select name="locations_requested" id="locations_requested">
 					<option value="100">100</option>
 					<option value="200">200</option>
 					<option value="300">300</option>
