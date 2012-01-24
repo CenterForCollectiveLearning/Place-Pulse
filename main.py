@@ -38,7 +38,7 @@ def main():
 	studyObj = Database.getRandomStudy()
 	if studyObj is None:
 		return redirect('/')
-	votesCount = Database.getVotes()
+	votesCount = Database.getVotesCount()
 	return render_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
 
 @app.route("/study/vote/<study_id>/",methods=['POST'])
@@ -85,8 +85,7 @@ def get_study_pairing(study_id):
 @app.route("/admin/rank/<study_id>/",methods=['GET'])
 def calculate_ranking(study_id):
 	votes = Database.getVotes(study_id)
-	for vote in votes:
-		print vote
+	return render_template('admin.html',votes=votes)
 
 @app.route("/study/view/<study_id>/",methods=['GET'])
 def server_view_study(study_id):

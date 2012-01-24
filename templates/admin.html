@@ -8,4 +8,7 @@
 
 {% block body %}
 <h2>Admin Functions</h2>
+	{% for vote in votes %}
+        {{ vote.choice }}
+    {% endfor %}
 {% endblock %}

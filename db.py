@@ -22,7 +22,13 @@ class database(object):
 
     def getVotes(self,study_id):
         try:
-			return self.votes.find(ObjectId(study_id))
+			return self.votes.find({'study_id': study_id})
+        except:
+            return None
+
+    def getVotesCount(self):
+        try:
+			return self.votes.find().count()
         except:
             return None
 	
