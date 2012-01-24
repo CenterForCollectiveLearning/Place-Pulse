@@ -122,6 +122,10 @@ def populate_study(study_id):
         'success': True
     })
 
+@app.route("/admin/")
+def load_admin():
+	return render_template('admin.html')
+
 @app.route('/study/finish_populate/<study_id>/',methods=['POST'])
 def finish_populate_study(study_id):
     if Database.getStudy(study_id) is None:
