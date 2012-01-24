@@ -1,0 +1,17 @@
+{% extends "sub.html" %}
+
+{% block footer %}
+<script src="/static/js/admin.js"></script>
+<link href="/static/css/admin.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+<br />
+<h2>View All Studies</h2>
+<ol>
+{%for study in studies:%}
+<li><a href='/admin/view/votes/{{study._id}}'>View Votes</a> | <a href='/study/view/{{study._id}}'>{{study.study_question}}</a></li>
+{%endfor%}
+</ol>
+{% endblock %}

@@ -10,12 +10,15 @@
 <br />
 <h2>Admin Functions</h2>
 <ol>
-{%for vote in votes:%}
-{%if vote.choice == 'left':%}
-<li><strong><a href='/place/view/{{vote.left}}'>{{vote.left}}</a></strong> vs <a href='/place/view/{{vote.right}}'>{{vote.right}}</a></li>
-{%elif vote.choice == 'right':%}
-<li><a href='/place/view/{{vote.left}}'>{{vote.left}}</a> vs <strong><a href='/place/view/{{vote.right}}'>{{vote.right}}</a></strong></li>
-{%endif%}
-{%endfor%}
+<strong>Studies</strong>
+<li><a href='/admin/view/studies/'>View All Studies</a></li>
+<li><a href='/admin/view/study/'>View Specific Study</a></li>
+<strong>Places</strong>
+<li><a href='/admin/view/places/'>View All Places</a></li>
+<li><a href='/admin/view/places_by_city/'>View Places by City</a></li>
+<li><a href='/admin/view/place/'>View Specific Place</a></li>
+<strong>Votes</strong>
+<li><a href='/admin/view/votes/'>View All Votes</a></li>
+<li><a href='/admin/view/vote/'>View Specific Vote</a></li>
 </ol>
 {% endblock %}

@@ -20,6 +20,12 @@ class database(object):
         except:
             return None
 
+    def getStudies(self):
+        try:
+			return self.studies.find()
+        except:
+            return None
+
     def getVotes(self,study_id):
         try:
 			return self.votes.find({'study_id': study_id})

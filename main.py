@@ -137,6 +137,11 @@ def load_admin():
 def calculate_ranking(study_id):
 	votes = Database.getVotes(study_id)
 	return render_template('view_votes.html',votes=votes)
+	
+@app.route("/admin/view/studies/")
+def view_studies():
+	studies = Database.getStudies()
+	return render_template('view_studies.html',studies=studies)
 
 @app.route('/study/finish_populate/<study_id>/',methods=['POST'])
 def finish_populate_study(study_id):
