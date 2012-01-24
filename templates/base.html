@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="/static/css/style.css?v=2">
 </head>
 <body>
-<div id="alert"><p>We're building a community and looking for coders. <a href="mailto:salesses@media.mit.edu">Interested?</a></p></div><div id="container">
+<div id="container">
 	<div id="content_top">
 		<header>
 			<a href="/" id="logo"><img src="/static/images/logo.png" alt="Place Pulse Logo" /></a>
@@ -32,6 +32,9 @@
 					<div id="pano_left">
 						<img class="place" />
 					</div>
+					<div id="pano_left_buffer" style="display:none">
+						<img class="place" />
+					</div>
 					<image id="key_1" height="70" width="67" src="/static/images/key_1.png" alt="Button 1" />
 					<div class="clear"></div>
 					<div id="report_left"><a>report bad image</a></div>
@@ -39,6 +42,9 @@
 				<div id="rightColumnHalf">
 					<div id="rightLink" class="streetViewChoice">&nbsp;</div>
 					<div id="pano_right">
+						<img class="place" />
+					</div>
+					<div id="pano_right_buffer" style="display:none">
 						<img class="place" />
 					</div>
 					<image id="key_2" height="70" width="67" src="/static/images/key_2.png" alt="Button 2" />

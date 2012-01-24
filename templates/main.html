@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block footer %}
-<script src="/static/js/main.js"></script>
 <script>
 var study_id = "{{ study_id }}";
 $(document).ready(function() {
@@ -17,6 +16,6 @@ $(document).ready(function() {
 	loadScript();
 });
 </script>
+<script src="/static/js/main.js"></script>
 
-<link href="/static/css/main.css" type="text/css" rel="stylesheet">
 {% endblock %}

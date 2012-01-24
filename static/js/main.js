@@ -1,11 +1,14 @@
 var locs;
-
+var buffer_left;
+var buffer_right;
 var uiLocked = true;
+
+init();
 
 function onStreetViewChoice() {
     if (uiLocked) return;
     uiLocked = true;
-    $('img.place').hide();
+    getImagesFromBuffer();
 	$.ajax({
 		type: 'POST',
 		url: '/study/vote/' + study_id + '/',
@@ -16,35 +19,39 @@ function onStreetViewChoice() {
             choice: $(this).hasClass('left') ? 'left' : 'right'
 		},
 		success: function(data) {
-	    	newPrompt();
+	    	loadImagesToBuffer();
 		}
 	});
 }
+function getImagesFromBuffer() {
+	var buffer_left = $('#pano_left_buffer img.place').attr('src');
+	var buffer_right = $('#pano_right_buffer img.place').attr('src');
+	
+	$('#pano_left img.place').attr('src', buffer_left);
+	$('#pano_right img.place').attr('src', buffer_right);
+}
 
-function newPrompt() {
+function loadImagesToBuffer() {
 	$.ajax({
 		url: '/study/getpair/' + study_id,
 		type: 'GET',
 		success: function(data) {
-		    
+
 		    locs = data.locs;
-		    
-		    function getSVURL(lat,lng) {
-		        // TODO: re-add this SV-specific data: &fov=90&heading=235&pitch=10
-		        return "http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false";
-		    }
-		    
-		    $('#pano_left img.place').attr('src',getSVURL(data.locs[0].loc[0],data.locs[0].loc[1]));
-		    $('#pano_right img.place').attr('src',getSVURL(data.locs[1].loc[0],data.locs[1].loc[1]));
-		    
-	        $('img.place').show();
+		    $('#pano_left_buffer img.place').attr('src',getSVURL(locs[0].loc[0],locs[0].loc[1]));
+		    $('#pano_right_buffer img.place').attr('src',getSVURL(locs[1].loc[0],locs[1].loc[1]));
 		    uiLocked = false;
 		}
 	});
 	
     $('.streetViewChoice').click(onStreetViewChoice);
-
+}
+function getSVURL(lat,lng) {
+    // TODO: re-add this SV-specific data: &fov=90&heading=235&pitch=10
+    return "http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false";
 }
 function init() {
-	newPrompt();
+	loadImagesToBuffer();
+	getImagesFromBuffer();
+	loadImagesToBuffer();
 }
