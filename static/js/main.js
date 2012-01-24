@@ -4,8 +4,6 @@ var buffer_left;
 var buffer_right;
 var uiLocked = true;
 
-init();
-
 function onStreetViewChoice() {
     if (uiLocked) return;
     uiLocked = true;
@@ -32,20 +30,30 @@ function getImagesFromBuffer() {
 	$('#pano_right img.place').attr('src', buffer_right);
 	locs = locs_buffer;
 }
-
 function loadImagesToBuffer() {
 	$.ajax({
 		url: '/study/getpair/' + study_id,
 		type: 'GET',
 		success: function(data) {
-
 		    locs_buffer = data.locs;
 		    $('#pano_left_buffer img.place').attr('src',getSVURL(locs_buffer[0].loc[0],locs_buffer[0].loc[1]));
 		    $('#pano_right_buffer img.place').attr('src',getSVURL(locs_buffer[1].loc[0],locs_buffer[1].loc[1]));
 		    uiLocked = false;
 		}
 	});
-	
+    $('.streetViewChoice').click(onStreetViewChoice);
+}
+function loadInitialImages() {
+	$.ajax({
+		url: '/study/getpair/' + study_id,
+		type: 'GET',
+		success: function(data) {
+		    locs = data.locs;
+		    $('#pano_left img.place').attr('src',getSVURL(locs[0].loc[0],locs[0].loc[1]));
+		    $('#pano_right img.place').attr('src',getSVURL(locs[1].loc[0],locs[1].loc[1]));
+		    uiLocked = false;
+		}
+	});
     $('.streetViewChoice').click(onStreetViewChoice);
 }
 function getSVURL(lat,lng) {
@@ -53,7 +61,7 @@ function getSVURL(lat,lng) {
     return "http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false";
 }
 function init() {
-	loadImagesToBuffer();
-	getImagesFromBuffer();
+	loadInitialImages();
 	loadImagesToBuffer();
 }
+init();

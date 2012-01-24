@@ -133,10 +133,10 @@ def get_place(place_id):
 def load_admin():
 	return render_template('admin.html')
 	
-@app.route("/admin/rank/<study_id>/",methods=['GET'])
+@app.route("/admin/view/votes/<study_id>/",methods=['GET'])
 def calculate_ranking(study_id):
 	votes = Database.getVotes(study_id)
-	return render_template('admin.html',votes=votes)
+	return render_template('view_votes.html',votes=votes)
 
 @app.route('/study/finish_populate/<study_id>/',methods=['POST'])
 def finish_populate_study(study_id):
