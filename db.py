@@ -20,9 +20,9 @@ class database(object):
         except:
             return None
 
-    def getVotes(self):
+    def getVotes(self, study_id):
         try:
-			return self.votes.count()
+			return self.votes.find(ObjectId(study_id))
         except:
             return None
 	
