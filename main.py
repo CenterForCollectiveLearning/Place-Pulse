@@ -88,19 +88,6 @@ def calculate_ranking(study_id):
 	for vote in votes:
 		print vote
 
-"""
-@app.route("/admin/rank/")
-def get_study_pairing():
-    placesInQueueCursor = Database.places.find({ 'bucket': Buckets.Queue, 
-                            'study_id': study_id }).limit(Buckets.QueueSize)
-    placesInQueue = [place for place in placesInQueueCursor]
-
-    placesToDisplay = sample(placesInQueue,2)
-    return jsonifyResponse({
-        'locs' : map(objifyPlace, placesToDisplay)
-    })
-"""
-
 @app.route("/study/view/<study_id>/",methods=['GET'])
 def server_view_study(study_id):
     studyObj = Database.getStudy(study_id)
