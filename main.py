@@ -82,11 +82,6 @@ def get_study_pairing(study_id):
         'locs' : map(objifyPlace, placesToDisplay)
     })
 
-@app.route("/admin/rank/<study_id>/",methods=['GET'])
-def calculate_ranking(study_id):
-	votes = Database.getVotes(study_id)
-	return render_template('admin.html',votes=votes)
-
 @app.route("/study/view/<study_id>/",methods=['GET'])
 def server_view_study(study_id):
     studyObj = Database.getStudy(study_id)
@@ -127,9 +122,21 @@ def populate_study(study_id):
         'success': True
     })
 
+@app.route('/place/view/<place_id>/',methods=['GET'])
+def get_place(place_id):
+	placeCursor = Database.getPlace(place_id)
+	lat = placeCursor['loc'][0]
+	lng = placeCursor['loc'][1]
+	return "<img src='http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false'/>"
+	
 @app.route("/admin/")
 def load_admin():
 	return render_template('admin.html')
+	
+@app.route("/admin/rank/<study_id>/",methods=['GET'])
+def calculate_ranking(study_id):
+	votes = Database.getVotes(study_id)
+	return render_template('admin.html',votes=votes)
 
 @app.route('/study/finish_populate/<study_id>/',methods=['POST'])
 def finish_populate_study(study_id):

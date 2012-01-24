@@ -8,7 +8,13 @@
 
 {% block body %}
 <h2>Admin Functions</h2>
-	{% for vote in votes %}
-        {{ vote.choice }}
-    {% endfor %}
+<ol>
+{%for vote in votes:%}
+{%if vote.choice == 'left':%}
+<li><strong><a href='/place/view/{{vote.left}}'>{{vote.left}}</a></strong> vs <a href='/place/view/{{vote.right}}'>{{vote.right}}</a></li>
+{%elif vote.choice == 'right':%}
+<li><a href='/place/view/{{vote.left}}'>{{vote.left}}</a> vs <strong><a href='/place/view/{{vote.right}}'>{{vote.right}}</a></strong></li>
+{%endif%}
+{%endfor%}
+</ol>
 {% endblock %}

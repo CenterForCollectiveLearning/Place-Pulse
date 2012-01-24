@@ -1,3 +1,4 @@
+var locs_buffer;
 var locs;
 var buffer_left;
 var buffer_right;
@@ -8,7 +9,6 @@ init();
 function onStreetViewChoice() {
     if (uiLocked) return;
     uiLocked = true;
-    getImagesFromBuffer();
 	$.ajax({
 		type: 'POST',
 		url: '/study/vote/' + study_id + '/',
@@ -19,6 +19,7 @@ function onStreetViewChoice() {
             choice: $(this).hasClass('left') ? 'left' : 'right'
 		},
 		success: function(data) {
+		    getImagesFromBuffer();
 	    	loadImagesToBuffer();
 		}
 	});
@@ -29,6 +30,7 @@ function getImagesFromBuffer() {
 	
 	$('#pano_left img.place').attr('src', buffer_left);
 	$('#pano_right img.place').attr('src', buffer_right);
+	locs = locs_buffer;
 }
 
 function loadImagesToBuffer() {
@@ -37,9 +39,9 @@ function loadImagesToBuffer() {
 		type: 'GET',
 		success: function(data) {
 
-		    locs = data.locs;
-		    $('#pano_left_buffer img.place').attr('src',getSVURL(locs[0].loc[0],locs[0].loc[1]));
-		    $('#pano_right_buffer img.place').attr('src',getSVURL(locs[1].loc[0],locs[1].loc[1]));
+		    locs_buffer = data.locs;
+		    $('#pano_left_buffer img.place').attr('src',getSVURL(locs_buffer[0].loc[0],locs_buffer[0].loc[1]));
+		    $('#pano_right_buffer img.place').attr('src',getSVURL(locs_buffer[1].loc[0],locs_buffer[1].loc[1]));
 		    uiLocked = false;
 		}
 	});
