@@ -51,8 +51,9 @@ function setupUI() {
         var polyPath = poly.getPath().getArray();
         var polyArray = [];
         for (var polygonIdx = 0; polygonIdx < polyPath.length; polygonIdx++) {
-            polyArray.push(polyPath[polygonIdx].Qa);
-			polyArray.push(polyPath[polygonIdx].Pa);
+		//replaced .Qa .Pa
+            polyArray.push(polyPath[polygonIdx].lng());
+	    polyArray.push(polyPath[polygonIdx].lat());
         }
         
         $.ajax({

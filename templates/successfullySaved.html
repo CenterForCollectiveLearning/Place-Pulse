@@ -1,0 +1,16 @@
+{% extends "sub.html" %}
+
+
+{% block footer %}
+<script src="/static/js/results.js"></script>
+<script>
+var study_id ="{{study_id}}";
+var cityname = "{{cityname}}";
+alert("Successfully saved "+cityname+" for study "+study_id);
+</script>
+{% endblock %}
+
+{% block body %}
+{% endblock %}
+
+

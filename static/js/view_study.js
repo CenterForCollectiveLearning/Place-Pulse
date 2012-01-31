@@ -1,5 +1,6 @@
 var locs;
-
+var count=0;
+var numToFinish=5; //complelety arbitrary
 var uiLocked = true;
 
 function onStreetViewChoice() {
@@ -22,6 +23,13 @@ function onStreetViewChoice() {
 }
 
 function newPrompt() {
+	count++;
+	if(count>numToFinish)
+	{
+		window.location='/results/'+study_id;
+	}
+	else
+	{
 	$.ajax({
 		url: '/study/getpair/' + study_id,
 		type: 'GET',
@@ -43,7 +51,7 @@ function newPrompt() {
 	});
 	
     $('.streetViewChoice').click(onStreetViewChoice);
-
+	}
 }
 function init() {
 	newPrompt();

@@ -20,6 +20,9 @@ class database(object):
         except:
             return None
 
+    def returnObjectId(self,study_id):
+        return ObjectId(study_id)
+
     def getStudies(self):
         try:
 			return self.studies.find()
