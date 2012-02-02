@@ -92,7 +92,13 @@ def server_view_study(study_id):
 
 @app.route("/study/create/")
 def serve_create_study():
-    return render_template('create_study.html')
+    cities=''
+    for city in Database.studies.distinct('city'):
+        if(len(str(city))>0):
+            cities+=str(city)+','
+    cities=cities[:-1]
+    print('step one complete')
+    return render_template('create_study.html', cities=cities)
     
 @app.route('/study/create/',methods=['POST'])
 def create_study():    
@@ -101,7 +107,8 @@ def create_study():
         'study_question': request.form['study_question'],
         'locations_requested': request.form['locations_requested'],
         'polygon': request.form['polygon'],
-	'city': ''})
+	'city': request.form['city']})
+    print('finished')
     # Return the ID for the client to rendezvous at /study/populate/<id>
     return jsonifyResponse({
         'studyID': str(newStudyID)
@@ -210,6 +217,12 @@ def updateCities(study_id):
 def success(study_id):
     cityname = Database.getStudy(study_id)['city']
     return render_template('successfullySaved.html',study_id=study_id, cityname = cityname)
+
+@app.route('/error/<error_id>')
+def error(error_id):
+    if(error_id=='1'):
+        return render_template('errorpage.html',errorStatement = "Pick a better polygon.")
+    return render_template('errorpage.html',errorStatement = "generic error statement")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))

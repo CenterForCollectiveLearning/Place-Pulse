@@ -2,6 +2,17 @@
 
 {% block footer %}
 <script src="/static/js/create_study.js"></script>
+<script>
+var citiesStr = "{{cities}}";
+var cities = citiesStr.split(",");
+var identityheader = document.getElementById('cityidentity');
+identityheader.style.visibility='hidden';
+var submitCityOptions = document.getElementById('dropDownList');
+submitCityOptions.style.visibility='hidden';
+var saveCityButton = document.getElementById('saveCity');
+saveCityButton.style.visibility='hidden';
+populateDropDownMenu(cities);
+</script>
 <link href="/static/css/create_study.css" type="text/css" rel="stylesheet">
 {% endblock %}
 
@@ -41,6 +52,7 @@
 	<div>
 		Click to draw points on a polygon.
 		<div>
+			<span id="area"></span> square miles.
 			<span class="mapInterfaceAction" id="removeLastPoint">Remove last point</span>
 			<span class="mapInterfaceAction" id="clearCurrentSelection">Clear current selection</span>
 		</div>
@@ -50,5 +62,10 @@
 	<div>
 		<input type="submit" id="submitPolygon" value="Next step"/>
 	</div>
+<span id="cityidentity"> Identify City </span>
+		<select id = "dropDownList">
+			<option> Add a new city ... </option>
+		</select>
+		<input type = "submit" id = "saveCity" value = "Save"/>
 </div>
 {% endblock %}

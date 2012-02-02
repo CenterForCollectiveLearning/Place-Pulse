@@ -2,13 +2,15 @@ var poly, map;
 var markers;
 var path;
 var markerIcon;
-
+var area=0;
+var cityList;
 var mapReady = false;
 
 $(document).ready(function() {
 
     setupUI();
-
+    
+    cityList=cities;
     // Hide entire map interface
     $('#mapInterface').hide();
 
@@ -16,7 +18,7 @@ $(document).ready(function() {
     function loadScript() {
       var script = document.createElement("script");
       script.type = "text/javascript";
-      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize";
+      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize&libraries=geometry";
       document.body.appendChild(script);
     }
     
@@ -46,31 +48,26 @@ function setupUI() {
     });
     
     $('#submitPolygon').click(function() {
-        // Create a comma-separated list of numbers representing the polygon.
-        // List is flattened, so (x1,y1),(x2,y2) becomes x1,y1,x2,y2 etc...
-        var polyPath = poly.getPath().getArray();
-        var polyArray = [];
-        for (var polygonIdx = 0; polygonIdx < polyPath.length; polygonIdx++) {
-		//replaced .Qa .Pa
-            polyArray.push(polyPath[polygonIdx].lng());
-	    polyArray.push(polyPath[polygonIdx].lat());
-        }
-        
-        $.ajax({
-            url:'/study/create/',
-            // Expect JSON to be returned. This is also enforced on the server via mimetype.
-            dataType: 'json',
-            data: {
-                polygon: polyArray.toString(),
-                study_question: $('#study_question').val(),
-                locations_requested: $('#locations_requested').val()
-            },
-            type: 'POST',
-            success: function(data) {
-                window.location.replace(window.location.protocol + '//' + window.location.host + "/study/populate/" + data.studyID);
-            }
-        });
+	if(area<1000.0) {
+		// Create a comma-separated list of numbers representing the polygon.
+		// List is flattened, so (x1,y1),(x2,y2) becomes x1,y1,x2,y2 etc...
+		var polyPath = poly.getPath().getArray();
+		var polyArray = [];
+		for (var polygonIdx = 0; polygonIdx < polyPath.length; polygonIdx++) {
+			//replaced .Qa .Pa
+		    polyArray.push(polyPath[polygonIdx].lng());
+		    polyArray.push(polyPath[polygonIdx].lat());
+		}
+		document.getElementById("cityidentity").style.visibility='visible';
+		document.getElementById("dropDownList").style.visibility='visible';
+		document.getElementById("saveCity").style.visibility='visible';
+	}
+	else {
+		alert("Please limit your polygon to less than 1000.0 square miles in area.");
+	}
     });
+
+    $('#saveCity').click(saveCity);
 }
 
 /*
@@ -150,6 +147,7 @@ function addPointLatLng(lat, lng) {
         for (var i = 0, I = markers.length; i < I && markers[i] != marker; ++i);
         markers.splice(i, 1);
         path.removeAt(i);
+	updateArea();
     }
     );
 
@@ -157,13 +155,17 @@ function addPointLatLng(lat, lng) {
     function() {
         for (var i = 0, I = markers.length; i < I && markers[i] != marker; ++i);
         path.setAt(i, marker.getPosition());
+	updateArea();
     }
+
     );
 }
 function clearOverlays() {
     for (var m = 0; m < markers.length; m) {
         google.maps.event.trigger(markers[0], 'click');
     }
+    
+
 }
 function removeMarker(index) {
     if (markers.length > 0) {
@@ -205,6 +207,7 @@ function addPoint(event) {
     var next = minPlace + 1;
     markers.splice(next, 0, marker);
     path.insertAt(next, event.latLng);
+    updateArea();    
 
     google.maps.event.addListener(marker, 'click',
     function() {
@@ -212,6 +215,7 @@ function addPoint(event) {
         for (var i = 0, I = markers.length; i < I && markers[i] != marker; ++i);
         markers.splice(i, 1);
         path.removeAt(i);
+	updateArea();
     }
     );
 
@@ -219,8 +223,86 @@ function addPoint(event) {
     function() {
         for (var i = 0, I = markers.length; i < I && markers[i] != marker; ++i);
         path.setAt(i, marker.getPosition());
+	updateArea();
     }
     );
+}
+
+function populateDropDownMenu(cityList)
+{
+	for(var i = 0;i<cityList.length;i++)
+	{
+			var opt = document.createElement('option');
+			document.getElementById('dropDownList').options.add(opt);
+			opt.text=""+cityList[i];
+			opt.value=""+cityList[i];
+	}
+}
+
+function saveCity() {
+	var index = document.getElementById('dropDownList').selectedIndex;
+	if(index==0)
+	{
+		var city_name = prompt("What is the name of the city?");
+		if(city_name!=null && city_name!="")
+		{
+			updateDB(city_name);
+		}
+		else
+		{
+			alert("Please enter a name or choose one from the list.");
+		}
+	}
+	else
+	{
+		updateDB(cityList[index-1]);
+	}
+
+}
+
+function updateDB(city_name) {
+		var polyPath = poly.getPath().getArray();
+		var polyArray = [];
+		for (var polygonIdx = 0; polygonIdx < polyPath.length; polygonIdx++) {
+			//replaced .Qa .Pa
+		    polyArray.push(polyPath[polygonIdx].lng());
+		    polyArray.push(polyPath[polygonIdx].lat());
+		}
+	$.ajax({
+		    url:'/study/create/',
+		    // Expect JSON to be returned. This is also enforced on the server via mimetype.
+		    dataType: 'json',
+		    data: {
+		        polygon: polyArray.toString(),
+		        study_question: $('#study_question').val(),
+		        locations_requested: $('#locations_requested').val(),
+			city: city_name
+		    },
+		    type: 'POST',
+		    success: function(data) {
+		        window.location.replace(window.location.protocol + '//' + window.location.host + "/study/populate/" + data.studyID);
+		    }
+		});
+}
+
+function updateArea() {
+	if(poly.getPath().length>2) {
+		var numMetersInSquareMile = Math.pow(5280.0*12*2.54/100,2);
+		area =  google.maps.geometry.spherical.computeArea(poly.getPath())/numMetersInSquareMile;
+		if(area>1000.0) {
+			$('#area').html(area.toFixed(3)+" square miles is above the limit of 1000.0 ");
+			poly.setOptions({strokeColor: '#d70f37',fillColor:'#d70f37'});
+		}
+		else { 
+			$('#area').html(area.toFixed(3)+" ");
+			poly.setOptions({strokeColor: '#9fe732',fillColor:'#9fe732'});
+		}
+	}
+	else {
+	area=0.0;
+	$('#area').html(area);
+	}
+
 }
 /*
     Distance math.
