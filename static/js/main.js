@@ -43,25 +43,20 @@ function loadImagesToBuffer() {
 	});
     $('.streetViewChoice').click(onStreetViewChoice);
 }
-function loadInitialImages() {
+function init() {
 	$.ajax({
 		url: '/study/getpair/' + study_id,
 		type: 'GET',
 		success: function(data) {
 		    locs = data.locs;
-		    $('#pano_left img.place').attr('src',getSVURL(locs[0].loc[0],locs[0].loc[1]));
-		    $('#pano_right img.place').attr('src',getSVURL(locs[1].loc[0],locs[1].loc[1]));
-		    uiLocked = false;
+			$('#pano_left img.place').attr('src', getSVURL(locs[0].loc[0],locs[0].loc[1]));
+			$('#pano_right img.place').attr('src', getSVURL(locs[1].loc[0],locs[1].loc[1]));
+			loadImagesToBuffer();
 		}
 	});
-    $('.streetViewChoice').click(onStreetViewChoice);
 }
 function getSVURL(lat,lng) {
     // TODO: re-add this SV-specific data: &fov=90&heading=235&pitch=10
     return "http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false";
-}
-function init() {
-	loadInitialImages();
-	loadImagesToBuffer();
 }
 init();
