@@ -1,0 +1,34 @@
+{% extends "sub.html" %}
+
+
+{% block footer %}
+	<script src="/static/js/results.js"></script>
+{% endblock %}
+
+{% block body %}
+<div>
+
+	<script>
+	var study_id ="{{study_id}}";
+	var listStr="{{L}}";
+	var list1=listStr.split(",");
+
+	for(var i=0;i<list1.length;i+=5)
+	{
+		document.write(list1[i]+",");
+		document.write(list1[i+1]+" ");
+		document.write(list1[i+2]+",");
+		document.write(list1[i+3]+" ");
+		document.write(list1[i+4]);
+		document.write("<br>");
+	}
+
+
+	</script>
+</div>
+<div>
+	<input type = "submit" id = "goToAdminPage" value = "Proceed to Admin?"/>
+</div>
+{% endblock %}
+
+

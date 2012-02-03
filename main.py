@@ -1,5 +1,6 @@
 import os
 import logging
+import re
 from flask import Flask,redirect,render_template,request
 
 from random import random, randint, shuffle, choice, sample
@@ -91,7 +92,13 @@ def server_view_study(study_id):
 
 @app.route("/study/create/")
 def serve_create_study():
-    return render_template('create_study.html')
+    cities=''
+    for city in Database.studies.distinct('city'):
+        if(len(str(city))>0):
+            cities+=str(city)+','
+    cities=cities[:-1]
+    print('step one complete')
+    return render_template('create_study.html', cities=cities)
     
 @app.route('/study/create/',methods=['POST'])
 def create_study():    
@@ -99,7 +106,9 @@ def create_study():
     newStudyID = Database.studies.insert({
         'study_question': request.form['study_question'],
         'locations_requested': request.form['locations_requested'],
-        'polygon': request.form['polygon']})
+        'polygon': request.form['polygon'],
+	'city': request.form['city']})
+    print('finished')
     # Return the ID for the client to rendezvous at /study/populate/<id>
     return jsonifyResponse({
         'studyID': str(newStudyID)
@@ -175,6 +184,45 @@ def buildIndices():
     })
     
     Database.places.ensureIndex( { study_id : 1, random : 1, bucket : 1 } )
+
+@app.route('/results/<study_id>',methods = ['GET'])
+def showData(study_id):
+    L=""
+    for x in Database.votes.find({'study_id':study_id}):
+        leftStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['left'])['loc']))
+        rightStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['right'])['loc']))
+        L+=str(leftStuff)+","+str(rightStuff)+","+str(x['choice'])+","
+    L=L[:-1]
+    return render_template('results.html',study_id=study_id, L=L)
+
+@app.route('/admin/aggregate_studies/<study_id>')
+def classifyStudy(study_id):
+    study = Database.getStudy(study_id)
+    cities=''
+    for city in Database.studies.distinct('city'):
+        if(len(str(city))>0):
+            cities+=str(city)+','
+    cities=cities[:-1]
+    return render_template('admin.html',study_id=study_id,polygon=study['polygon'],cities=cities)
+
+@app.route('/admin/aggregate_studies/<study_id>',methods = ['POST'])
+def updateCities(study_id):
+    cityname = request.form['city']
+    Database.studies.update({'_id':Database.returnObjectId(study_id)},{'$set': {'city':cityname}})
+    return jsonifyResponse({
+        'success':True
+    })
+
+@app.route('/success/<study_id>',methods = ['GET'])
+def success(study_id):
+    cityname = Database.getStudy(study_id)['city']
+    return render_template('successfullySaved.html',study_id=study_id, cityname = cityname)
+
+@app.route('/error/<error_id>')
+def error(error_id):
+    if(error_id=='1'):
+        return render_template('errorpage.html',errorStatement = "Pick a better polygon.")
+    return render_template('errorpage.html',errorStatement = "generic error statement")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
