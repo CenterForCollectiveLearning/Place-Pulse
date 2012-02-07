@@ -1,5 +1,6 @@
-/bin/
-/include/
-/lib/
+/PlacePulse/bin/
+/PlacePulse/include/
+/PlacePulse/lib/
+/PlacePulse/Stash/
 .Python
 *.pyc
