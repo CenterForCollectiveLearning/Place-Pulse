@@ -1,84 +1,161 @@
 <!DOCTYPE html>
-<head>
-	<meta charset="utf-8">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
 	<title>Place Pulse | The Collaborative Image of the City</title>
 	<meta name="description" content="Place Pulse is a website that allows anybody to quickly run an urban perception study and visualize the results in powerful ways." />
 	<meta name="author" content="Phil Salesses | Macro Connections | The Media Lab | Massachusetts Institute of Technology" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="/static/css/responsive.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
 	<link rel="shortcut icon" href="/static/images/customize/favicon.ico" />
 	<link rel="apple-touch-icon" href="/static/images/customize/apple/touch-icon-iphone.png" />
 	<link rel="apple-touch-icon" sizes="72x72" href="/static/images/customize/apple/touch-icon-ipad.png" />
 	<link rel="apple-touch-icon" sizes="114x114" href="/static/images/customize/apple/touch-icon-iphone4.png" />
-	<link rel="stylesheet" href="/static/css/style.css?v=2">
-</head>
-<body>
-<div id="container">
-	<div id="content_top">
-		<header>
-			<a href="/" id="logo"><img src="/static/images/logo.png" alt="Place Pulse Logo" /></a>
-		</header>
-		<article>
-			<div id="instructions">
-				<h4 id="current_votes">Total votes contributed: {{ votes_contributed }}</h4>
-				<p id="results"><a id="current_results" href="/results/">view results</a></p>
-			</div>
-			<section id="voting_box">
-				<div class="splash">
-					<div id="question">
-						<h2>{{ study_prompt }}</h2>
-					</div>
-				</div>
-				<div id="leftColumnHalf">
-					<div id="leftLink" class="streetViewChoice left" >&nbsp;</div>
-					<div id="pano_left">
-						<img class="place" />
-					</div>
-					<div id="pano_left_buffer" style="display:none">
-						<img class="place" />
-					</div>
-					<image id="key_1" height="70" width="67" src="/static/images/key_1.png" alt="Button 1" />
-					<div class="clear"></div>
-					<div id="report_left"><a>report bad image</a></div>
-				</div>
-				<div id="rightColumnHalf">
-					<div id="rightLink" class="streetViewChoice right">&nbsp;</div>
-					<div id="pano_right">
-						<img class="place" />
-					</div>
-					<div id="pano_right_buffer" style="display:none">
-						<img class="place" />
-					</div>
-					<image id="key_2" height="70" width="67" src="/static/images/key_2.png" alt="Button 2" />
-					<div class="clear"></div>
-					<div id="report_right"><a>report bad image</a></div>
-				</div>				
-				<div class="clear"></div>		
-				<div id="equal">
-					<a id="equal_a">photos are equal</a>
-				</div>
-			</section>
-		</article>
-		<div class="clear"></div>
-		<footer id="footer">
-			<section id="copyright">
-				<p>&copy; 2011 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
-				<p class="small">Page rendered in XXX seconds</p>				
-			</section>
-			<div id="credits"></div>
-		</footer>
-	</div>
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-<script>
-  	var _gaq = [['_setAccount', 'UA-21313433-1'], ['_trackPageview']];
-   	(function(d, t) {
-	    var g = d.createElement(t),
-	    s = d.getElementsByTagName(t)[0];
-	   	g.async = true;
-	    g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	    s.parentNode.insertBefore(g, s);
-	 })(document, 'script');
-</script>
-{% block footer %}
-{% endblock %}
-</body>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">PLACE PULSE</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#create">Create Study</a></li>
+			  <li><a href="#contribute">Contribute Data</a></li>
+			  <li><a href="#results">Browse Results</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+            <p class="navbar-text pull-right">Logged in as <a href="#">Phil Salesses</a></p>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Studies</li>
+              <li class="active"><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li class="nav-header">Places</li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li class="nav-header">Users</li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+              <li><a href="#">Link</a></li>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+          <div class="hero-unit">
+            <h1>Hello, world!</h1>
+            <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+            <p><a class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+          </div>
+          <div class="row-fluid">
+            <div class="span4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn" href="#">View details &raquo;</a></p>
+            </div><!--/span-->
+            <div class="span4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn" href="#">View details &raquo;</a></p>
+            </div><!--/span-->
+            <div class="span4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn" href="#">View details &raquo;</a></p>
+            </div><!--/span-->
+          </div><!--/row-->
+          <div class="row-fluid">
+            <div class="span4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn" href="#">View details &raquo;</a></p>
+            </div><!--/span-->
+            <div class="span4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn" href="#">View details &raquo;</a></p>
+            </div><!--/span-->
+            <div class="span4">
+              <h2>Heading</h2>
+              <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+              <p><a class="btn" href="#">View details &raquo;</a></p>
+            </div><!--/span-->
+          </div><!--/row-->
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+    <script src="/static/js/bootstrap-transition.js"></script>
+    <script src="/static/js/bootstrap-alert.js"></script>
+    <script src="/static/js/bootstrap-modal.js"></script>
+    <script src="/static/js/bootstrap-dropdown.js"></script>
+    <script src="/static/js/bootstrap-scrollspy.js"></script>
+    <script src="/static/js/bootstrap-tab.js"></script>
+    <script src="/static/js/bootstrap-tooltip.js"></script>
+    <script src="/static/js/bootstrap-popover.js"></script>
+    <script src="/static/js/bootstrap-button.js"></script>
+    <script src="/static/js/bootstrap-collapse.js"></script>
+    <script src="/static/js/bootstrap-carousel.js"></script>
+    <script src="/static/js/bootstrap-typeahead.js"></script>
+    <script>
+	  	var _gaq = [['_setAccount', 'UA-21313433-1'], ['_trackPageview']];
+	   	(function(d, t) {
+		    var g = d.createElement(t),
+		    s = d.getElementsByTagName(t)[0];
+		   	g.async = true;
+		    g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    s.parentNode.insertBefore(g, s);
+		 })(document, 'script');
+	</script>
+  </body>
 </html>

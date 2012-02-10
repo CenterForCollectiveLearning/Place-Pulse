@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>Place Pulse | The Collaborative Image of the City</title>
+	<meta name="description" content="Place Pulse is a website that allows anybody to quickly run an urban perception study and visualize the results in powerful ways." />
+	<meta name="author" content="Phil Salesses | Macro Connections | The Media Lab | Massachusetts Institute of Technology" />
+	<link rel="shortcut icon" href="/static/images/customize/favicon.ico" />
+	<link rel="apple-touch-icon" href="/static/images/customize/apple/touch-icon-iphone.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="/static/images/customize/apple/touch-icon-ipad.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="/static/images/customize/apple/touch-icon-iphone4.png" />
+	<link rel="stylesheet" href="/static/css/style.css?v=2">
+</head>
+<body>
+<div id="container">
+	<div id="content_top">
+		<header>
+			<a href="/" id="logo"><img src="/static/images/logo.png" alt="Place Pulse Logo" /></a>
+		</header>
+		<article>
+			<div id="instructions">
+				<h4 id="current_votes">Total votes contributed: {{ votes_contributed }}</h4>
+				<p id="results"><a id="current_results" href="/results/">view results</a></p>
+			</div>
+			<section id="voting_box">
+				<div class="splash">
+					<div id="question">
+						<h2>{{ study_prompt }}</h2>
+					</div>
+				</div>
+				<div id="leftColumnHalf">
+					<div id="leftLink" class="streetViewChoice left" >&nbsp;</div>
+					<div id="pano_left">
+						<img class="place" />
+					</div>
+					<div id="pano_left_buffer" style="display:none">
+						<img class="place" />
+					</div>
+					<image id="key_1" height="70" width="67" src="/static/images/key_1.png" alt="Button 1" />
+					<div class="clear"></div>
+					<div id="report_left"><a>report bad image</a></div>
+				</div>
+				<div id="rightColumnHalf">
+					<div id="rightLink" class="streetViewChoice right">&nbsp;</div>
+					<div id="pano_right">
+						<img class="place" />
+					</div>
+					<div id="pano_right_buffer" style="display:none">
+						<img class="place" />
+					</div>
+					<image id="key_2" height="70" width="67" src="/static/images/key_2.png" alt="Button 2" />
+					<div class="clear"></div>
+					<div id="report_right"><a>report bad image</a></div>
+				</div>				
+				<div class="clear"></div>		
+				<div id="equal">
+					<a id="equal_a">photos are equal</a>
+				</div>
+			</section>
+		</article>
+		<div class="clear"></div>
+		<footer id="footer">
+			<section id="copyright">
+				<p>&copy; 2011 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
+				<p class="small">Page rendered in XXX seconds</p>				
+			</section>
+			<div id="credits"></div>
+		</footer>
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+<script>
+  	var _gaq = [['_setAccount', 'UA-21313433-1'], ['_trackPageview']];
+   	(function(d, t) {
+	    var g = d.createElement(t),
+	    s = d.getElementsByTagName(t)[0];
+	   	g.async = true;
+	    g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    s.parentNode.insertBefore(g, s);
+	 })(document, 'script');
+</script>
+{% block footer %}
+{% endblock %}
+</body>
+</html>
