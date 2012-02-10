@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block footer %}
+<script src="/static/js/admin.js"></script>
+<script>
+var study_id ="{{study_id}}";
+var polygonStr="{{polygon}}";
+var citiesStr = "{{cities}}";
+var cities = citiesStr.split(",");
+$(document).ready(function() {
+	// On page load, load the GMaps API. Once that's loaded, callback to init()
+    function loadScript() {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init";
+      document.body.appendChild(script);
+    }
+
+	loadScript();
+});
+
+function init() {
+	displayCityOptions(study_id, polygonStr, cities);
+}
+
+populateDropDownMenu(cities);
+</script>
+<link href="/static/css/admin.css" type="text/css" rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+<br />
+<h2>Admin Functions</h2>
+<ol>
+<strong>Studies</strong>
+<li><a href='/admin/view/studies/'>View All Studies</a></li>
+<li><a href='/admin/view/study/'>View Specific Study</a></li>
+<strong>Places</strong>
+<li><a href='/admin/view/places/'>View All Places</a></li>
+<li><a href='/admin/view/places_by_city/'>View Places by City</a></li>
+<li><a href='/admin/view/place/'>View Specific Place</a></li>
+<strong>Votes</strong>
+<li><a href='/admin/view/votes/'>View All Votes</a></li>
+<li><a href='/admin/view/vote/'>View Specific Vote</a></li>
+</ol>
+<br />
+<br />
+<h3> Identify City </h3>
+	<div>
+		<div id="map_canvas"></div>
+		<select id = "dropDownList">
+			<option> Add a new city ... </option>
+		</select>
+		<input type = "submit" id = "saveCity" value = "Save"/>
+	</div>
+{% endblock %}

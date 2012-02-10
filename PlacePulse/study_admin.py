@@ -10,7 +10,8 @@ from db import Database
 
 @study_admin.route("/admin/")
 def load_admin():
-	return render_template('admin.html')
+	studies = Database.getStudies()
+	return render_template('admin.html',studies=studies)
 	
 @study_admin.route("/admin/view/votes/<study_id>/",methods=['GET'])
 def calculate_ranking(study_id):
