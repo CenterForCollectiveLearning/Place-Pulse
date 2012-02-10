@@ -69,27 +69,34 @@
       <div class="hero-unit">
 		<h1>Control Panel</h1>
         <p>Manage everything from one place.</p>
-        <p><a class="btn btn-primary btn-large" href="#">Get Started &raquo;</a></p>
       </div>
       <div class="row-fluid">
         <div class="span4">
           <h2>Popular Studies</h2>
           <ol>
-			{%for study in studies:%}
+			{%for study in popular_studies:%}
 		  	<li><a href='/study/view_specific/{{study._id}}'>{{study.study_question}}</a></li>
 		  	{%endfor%}
 		  </ol>
           <p><a class="btn" href="#">View more &raquo;</a></p>
         </div><!--/span-->
         <div class="span4">
-          <h2>New Studies</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View more &raquo;</a></p>
+          <h2>Recently Added Cities</h2>
+          <ol>
+			{%for study in new_cities:%}
+		  	<li><a href='/study/view_specific/{{study._id}}'>{{study.city}}</a></li>
+		  	{%endfor%}
+		  </ol>
+		  <p><a class="btn" href="#">View more &raquo;</a></p>
         </div><!--/span-->
         <div class="span4">
-          <h2>Inactive Studies</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn" href="#">View more &raquo;</a></p>
+          <h2>Newest Results</h2>
+          <ol>
+			{%for study in inactive_studies:%}
+		  	<li><a href='/study/view_specific/{{study._id}}'>{{study.study_question}}</a></li>
+		  	{%endfor%}
+		  </ol>
+		  <p><a class="btn" href="#">View more &raquo;</a></p>
         </div><!--/span-->
       </div><!--/row-->
     </div><!--/span-->

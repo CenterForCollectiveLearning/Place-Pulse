@@ -23,11 +23,29 @@ class database(object):
     def returnObjectId(self,study_id):
         return ObjectId(study_id)
 
-    def getStudies(self):
-        try:
+	def getStudies(self):
+		try:
 			return self.studies.find()
+		except:
+			return None
+
+    def getNewStudies(self,limit):
+        try:
+			return self.studies.find().limit(limit)
         except:
             return None
+
+    def getPopularStudies(self,limit):
+        try:
+			return self.studies.find().limit(limit)
+        except:
+            return None
+
+    def getInactiveStudies(self,limit):
+		try:
+			return self.studies.find().limit(limit) #Need to add votes_needed field for studies to track how long they have to go.
+		except:
+			return None
 
     def getVotes(self,study_id):
         try:
@@ -44,6 +62,12 @@ class database(object):
     def getPlace(self,place_id):
         try:
             return self.places.find_one(ObjectId(place_id))
+        except:
+            return None
+
+    def getNewCities(self,limit):
+        try:
+			return self.studies.find().limit(limit)
         except:
             return None
 			
