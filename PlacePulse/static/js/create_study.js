@@ -164,6 +164,12 @@ function clearOverlays() {
     for (var m = 0; m < markers.length; m) {
         google.maps.event.trigger(markers[0], 'click');
     }
+    poly.setOptions({
+	strokeWeight: 2,
+        strokeOpacity: 1,
+        strokeColor: '#eeb44b',
+        fillColor: '#eeb44b'
+	});
     
 
 }
@@ -292,17 +298,23 @@ function updateArea() {
 		if(area>1000.0) {
 			$('#area').html(area.toFixed(3)+" square miles is above the limit of 1000.0 ");
 			poly.setOptions({strokeColor: '#d70f37',fillColor:'#d70f37'});
+			toggleMarkers('/static/images/red.png');
 		}
 		else { 
 			$('#area').html(area.toFixed(3)+" ");
 			poly.setOptions({strokeColor: '#9fe732',fillColor:'#9fe732'});
+			toggleMarkers('/static/images/yellow.png');
 		}
 	}
 	else {
 	area=0.0;
 	$('#area').html(area);
 	}
+}
 
+function toggleMarkers(markerIcon) {
+	for(var i=0;i<markers.length;i++)
+		markers[i].setIcon(markerIcon);
 }
 /*
     Distance math.

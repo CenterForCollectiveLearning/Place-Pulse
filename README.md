@@ -2,6 +2,6 @@ Place Pulse
 ============
 
     source setupEnv.sh
-    python main.py
+    ./run_placepulse.py
 
 And then, open up http://localhost:8000/study/create
