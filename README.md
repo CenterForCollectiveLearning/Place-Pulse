@@ -1,10 +1,10 @@
 Place Pulse
 ============
-To run Place Pulse on your local machine:
-Database Setup
---------------------
-Download and install MongoDB from mongodb.org
-Open Terminal and type (without the $)
+ To run Place Pulse on your local machine:
+ Database Setup
+ --------------------
+ Download and install MongoDB from mongodb.org
+ Open Terminal and type (without the $)
     $ sudo mkdir -p /data/db/
 	$ sudo chown `id -u` /data/db
 	$ cd /in/to/the/directory/where/you/installed/mongo
@@ -19,10 +19,10 @@ Open Terminal and type (without the $)
 		Fri Feb 10 12:01:22 [initandlisten] recover : no journal files present, no recovery needed
 		Fri Feb 10 12:01:22 [websvr] admin web console waiting for connections on port 28017
 	
-Site Setup
---------------------
-Clone Place-Pulse from GitHub git@github.com:philsalesses/Place-Pulse.git
-Open Terminal and type (without the $)
+ Site Setup
+ --------------------
+ Clone Place-Pulse from GitHub git@github.com:philsalesses/Place-Pulse.git
+ Open Terminal and type (without the $)
     $ cd /in/to/the/directory/you/just/cloned
 	$ virtualenv ./ --distribute
 		New python executable in ./bin/python
@@ -36,4 +36,4 @@ Open Terminal and type (without the $)
     	* Running on http://localhost:8000/
     	* Restarting with reloader
 
-And then, open up http://localhost:8000/study/create
+And then, open up http://localhost:8000/ or http://localhost:8000/admin
