@@ -14,51 +14,51 @@ class database(object):
 
     def getRandomStudy(self):
         try:
-			count = self.studies.count()
-			randomNumber = random.randint(0,count-1)
-			return self.studies.find().limit(-1).skip(randomNumber).next()
+            count = self.studies.count()
+            randomNumber = random.randint(0,count-1)
+            return self.studies.find().limit(-1).skip(randomNumber).next()
         except:
             return None
 
     def returnObjectId(self,study_id):
         return ObjectId(study_id)
 
-	def getStudies(self):
-		try:
-			return self.studies.find()
-		except:
-			return None
+    def getStudies(self):
+        try:
+            return self.studies.find()
+        except:
+            return None
 
     def getNewStudies(self,limit):
         try:
-			return self.studies.find().limit(limit)
+            return self.studies.find().limit(limit)
         except:
             return None
 
     def getPopularStudies(self,limit):
         try:
-			return self.studies.find().limit(limit)
+            return self.studies.find().limit(limit)
         except:
             return None
 
     def getInactiveStudies(self,limit):
-		try:
-			return self.studies.find().limit(limit) #Need to add votes_needed field for studies to track how long they have to go.
-		except:
-			return None
+        try:
+            return self.studies.find().limit(limit) #Need to add votes_needed field for studies to track how long they have to go.
+        except:
+            return None
 
     def getVotes(self,study_id):
         try:
-			return self.votes.find({'study_id': study_id})
+            return self.votes.find({'study_id': study_id})
         except:
             return None
 
     def getVotesCount(self):
         try:
-			return self.votes.find().count()
+            return self.votes.find().count()
         except:
             return None
-	
+    
     def getPlace(self,place_id):
         try:
             return self.places.find_one(ObjectId(place_id))
@@ -67,10 +67,10 @@ class database(object):
 
     def getNewCities(self,limit):
         try:
-			return self.studies.find().limit(limit)
+            return self.studies.find().limit(limit)
         except:
             return None
-			
+            
     @property
     def votes(self):
         return self.db.votes
