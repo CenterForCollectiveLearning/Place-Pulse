@@ -47,21 +47,26 @@
     <div class="span3">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
-          <li class="nav-header">Studies</li>
-          <li><a href='/admin/studies/view_all/'>View all</a></li>
-		  <li><a href='/admin/studies/view_specific/'>View specific</a></li>
-		  <li><a href='/admin/studies/aggregate/'>Aggregate</a></li>
-          <li class="nav-header">Places</li>
-		  <li><a href='/admin/places/view_all/'>View all</a></li>
-		  <li><a href='/admin/places/view_specific/'>View specific</a></li>
-		  <li><a href='/admin/places/view_by_city/'>View by city</a></li>
-          <li class="nav-header">Votes</li>
-          <li><a href='/admin/votes/view_all/'>View all</a></li>
-		  <li><a href='/admin/votes/view_specific/'>View specific</a></li>
-		  <li><a href='/admin/votes/view_by_user/'>View by user</a></li>
-		  <li class="nav-header">Users</li>
-          <li><a href='/admin/users/view_all'>View all</a></li>
-		 <li><a href='/admin/users/view_specific'>View specific</a></li>
+		  <li class="nav-header">Place Pulse</li>
+		  <li><a href='/admin/studies/'><i class="icon-book"></i> Studies</a></li>
+		  <li><a href='/admin/places/'><i class="icon-plane"></i> Places</a></li>
+		  <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Locations</a></li>
+		  <li><a href='/admin/images/'><i class="icon-picture"></i> Images</a></li>
+		  <li><a href='/admin/votes/'><i class="icon-ok"></i> Votes</a></li>
+		  <li><a href='/admin/results/'><i class="icon-signal"></i> Results</a></li>
+		  <li class="nav-header">Your Account</li>
+          <li><a href='/admin/users/view_all'><i class="icon-user"></i> Profile</a></li>
+		  <li><a href='/admin/users/view_specific'><i class="icon-cog"></i> Settings</a></li>
+		  <li><a href='/admin/users/view_specific'><i class="icon-question-sign"></i> Help</a></li>
+		<hr>
+		  <li class="nav-header">Global Settings</li>
+          <li><a href='/admin/settings/studies/'><i class="icon-book"></i> Studies</a></li>
+		  <li><a href='/admin/settings/places/'><i class="icon-plane"></i> Places</a></li>
+		  <li><a href='/admin/settings/locations/'><i class="icon-map-marker"></i> Locations</a></li>
+		  <li><a href='/admin/settings/images/'><i class="icon-picture"></i> Images</a></li>
+		  <li><a href='/admin/settings/votes/'><i class="icon-ok"></i> Votes</a></li>
+		  <li><a href='/admin/settings/results/'><i class="icon-signal"></i> Results</a></li>
+		  <li><a href='/admin/settings/users/'><i class="icon-user"></i> Users</a></li>
         </ul>
       </div><!--/.well -->
     </div><!--/span-->
@@ -75,7 +80,7 @@
           <h2>Popular Studies</h2>
           <ol>
 			{%for study in popular_studies:%}
-		  	<li><a href='/study/view_specific/{{study._id}}'>{{study.study_question}}</a></li>
+		  	<li><a href='/study/{{study._id}}'>{{study.study_question}}</a></li>
 		  	{%endfor%}
 		  </ol>
           <p><a class="btn" href="#">View more &raquo;</a></p>
@@ -84,7 +89,7 @@
           <h2>Recently Added Cities</h2>
           <ol>
 			{%for study in new_cities:%}
-		  	<li><a href='/study/view_specific/{{study._id}}'>{{study.city}}</a></li>
+		  	<li><a href='/study/{{study._id}}'>{{study.city}}</a></li>
 		  	{%endfor%}
 		  </ol>
 		  <p><a class="btn" href="#">View more &raquo;</a></p>

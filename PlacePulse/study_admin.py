@@ -15,12 +15,12 @@ def load_admin():
 	inactive_studies = Database.getInactiveStudies(5)
 	return render_template('admin.html',popular_studies=popular_studies,new_cities=new_cities,inactive_studies=inactive_studies)
 	
-@study_admin.route("/admin/view/votes/<study_id>/",methods=['GET'])
+@study_admin.route("/admin/votes/<study_id>/",methods=['GET'])
 def calculate_ranking(study_id):
 	votes = Database.getVotes(study_id)
 	return render_template('view_votes.html',votes=votes)
 	
-@study_admin.route("/admin/view/studies/")
+@study_admin.route("/admin/studies/")
 def view_studies():
 	studies = Database.getStudies()
 	return render_template('view_studies.html',studies=studies)
