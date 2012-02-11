@@ -3,6 +3,7 @@
 {% block header %}
 <!-- Le styles -->
 <link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/responsive.css" rel="stylesheet">
 <style type="text/css">
   body {
     padding-top: 60px;
@@ -12,8 +13,6 @@
     padding: 9px 0;
   }
 </style>
-<link href="/static/css/responsive.css" rel="stylesheet">
-<link href="/static/css/admin.css" type="text/css" rel="stylesheet">
 {% endblock %}
 
 {% block nav %}
@@ -137,12 +136,7 @@
 <script src="/static/js/bootstrap-collapse.js"></script>
 <script src="/static/js/bootstrap-carousel.js"></script>
 <script src="/static/js/bootstrap-typeahead.js"></script>
-<script src="/static/js/admin.js"></script>
 <script>
-var study_id ="{{study_id}}";
-var polygonStr="{{polygon}}";
-var citiesStr = "{{cities}}";
-var cities = citiesStr.split(",");
 $(document).ready(function() {
 	// On page load, load the GMaps API. Once that's loaded, callback to init()
     function loadScript() {
@@ -154,11 +148,5 @@ $(document).ready(function() {
 
 	loadScript();
 });
-
-function init() {
-	displayCityOptions(study_id, polygonStr, cities);
-}
-
-populateDropDownMenu(cities);
 </script>
 {% endblock %}

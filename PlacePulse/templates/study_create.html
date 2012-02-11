@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block header %}
+<!-- Le styles -->
+<link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/responsive.css" rel="stylesheet">
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+  .sidebar-nav {
+    padding: 9px 0;
+  }
+  #map {
+  width: 600px;
+  height: 400px;
+  }
+
+  #mapInterface {
+    /* Hide at first. */
+    display:none; 
+  }
+
+  .mapInterfaceAction {
+      cursor:pointer;
+  	color:rgb(200,200,255);
+  	display:block;
+  }
+  .mapInterfaceAction:hover {
+  	text-decoration:underline;
+  }
+</style>
+{% endblock %}
+
+{% block nav %}
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="/"><img src="/static/img/place_pulse_logo_15.png" alt="" /></a>
+      <div class="nav-collapse">
+        <ul class="nav">
+            <li><a href="#about">About The Project</a></li>
+            <li><a href="#create">Create Study</a></li>
+            <li><a href="#contribute">Contribute Data</a></li>
+            <li><a href="#results">Browse Results</a></li>
+        </ul>
+        <p class="navbar-text pull-right">Logged in as <a href="/admin/">Phil Salesses</a></p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+          <li class="nav-header">Create a Study</li>
+          <li class="active"><a href='/admin/studies/'><i class="icon-book icon-white"></i> Study Information</a></li>
+          <li><a href='/admin/places/'><i class="icon-plane"></i> Define Places</a></li>
+          <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Populate Locations</a></li>
+          <li><a href='/admin/images/'><i class="icon-picture"></i> Curate Images</a></li>
+          <li><a href='/admin/votes/'><i class="icon-ok"></i> Start Collecting Votes</a></li>
+        </ul>
+      </div><!--/.well -->
+    </div><!--/span-->
+    <div class="span9">
+      <div class="row-fluid">
+        <div class="span12">
+          <h1>Create a Study</h1>
+          <div id="createStudyForm">
+          	<div>
+          		<div>
+          			What attribute would you like to study?
+          			<div>
+          				<input type="text" id="study_question" />
+          			</div>
+          		</div>
+          	</div>
+          	<div>
+          		<div>
+          			<div>
+          				Number of locations requested
+          			</div>
+          			<div>
+          				<select name="locations_requested" id="locations_requested">
+          					<option value="100">100</option>
+          					<option value="200">200</option>
+          					<option value="300">300</option>
+          					<option value="400">400</option>
+          					<option value="500">500</option>
+          				</select>
+          			</div>
+          		</div>
+          	</div>
+          	<div>
+          		<input type="submit" id="finishStudyForm" value="Next"/>
+          	</div>
+          </div>
+          <div id="mapInterface">
+          	<div>
+          		Click to draw points on a polygon.
+          		<div>
+          			<span id="area"></span> square miles.
+          			<span class="mapInterfaceAction" id="removeLastPoint">Remove last point</span>
+          			<span class="mapInterfaceAction" id="clearCurrentSelection">Clear current selection</span>
+          		</div>
+          	</div>
+          	<div id="map">
+          	</div>
+          	<div>
+          		<input type="submit" id="submitPolygon" value="Next step"/>
+          	</div>
+                <span id="cityidentity"> Identify City </span>
+          		<select id = "dropDownList">
+          			<option> Add a new city ... </option>
+          		</select>
+          		<input type = "submit" id = "saveCity" value = "Save"/>
+          </div>
+        </div><!--/span-->
+      </div><!--/row-->
+    </div><!--/span-->
+  </div><!--/row-->
+{% endblock %}
+
+{% block footer %}
+  <hr>
+
+  <footer>
+    <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
+  </footer>
+
+</div><!--/.fluid-container-->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+<script src="/static/js/bootstrap-transition.js"></script>
+<script src="/static/js/bootstrap-alert.js"></script>
+<script src="/static/js/bootstrap-modal.js"></script>
+<script src="/static/js/bootstrap-dropdown.js"></script>
+<script src="/static/js/bootstrap-scrollspy.js"></script>
+<script src="/static/js/bootstrap-tab.js"></script>
+<script src="/static/js/bootstrap-tooltip.js"></script>
+<script src="/static/js/bootstrap-popover.js"></script>
+<script src="/static/js/bootstrap-button.js"></script>
+<script src="/static/js/bootstrap-collapse.js"></script>
+<script src="/static/js/bootstrap-carousel.js"></script>
+<script src="/static/js/bootstrap-typeahead.js"></script>
+<script src="/static/js/create_study.js"></script>
+<script>
+var citiesStr = "{{cities}}";
+var cities = citiesStr.split(",");
+var identityheader = document.getElementById('cityidentity');
+identityheader.style.visibility='hidden';
+var submitCityOptions = document.getElementById('dropDownList');
+submitCityOptions.style.visibility='hidden';
+var saveCityButton = document.getElementById('saveCity');
+saveCityButton.style.visibility='hidden';
+populateDropDownMenu(cities);
+</script>
+{% endblock %}

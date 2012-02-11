@@ -18,12 +18,10 @@ To pull a random place, simply load the study obj, look at the places, and choos
 """
 
 # TODO: Move from modules to blueprints, see http://flask.pocoo.org/docs/blueprints/
-from study_admin import study_admin
-from study_builder import study_builder
-from study_viewer import study_viewer
-app.register_module(study_admin)
-app.register_module(study_builder)
-app.register_module(study_viewer)
+from admin import admin
+from study import study
+app.register_module(admin)
+app.register_module(study)
 
 
 @app.route("/")
