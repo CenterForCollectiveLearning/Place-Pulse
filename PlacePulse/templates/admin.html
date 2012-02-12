@@ -4,107 +4,79 @@
 <!-- Le styles -->
 <link href="/static/css/bootstrap.css" rel="stylesheet">
 <link href="/static/css/responsive.css" rel="stylesheet">
-<style type="text/css">
-  body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-  }
-  .sidebar-nav {
-    padding: 9px 0;
-  }
-</style>
+<link href="/static/css/main.css" rel="stylesheet">
 {% endblock %}
 
 {% block nav %}
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container-fluid">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <a class="brand" href="/"><img src="/static/img/place_pulse_logo_15.png" alt="" /></a>
-      <div class="nav-collapse">
-        <ul class="nav">
-            <li><a href="#about">About The Project</a></li>
-			<li><a href="#create">Create Study</a></li>
-		  <li><a href="#contribute">Contribute Data</a></li>
-		  <li><a href="#results">Browse Results</a></li>
-        </ul>
-        <p class="navbar-text pull-right">Logged in as <a href="/admin/">Phil Salesses</a></p>
-      </div><!--/.nav-collapse -->
-    </div>
-  </div>
-</div>
+    {% set active_page = "controlpanel" %}
+    {% include 'nav.html' %}
 {% endblock %}
 
 {% block body %}
-
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span3">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
-		  <li class="nav-header">Control Panel</li>
-		  <li><a href='/admin/studies/'><i class="icon-book"></i> Studies</a></li>
-		  <li><a href='/admin/places/'><i class="icon-plane"></i> Places</a></li>
-		  <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Locations</a></li>
-		  <li><a href='/admin/images/'><i class="icon-picture"></i> Images</a></li>
-		  <li><a href='/admin/votes/'><i class="icon-ok"></i> Votes</a></li>
-		  <li><a href='/admin/results/'><i class="icon-signal"></i> Results</a></li>
-		  <li class="nav-header">Your Account</li>
-          <li><a href='/admin/users/view_all'><i class="icon-user"></i> Profile</a></li>
-		  <li><a href='/admin/users/view_specific'><i class="icon-cog"></i> Settings</a></li>
-		  <li><a href='/admin/users/view_specific'><i class="icon-question-sign"></i> Help</a></li>
-		<hr>
-		  <li class="nav-header"><span class="label">Admin</span> Control Panel</li>
-          <li><a href='/admin/settings/studies/'><i class="icon-book"></i> Studies</a></li>
-		  <li><a href='/admin/settings/places/'><i class="icon-plane"></i> Places</a></li>
-		  <li><a href='/admin/settings/locations/'><i class="icon-map-marker"></i> Locations</a></li>
-		  <li><a href='/admin/settings/images/'><i class="icon-picture"></i> Images</a></li>
-		  <li><a href='/admin/settings/votes/'><i class="icon-ok"></i> Votes</a></li>
-		  <li><a href='/admin/settings/results/'><i class="icon-signal"></i> Results</a></li>
-		  <li><a href='/admin/settings/users/'><i class="icon-user"></i> Users</a></li>
+          <li class="nav-header">Control Panel</li>
+          <li><a href='/admin/studies/'><i class="icon-book"></i> Studies</a></li>
+          <li><a href='/admin/places/'><i class="icon-plane"></i> Places</a></li>
+          <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Locations</a></li>
+          <li><a href='/admin/images/'><i class="icon-picture"></i> Images</a></li>
+          <li><a href='/admin/votes/'><i class="icon-ok"></i> Votes</a></li>
+          <li><a href='/admin/results/'><i class="icon-signal"></i> Results</a></li>
+          <li class="nav-header">Your Account</li>
+          <li><a href='/admin/profile/'><i class="icon-user"></i> Profile</a></li>
+          <li><a href='/admin/settings/'><i class="icon-cog"></i> Settings</a></li>
+          <li><a href='/admin/help/'><i class="icon-question-sign"></i> Help</a></li>
+        <hr>
+          <li class="nav-header"><span class="label">Admin</span> Control Panel</li>
+          <li><a href='/admin/admin/studies/'><i class="icon-book"></i> Studies</a></li>
+          <li><a href='/admin/admin/places/'><i class="icon-plane"></i> Places</a></li>
+          <li><a href='/admin/admin/locations/'><i class="icon-map-marker"></i> Locations</a></li>
+          <li><a href='/admin/admin/images/'><i class="icon-picture"></i> Images</a></li>
+          <li><a href='/admin/admin/votes/'><i class="icon-ok"></i> Votes</a></li>
+          <li><a href='/admin/admin/results/'><i class="icon-signal"></i> Results</a></li>
+          <li><a href='/admin/admin/users/'><i class="icon-user"></i> Users</a></li>
         </ul>
       </div><!--/.well -->
     </div><!--/span-->
     <div class="span9">
-	  	<div class="alert">
-		  <a class="close">×</a>
-		  <strong>Warning!</strong> None of the links work right now.
-		</div>
+          <div class="alert">
+          <a class="close">×</a>
+          <strong>Warning!</strong> None of the links work right now.
+        </div>
       <div class="hero-unit">
-		<h1>Control Panel</h1>
+        <h1>Control Panel</h1>
         <p>Manage everything from one place.</p>
       </div>
       <div class="row-fluid">
         <div class="span4">
           <h2>Popular Studies</h2>
           <ol>
-			{%for study in popular_studies:%}
-		  	<li><a href='/study/{{study._id}}'>{{study.study_question}}</a></li>
-		  	{%endfor%}
-		  </ol>
+            {%for study in popular_studies:%}
+              <li><a href='/study/{{study._id}}'>{{study.study_question}}</a></li>
+              {%endfor%}
+          </ol>
           <p><a class="btn" href="#">View more &raquo;</a></p>
         </div><!--/span-->
         <div class="span4">
           <h2>Recently Added Cities</h2>
           <ol>
-			{%for study in new_cities:%}
-		  	<li><a href='/study/{{study._id}}'>{{study.city}}</a></li>
-		  	{%endfor%}
-		  </ol>
-		  <p><a class="btn" href="#">View more &raquo;</a></p>
+            {%for study in new_cities:%}
+              <li><a href='/study/{{study._id}}'>{{study.city}}</a></li>
+              {%endfor%}
+          </ol>
+          <p><a class="btn" href="#">View more &raquo;</a></p>
         </div><!--/span-->
         <div class="span4">
           <h2>Newest Results</h2>
           <ol>
-			{%for study in inactive_studies:%}
-		  	<li><a href='/study/view_specific/{{study._id}}'>{{study.study_question}}</a></li>
-		  	{%endfor%}
-		  </ol>
-		  <p><a class="btn" href="#">View more &raquo;</a></p>
+            {%for study in inactive_studies:%}
+              <li><a href='/study/view_specific/{{study._id}}'>{{study.study_question}}</a></li>
+              {%endfor%}
+          </ol>
+          <p><a class="btn" href="#">View more &raquo;</a></p>
         </div><!--/span-->
       </div><!--/row-->
     </div><!--/span-->
@@ -138,7 +110,7 @@
 <script src="/static/js/bootstrap-typeahead.js"></script>
 <script>
 $(document).ready(function() {
-	// On page load, load the GMaps API. Once that's loaded, callback to init()
+    // On page load, load the GMaps API. Once that's loaded, callback to init()
     function loadScript() {
       var script = document.createElement("script");
       script.type = "text/javascript";
@@ -146,7 +118,7 @@ $(document).ready(function() {
       document.body.appendChild(script);
     }
 
-	loadScript();
+    loadScript();
 });
 </script>
 {% endblock %}

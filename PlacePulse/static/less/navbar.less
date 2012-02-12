@@ -58,7 +58,7 @@
   .brand {
     float: left;
     display: block;
-    padding: 8px 20px 12px;
+    padding: (((@navbarHeight - 20) / 2) * 0.8) 20px (((@navbarHeight - 20) / 2) * 0.5);
     margin-left: -20px; // negative indent to left-align the text down the page
     font-size: 20px;
     font-weight: 200;
@@ -68,7 +68,7 @@
   // Plain text in topbar
   .navbar-text {
     margin-bottom: 0;
-    line-height: 40px;
+    line-height: @navbarHeight;
     color: @navbarText;
     a:hover {
       color: @white;
@@ -174,6 +174,7 @@
   display: block;
   float: left;
   margin: 0 10px 0 0;
+  height: @navbarHeight;
 }
 .navbar .nav.pull-right {
   float: right; // redeclare due to specificity
@@ -186,7 +187,7 @@
 // Links
 .navbar .nav > li > a {
   float: none;
-  padding: 10px 10px 11px;
+  padding: (@navbarHeight - 20)/2 10px ((@navbarHeight - 20)/2 + 1);
   line-height: 19px;
   color: @navbarLinkColor;
   text-decoration: none;
