@@ -5,26 +5,7 @@
 <link href="/static/css/bootstrap.css" rel="stylesheet">
 <link href="/static/css/responsive.css" rel="stylesheet">
 <link href="/static/css/main.css" rel="stylesheet">
-<style type="text/css">
-  #map {
-  width: 600px;
-  height: 400px;
-  }
-
-  #mapInterface {
-    /* Hide at first. */
-    display:none; 
-  }
-
-  .mapInterfaceAction {
-      cursor:pointer;
-  	color:rgb(200,200,255);
-  	display:block;
-  }
-  .mapInterfaceAction:hover {
-  	text-decoration:underline;
-  }
-</style>
+<link href="/static/css/study_create.css" rel="stylesheet">
 {% endblock %}
 
 {% block nav %}
@@ -33,12 +14,15 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-  <div class="row-fluid">
+<header class="jumbotron subhead">
+    <h1>Create a Study</h1>
+    <p class="lead">Studying geospatial perceptions has never been easier.</p>
+</header>
+  <div class="row">
     <div class="span3">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
-          <li class="nav-header">Create a Study</li>
+          <li class="nav-header">Steps to Creating a Study</li>
           <li class="active"><a href='/admin/studies/'><i class="icon-book icon-white"></i> Study Information</a></li>
           <li><a href='/admin/places/'><i class="icon-plane"></i> Define Places</a></li>
           <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Populate Locations</a></li>
@@ -48,38 +32,76 @@
       </div><!--/.well -->
     </div><!--/span-->
     <div class="span9">
-      <div class="row-fluid">
-        <div class="span12">
-          <h1>Create a Study</h1>
-          <div id="createStudyForm">
-          	<div>
-          		<div>
-          			What attribute would you like to study?
-          			<div>
-          				<input type="text" id="study_question" />
-          			</div>
-          		</div>
+            <div class="alert alert-info">
+          	<strong>Step 1 of 5:</strong>
+          	<br />To get started, please share some basic information with us.
           	</div>
-          	<div>
-          		<div>
-          			<div>
-          				Number of locations requested
-          			</div>
-          			<div>
-          				<select name="locations_requested" id="locations_requested">
-          					<option value="100">100</option>
-          					<option value="200">200</option>
-          					<option value="300">300</option>
-          					<option value="400">400</option>
-          					<option value="500">500</option>
-          				</select>
-          			</div>
-          		</div>
-          	</div>
-          	<div>
-          		<input type="submit" id="finishStudyForm" value="Next"/>
-          	</div>
-          </div>
+          	<form class="form-horizontal" id="createStudyForm">
+              <fieldset>
+                <legend>Study Information</legend>
+                <div class="control-group">
+                  <label class="control-label" for="study_name">Study Name</label>
+                  <div class="controls">
+                    <input type="text" class="input-xlarge" id="study_name">
+                    <p class="help-block">Study name is how we will refer to your study on our site.</p>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="study_question">Question to Ask Users</label>
+                  <div class="controls">
+                    <div class="input-prepend">
+                      <span class="add-on">Which place looks </span>
+                      <input class="span2" id="study_question" size="16" type="text">
+                      ?
+                    </div>
+                    <p class="help-block">i.e. Which place looks "safer"?</p>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="public">Open to the public?</label>
+                  <div class="controls">
+                    <label class="radio inline">
+                      <input name="public" type="radio" id="public" value="yes" checked>
+                      Yes
+                    </label>
+                    <label class="radio inline">
+                      <input name="public" type="radio" id="public" value="no">
+                      No
+                    </label>
+                    <p class="help-block">If No is selected, you will have to provide your own study participants by sending them a link.</p>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="location_requested">Number of locations</label>
+                  <div class="controls">
+                    <select name="locations_requested" id="locations_requested">
+                      <option value="100">100</option>
+                      <option value="200">200</option>
+                      <option value="300">300</option>
+                      <option value="400">400</option>
+                      <option value="500">500</option>
+                    </select>
+                    <p class="help-block">A location is a point at a single latitude and longitude.</p>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="location_distribution">Location distribution</label>
+                  <div class="controls">
+                    <select name="locations_requested" id="locations_requested">
+                      <option value="randomly">Randomly</option>
+                      <option value="evenly">Evenly</option>
+                      <option value="gridrandom">Random Within a Grid</option>
+                    </select>
+                    <p class="help-block">When selecting points, this is how we will do it.</p>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary" id="finishStudyForm">Continue</button>
+                  <button type="reset" class="btn">Clear</button>
+                </div>
+              </fieldset>
+            </form>
+    
           <div id="mapInterface">
           	<div>
           		Click to draw points on a polygon.
@@ -100,8 +122,6 @@
           		</select>
           		<input type = "submit" id = "saveCity" value = "Save"/>
           </div>
-        </div><!--/span-->
-      </div><!--/row-->
     </div><!--/span-->
   </div><!--/row-->
 {% endblock %}

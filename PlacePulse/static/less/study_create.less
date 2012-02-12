@@ -1,0 +1,19 @@
+@import "variables.less";
+#map {
+width: (9 * @gridColumnWidth) + (@gridGutterWidth * 8);
+height: (9 * @gridColumnWidth) + (@gridGutterWidth * 8) / 4;
+}
+
+#mapInterface {
+  /* Hide at first. */
+  display:none; 
+}
+
+.mapInterfaceAction {
+    cursor:pointer;
+	color:rgb(200,200,255);
+	display:block;
+}
+.mapInterfaceAction:hover {
+	text-decoration:underline;
+}
