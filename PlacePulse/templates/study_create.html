@@ -23,76 +23,53 @@
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
           <li class="nav-header">Steps to Creating a Study</li>
-          <li class="active"><a href='/admin/studies/'><i class="icon-book icon-white"></i> Study Information</a></li>
-          <li><a href='/admin/places/'><i class="icon-plane"></i> Define Places</a></li>
-          <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Populate Locations</a></li>
-          <li><a href='/admin/images/'><i class="icon-picture"></i> Curate Images</a></li>
-          <li><a href='/admin/votes/'><i class="icon-ok"></i> Start Collecting Votes</a></li>
+          <li id="info" class="active"><a href='#'><i class="icon-book icon-white"></i> Study Information</a></li>
+          <li id="define"><a href='#'><i class="icon-plane"></i> Define Places</a></li>
+          <li id="populate"><a href='#'><i class="icon-map-marker"></i> Populate Locations</a></li>
+          <li id="curate"><a href='#'><i class="icon-picture"></i> Curate Images</a></li>
+          <li id="start"><a href='#'><i class="icon-ok"></i> Start Collecting Votes</a></li>
         </ul>
       </div><!--/.well -->
+      <div class="alert alert-info" id="info-alert">
+    	<strong>Step 1 of 5:</strong>
+    	<br />To get started, please share some basic information with us.
+    	</div>
     </div><!--/span-->
     <div class="span9">
-            <div class="alert alert-info">
-          	<strong>Step 1 of 5:</strong>
-          	<br />To get started, please share some basic information with us.
-          	</div>
-          	<form class="form-horizontal" id="createStudyForm">
+          	<div class="form-horizontal" id="createStudyForm">
               <fieldset>
                 <legend>Study Information</legend>
-                <div class="control-group">
+                <div class="control-group" id="study_name_cg">
                   <label class="control-label" for="study_name">Study Name</label>
                   <div class="controls">
-                    <input type="text" class="input-xlarge" id="study_name">
-                    <p class="help-block">Study name is how we will refer to your study on our site.</p>
+                    <input type="text" class="input-xlarge" id="study_name" placeholder="i.e. Boston Tourism Study">
+                    <span id="study_name_error" class="help-inline hidden">Please use at least three words.</span>
+                    <p class="help-block">This is how we will refer to your study on our site.</p>
                   </div>
                 </div>
-                <div class="control-group">
+                <div class="control-group" id="study_question_cg">
                   <label class="control-label" for="study_question">Question to Ask Users</label>
                   <div class="controls">
                     <div class="input-prepend">
-                      <span class="add-on">Which place looks </span>
-                      <input class="span2" id="study_question" size="16" type="text">
+                      <span class="add-on">Which place looks more </span>
+                      <input class="span2" id="study_question" size="16" type="text" placeholder="i.e. unique" data-provide="typeahead" data-items="6" data-source='["safe","upper-class","unique","livable","tourist friendly","modern","ghetto"]'>
                       ?
+                      <span id="study_question_error" class="help-inline hidden">Please use at most three words.</span>
                     </div>
-                    <p class="help-block">i.e. Which place looks "safer"?</p>
                   </div>
                 </div>
-                <div class="control-group">
-                  <label class="control-label" for="public">Open to the public?</label>
+                <div class="control-group" id="study_public_cg">
+                  <label class="control-label" for="study_public">Open to the public?</label>
                   <div class="controls">
                     <label class="radio inline">
-                      <input name="public" type="radio" id="public" value="yes" checked>
+                      <input name="study_public" type="radio" id="study_public" value="yes" checked>
                       Yes
                     </label>
                     <label class="radio inline">
-                      <input name="public" type="radio" id="public" value="no">
+                      <input name="study_public" type="radio" id="study_public" value="no">
                       No
                     </label>
-                    <p class="help-block">If No is selected, you will have to provide your own study participants by sending them a link.</p>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label" for="location_requested">Number of locations</label>
-                  <div class="controls">
-                    <select name="locations_requested" id="locations_requested">
-                      <option value="100">100</option>
-                      <option value="200">200</option>
-                      <option value="300">300</option>
-                      <option value="400">400</option>
-                      <option value="500">500</option>
-                    </select>
-                    <p class="help-block">A location is a point at a single latitude and longitude.</p>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label" for="location_distribution">Location distribution</label>
-                  <div class="controls">
-                    <select name="locations_requested" id="locations_requested">
-                      <option value="randomly">Randomly</option>
-                      <option value="evenly">Evenly</option>
-                      <option value="gridrandom">Random Within a Grid</option>
-                    </select>
-                    <p class="help-block">When selecting points, this is how we will do it.</p>
+                    <p class="help-block">If "No" is selected, you will have to provide your own study participants by sending them a link.</p>
                   </div>
                 </div>
                 <div class="form-actions">
@@ -100,28 +77,51 @@
                   <button type="reset" class="btn">Clear</button>
                 </div>
               </fieldset>
-            </form>
-    
-          <div id="mapInterface">
-          	<div>
-          		Click to draw points on a polygon.
-          		<div>
-          			<span id="area"></span> square miles.
-          			<span class="mapInterfaceAction" id="removeLastPoint">Remove last point</span>
-          			<span class="mapInterfaceAction" id="clearCurrentSelection">Clear current selection</span>
-          		</div>
-          	</div>
-          	<div id="map">
-          	</div>
-          	<div>
-          		<input type="submit" id="submitPolygon" value="Next step"/>
-          	</div>
-                <span id="cityidentity"> Identify City </span>
-          		<select id = "dropDownList">
-          			<option> Add a new city ... </option>
-          		</select>
-          		<input type = "submit" id = "saveCity" value = "Save"/>
-          </div>
+            </div>
+            <div class="form-horizontal" id="mapInterface">
+              <fieldset>
+                <legend>Define Area</legend>
+                <div class="control-group">
+                  <label class="control-label" for="map">Define Polygon</label>
+                  <div id="map"></div>
+                  <div id="mapInterfaceButtons">
+                    <div id="selectionarea" class="alert alert-error">
+                      <strong>Selection Too Large</strong> Please reduce the area of your selection to under 500 square miles.
+                    </div>
+                  <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
+                </div>
+                </div>
+                
+                <div class="control-group">
+                  <label class="control-label" for="location_distribution">Location distribution</label>
+                  <div class="controls">
+                    <select name="location_distribution" id="location_distribution">
+                      <option value="randomly">Randomly</option>
+                      <option value="evenly">Evenly</option>
+                      <option value="gridrandom">Random within a grid</option>
+                    </select>
+                    <p class="help-block">When selecting locations within your polygon, this is the method we will use.</p>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" for="data_resolution">Data Resolution</label>
+                  <div class="controls">
+                    <select name="data_resolution" id="data_resolution">
+                      <option value="50">50 meters</option>
+                      <option value="100">100 meters</option>
+                      <option value="250" selected>250 meters</option>
+                      <option value="500">500 meters</option>
+                      <option value="1000">1 kilometer</option>
+                    </select>
+                    <p class="help-block">This will help us determine the density of locations within your polygon.</p>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary" id="submitPolygon">Continue</button>
+                  <button type="reset" class="btn">Clear</button>
+                </div>
+              </fieldset>
+            </div>
     </div><!--/span-->
   </div><!--/row-->
 {% endblock %}
@@ -139,28 +139,6 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-<script src="/static/js/bootstrap-transition.js"></script>
-<script src="/static/js/bootstrap-alert.js"></script>
-<script src="/static/js/bootstrap-modal.js"></script>
-<script src="/static/js/bootstrap-dropdown.js"></script>
-<script src="/static/js/bootstrap-scrollspy.js"></script>
-<script src="/static/js/bootstrap-tab.js"></script>
-<script src="/static/js/bootstrap-tooltip.js"></script>
-<script src="/static/js/bootstrap-popover.js"></script>
-<script src="/static/js/bootstrap-button.js"></script>
-<script src="/static/js/bootstrap-collapse.js"></script>
-<script src="/static/js/bootstrap-carousel.js"></script>
 <script src="/static/js/bootstrap-typeahead.js"></script>
-<script src="/static/js/create_study.js"></script>
-<script>
-var citiesStr = "{{cities}}";
-var cities = citiesStr.split(",");
-var identityheader = document.getElementById('cityidentity');
-identityheader.style.visibility='hidden';
-var submitCityOptions = document.getElementById('dropDownList');
-submitCityOptions.style.visibility='hidden';
-var saveCityButton = document.getElementById('saveCity');
-saveCityButton.style.visibility='hidden';
-populateDropDownMenu(cities);
-</script>
+<script src="/static/js/study_create.js"></script>
 {% endblock %}

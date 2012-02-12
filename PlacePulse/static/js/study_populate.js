@@ -85,26 +85,12 @@ function plot()
 		mapTypeId: google.maps.MapTypeId.HYBRID,
 		streetViewControl: false
 	};
-	map = new google.maps.Map($('#map_canvas').get()[0], mapOptions);
+	map = new google.maps.Map($('#map').get()[0], mapOptions);
 	polygon.setMap(map);
 	var swpoint = new google.maps.LatLng(studyArea.BRLat, studyArea.TLLng);
     var nepoint = new google.maps.LatLng(studyArea.TLLat, studyArea.BRLng);
     var bounds = new google.maps.LatLngBounds(swpoint, nepoint);
     map.fitBounds(bounds);
-	var panoOptions =
-	{
-		position: randomPoint,
-		addressControlOptions: {
-			position: google.maps.ControlPosition.BOTTOM
-		},
-		linksControl: false,
-		navigationControlOptions: {
-			style: google.maps.NavigationControlStyle.SMALL
-		},
-		enableCloseButton: false,
-		visible: true
-	};
-	panorama = new google.maps.StreetViewPanorama($("#pano").get()[0], panoOptions);
 }
 function processSVData(data, status)
 {
@@ -114,17 +100,6 @@ function processSVData(data, status)
 		{
 			plot();
 			virgin = 1;
-		}
-		if(pointsToAdd / 2 == completed)
-		{
-			panorama.setPano(data.location.pano);
-			panorama.setPov(
-			{
-				heading: 0,
-				pitch: 0,
-				zoom: 1
-			});
-			panorama.setVisible(true);
 		}
 		if(completed < pointsToAdd)
 		{
@@ -143,7 +118,7 @@ function processSVData(data, status)
                     'study_id': studyID
                 },
                 success: function(e) {
-                    window.location = "/study/view/" + studyID;
+                    window.location = "/study/curate/" + studyID;
                 }
             });
             
@@ -189,7 +164,7 @@ function refreshMap(lat,lng)
 		position: new google.maps.LatLng(lat, lng),
 		map: map
 	});
-	$("#amount").html("Getting image " + completed + " of " + pointsToAdd);
+	$("#progress_bar").css("width",completed/pointsToAdd*100 + "%");
 }
 
 // Gmaps API extension

@@ -1,19 +1,16 @@
 @import "variables.less";
 #map {
-width: (9 * @gridColumnWidth) + (@gridGutterWidth * 8);
-height: (9 * @gridColumnWidth) + (@gridGutterWidth * 8) / 4;
+width: (7 * @gridColumnWidth) + (@gridGutterWidth * 6);
+height: ((7 * @gridColumnWidth) + (@gridGutterWidth * 6)) / 4 * 3;
+left: 18px;
+top: @baseLineHeight/2;
 }
 
 #mapInterface {
   /* Hide at first. */
-  display:none; 
+  display:none;
 }
-
-.mapInterfaceAction {
-    cursor:pointer;
-	color:rgb(200,200,255);
-	display:block;
-}
-.mapInterfaceAction:hover {
-	text-decoration:underline;
+#mapInterfaceButtons {
+margin-left: 158px;
+margin-top: @baseLineHeight;
 }

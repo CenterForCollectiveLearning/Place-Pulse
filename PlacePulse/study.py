@@ -21,11 +21,12 @@ def serve_create_study():
 def create_study():    
     # Insert the new study into Mongo
     newStudyID = Database.studies.insert({
+        'study_name': request.form['study_question'],
         'study_question': request.form['study_question'],
-        'locations_requested': request.form['locations_requested'],
-        'polygon': request.form['polygon'],
-	    'city': request.form['city']})
-    print('finished')
+		'study_public': request.form['study_public'],
+        'data_resolution': request.form['data_resolution'],
+        'location_distribution': request.form['location_distribution'],
+		'polygon': request.form['polygon']})
     # Return the ID for the client to rendezvous at /study/populate/<id>
     return jsonifyResponse({
         'studyID': str(newStudyID)
@@ -35,7 +36,7 @@ def create_study():
 @study.route('/study/populate/<study_id>/',methods=['GET'])
 def serve_populate_study(study_id):
     study = Database.getStudy(study_id)
-    return render_template('populate_study.html',polygon=study['polygon'],study_id=study_id)
+    return render_template('study_populate.html',polygon=study['polygon'],study_id=study_id)
 
 @study.route('/study/populate/<study_id>/',methods=['POST'])
 def populate_study(study_id):
