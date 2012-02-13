@@ -43,6 +43,8 @@ def populate_study(study_id):
     Database.places.insert({
         'loc': [request.form['lat'],request.form['lng']],
         'study_id': request.form['study_id'],
+        'heading': 0,
+        'pitch': 0,
         'bucket' : Buckets.Unknown,
         'votes' : 0
     })
@@ -74,17 +76,25 @@ def finish_populate_study(study_id):
     return jsonifyResponse({
         'success': True
     })
-
-@study.route('/success/<study_id>',methods = ['GET'])
-def success(study_id):
-    cityname = Database.getStudy(study_id)['city']
-    return render_template('successfullySaved.html',study_id=study_id, cityname = cityname)
-
-@study.route('/error/<error_id>')
-def error(error_id):
-    if(error_id=='1'):
-        return render_template('errorpage.html',errorStatement = "Pick a better polygon.")
-    return render_template('errorpage.html',errorStatement = "generic error statement")
+    
+#--------------------Curate
+@study.route('/study/curate/<study_id>/',methods=['GET'])
+def curate_study(study_id):
+    study = Database.getStudy(study_id)
+    locations = Database.getLocations(study_id)
+    return render_template('study_curate.html',polygon=study['polygon'],locations=locations)
+    
+@study.route('/study/curate/location/<id>',methods=['POST'])
+def curate_location():    
+    # Insert the new study into Mongo
+    location = Database.getLocation(id)
+    # Return the ID for the client to rendezvous at /study/populate/<id>
+    return jsonifyResponse({
+        'latitude': str(location.loc[0]),
+        'longitude': str(location.loc[1]),
+        'heading': str(location.heading),
+        'pitch': str(location.pitch)
+    })
 
 #--------------------Vote
 @study.route("/study/vote/<study_id>/",methods=['POST'])

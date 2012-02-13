@@ -1,21 +1,41 @@
+function editsv(id, lat, lng, heading, pitch) {
+    $('#edit_street_view').modal();
+    var location = new google.maps.LatLng(lat,lng);
+    var mapOptions = {
+      center: location,
+      zoom: 14,
+      mapTypeId: google.maps.MapTypeId.HYBRID
+    };
+    var map = new google.maps.Map(document.getElementById("map4"), mapOptions);
+    var panoramaOptions = {
+      position: location,
+      pov: {
+        heading: heading,
+        pitch: pitch,
+        zoom: 1
+      },
+      	addressControl: false,
+  		linksControl: false,
+  		disableDoubleClickZoom: true,
+  		zoomControl: false,
+  		navigationControl: false,
+  		enableCloseButton: false
+    };
+    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("edit_pano"), panoramaOptions);
+    map.setStreetView(panorama);
+    panorama.setVisible(true);
+}
 var map; //Google Map
 var randomPoint; //Random Lat/Long Point
-var sv = null;
 var isWithinCity;
 var studyArea = new Object();
 var studyPolygon = [];
 var polygon;
-var completed = 0;
-var virgin = 0;
-var pointsToAdd = 100;
-var studyID = ''
 var markerIcon = '/static/images/yellow.png';
-var waitingForFinish = false;
 
 
-function startPopulatingStudy(_studyID, polygonStr) {
+function initialize(_studyID, polygonStr) {
     studyID = _studyID;
-    pointsToAdd = 100;
     extendGmaps();
     
     studyPolygon = [];
@@ -26,14 +46,20 @@ function startPopulatingStudy(_studyID, polygonStr) {
     }
 
     // TODO: comment this out once populating is working again.
-    console.log(studyPolygon);
+    //console.log(studyPolygon);
     
-    sv = new google.maps.StreetViewService(); //Google Street View Service
-
+    //sv = new google.maps.StreetViewService(); //Google Street View Service
 	studyArea = {name: "studyArea", polygon: studyPolygon, TLLat: null, TLLng: null, BRLat: null, BRLng: null};
 	//Calculate Bounding box for fetched city
+	polygon = new google.maps.Polygon({
+		paths: studyArea.polygon,        
+		strokeWeight: 2,
+        strokeOpacity: 1,
+        strokeColor: '#eeb44b',
+        fillColor: '#eeb44b'
+    });
 	calcBoundingBox();
-	newPoint();
+	plot();
 }
 function calcBoundingBox() 
 {
@@ -49,123 +75,21 @@ function calcBoundingBox()
 	studyArea.BRLat = Math.min.apply(Math, arrayLat);
 	studyArea.BRLng = Math.max.apply(Math, arrayLng);
 }
-function newPoint()
-{
-	guessPoint();
-	checkPoly();
-	sv.getPanoramaByLocation(randomPoint, 50, processSVData);
-}
-function guessPoint() 
-{
-   	var lat = Math.random() * (studyArea.TLLat - studyArea.BRLat) + studyArea.BRLat;
-	var lng = Math.random() * (studyArea.BRLng - studyArea.TLLng) + studyArea.TLLng;
-	randomPoint = new google.maps.LatLng(lat, lng);
-}
-function checkPoly()
-{
-    polygon = new google.maps.Polygon({
-		paths: studyArea.polygon,        
-		strokeWeight: 2,
-        strokeOpacity: 1,
-        strokeColor: '#eeb44b',
-        fillColor: '#eeb44b'
-    });
-	while(!polygon.containsLatLng(randomPoint))
-	{
-		guessPoint();
-	}
-}
 function plot()
 {
 	var mapOptions =
 	{
-		center: randomPoint,
 		zoom: 10,
 		mapTypeId: google.maps.MapTypeId.HYBRID,
 		streetViewControl: false
 	};
-	map = new google.maps.Map($('#map').get()[0], mapOptions);
+	map = new google.maps.Map($('#map4').get()[0], mapOptions);
 	polygon.setMap(map);
 	var swpoint = new google.maps.LatLng(studyArea.BRLat, studyArea.TLLng);
     var nepoint = new google.maps.LatLng(studyArea.TLLat, studyArea.BRLng);
     var bounds = new google.maps.LatLngBounds(swpoint, nepoint);
     map.fitBounds(bounds);
 }
-function processSVData(data, status)
-{
-	if (status == google.maps.StreetViewStatus.OK)
-	{
-		if(virgin==0)
-		{
-			plot();
-			virgin = 1;
-		}
-		if(completed < pointsToAdd)
-		{
-			updateDB(data.location.latLng.lat(), data.location.latLng.lng());
-		}
-        else
-        {
-            // Only call /study/finish_populate once
-            if (waitingForFinish) return;
-
-            $.ajax({
-                dataType: 'json',
-                url: "/study/finish_populate/" + studyID + '/',
-                type: "POST",
-                data: {
-                    'study_id': studyID
-                },
-                success: function(e) {
-                    window.location = "/study/curate/" + studyID;
-                }
-            });
-            
-            waitingForFinish = true;
-        }
-	}
-	newPoint();
-}
-function updateDB(lat,lng)
-{
-	console.log('updateDB: ' + completed)
-	$.ajax({
-		type: "POST",
-		url: window.location.href,
-		data: { 
-			'lat': lat,
-			'lng': lng,
-			'study_id': studyID },
-		success: function(result) {
-			if(result.success)
-			{
-			    console.log(completed + ' places sent.');
-				completed++;
-				if(completed<=pointsToAdd)
-				{
-					refreshMap(lat,lng);
-				}
-			}
-		},
-		error: function(data){
-			//alert(data.responseText);
-		},
-		complete: function(data){
-			newPoint();
-		}
-	});
-}
-function refreshMap(lat,lng)
-{
-	var marker = new google.maps.Marker(
-	{
-		icon: markerIcon,
-		position: new google.maps.LatLng(lat, lng),
-		map: map
-	});
-	$("#progress_bar").css("width",completed/pointsToAdd*100 + "%");
-}
-
 // Gmaps API extension
 
 // Polygon getBounds extension - google-maps-extensions

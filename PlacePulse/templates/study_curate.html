@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block header %}
+<!-- Le styles -->
+<link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/responsive.css" rel="stylesheet">
+<link href="/static/css/main.css" rel="stylesheet">
+<link href="/static/css/study_create.css" rel="stylesheet">
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = "create" %}
+    {% include 'nav.html' %}
+{% endblock %}
+
+{% block body %}
+<header class="jumbotron subhead">
+    <h1>Create a Study</h1>
+    <p class="lead">Studying geospatial perceptions has never been easier.</p>
+</header>
+  <div class="row">
+    <div class="span4">
+      <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+          <li class="nav-header">Steps to Creating a Study</li>
+          <li id="info"><a href='#'><i class="icon-book"></i> Study Information</a></li>
+          <li id="define"><a href='#'><i class="icon-plane"></i> Define Places</a></li>
+          <li id="populate"><a href='#'><i class="icon-map-marker"></i> Populate Locations</a></li>
+          <li id="curate" class="active"><a href='#'><i class="icon-picture icon-white"></i> Curate Images</a></li>
+          <li id="start"><a href='#'><i class="icon-ok"></i> Start Collecting Votes</a></li>
+        </ul>
+      </div><!--/.well -->
+      <div class="alert alert-info" id="info-alert">
+    	<strong>Step 4 of 5:</strong>
+    	<br />Verify that all images are acceptable for inclusion in your study. To edit or remove an image, just click on it.
+    	</div>
+    	<div id="map4"></div>
+    </div><!--/span-->
+    <div class="span8">
+      <div id="edit_street_view" class="modal hide fade">
+        <div class="modal-header">
+          <a class="close" data-dismiss="modal" >&times;</a>
+          <h3>Edit Image</h3>
+        </div>
+        <div class="modal-body">
+          <div id="edit_pano"></div>
+          <h4>Need Help?</h4>
+          <p>Rotate to your desired heading by clicking and dragging.</p> 
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn btn-primary">Save Changes</a>
+          <a href="#" class="btn">Delete Image</a>
+          <a href="#" class="btn" data-dismiss="modal" >Close</a>
+        </div>
+      </div>
+      <ul class="thumbnails">
+      {%for location in locations:%}
+      <li class="span2">
+        <a id="{{location._id}}" class="thumbnail cursor" data-toggle="modal" onclick="editsv('{{location._id}}',{{location.loc[0]}},{{location.loc[1]}},{{location.heading}},{{location.pitch}})">
+          <img src="http://maps.googleapis.com/maps/api/streetview?size=160x120&location={{location.loc[0]}},%20{{location.loc[1]}}&fov=90&heading={{location.heading}}&pitch={{location.pitch}}&sensor=false" />
+        </a>
+      </li>
+      {%endfor%}
+      </ul>
+    </div><!--/span-->
+  </div><!--/row-->
+{% endblock %}
+
+{% block footer %}
+  <hr>
+
+  <footer>
+    <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
+  </footer>
+
+</div><!--/.fluid-container-->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/static/js/bootstrap-modal.js"></script>
+<script src="/static/js/bootstrap-transition.js"></script>
+<script src="/static/js/study_curate.js"></script>
+<script>
+$(document).ready(function() {
+	// On page load, load the GMaps API. Once that's loaded, callback to init()
+    function loadScript() {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init";
+      document.body.appendChild(script);
+    }
+	loadScript();
+});
+function init() {
+	initialize("{{ study_id }}","{{ polygon }}");
+}
+</script>
+{% endblock %}
