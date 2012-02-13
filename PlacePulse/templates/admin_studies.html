@@ -58,7 +58,7 @@
                         {%for study in studies:%}
                         <tr>
                           <td><a href='/study/{{study._id}}'>{{study._id}}</a></td>
-                          <td>{{study.study_question}}</td>
+                          <td>Which place looks more {{study.study_question}}?</td>
                           <td><a href='/admin/places/{{study._id}}'>{{study.city}}</a></td>
                           <td><a href='/admin/votes/{{study._id}}' title="Manage Votes"><i class="icon-book"></i></a> <a href='/admin/places/{{study._id}}' title="Manage Places"><i class="icon-plane"></i></a> <a href='/admin/locations/{{study._id}}' title="Manage Locations"><i class="icon-map-marker"></i></a> <a href='/admin/images/{{study._id}}' title="Manage Images"><i class="icon-picture"></i></a> <a href='/admin/votes/{{study._id}}' title="Manage Votes"><i class="icon-ok"></i></a> <a href='/admin/results/{{study._id}}' title="Manage Results"><i class="icon-signal"></i></a></td>
                         </tr>

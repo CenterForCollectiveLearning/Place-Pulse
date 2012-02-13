@@ -49,7 +49,7 @@
           <h2>Popular Studies</h2>
           <ol>
             {%for study in popular_studies:%}
-              <li><a href='/study/{{study._id}}'>{{study.study_question}}</a></li>
+              <li><a href='/study/{{study._id}}'>Which place looks more {{study.study_question}}?</a></li>
               {%endfor%}
           </ol>
           <p><a class="btn" href="#">View more &raquo;</a></p>
@@ -67,7 +67,7 @@
           <h2>Newest Results</h2>
           <ol>
             {%for study in inactive_studies:%}
-              <li><a href='/study/view_specific/{{study._id}}'>{{study.study_question}}</a></li>
+              <li><a href='/study/view_specific/{{study._id}}'>Which place looks more {{study.study_question}}?</a></li>
               {%endfor%}
           </ol>
           <p><a class="btn" href="#">View more &raquo;</a></p>
