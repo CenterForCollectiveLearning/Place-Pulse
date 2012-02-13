@@ -63,7 +63,7 @@ class database(object):
 #--------------------Places
     def getPlace(self,place_id):
         try:
-            return self.places.find_one(ObjectId(place_id))
+            return self.locations.find_one(ObjectId(place_id))
         except:
             return None
 
@@ -76,15 +76,30 @@ class database(object):
 #--------------------Locations
     def getLocations(self,study_id):
         try:
-            return self.places.find({'study_id': study_id}).limit(24)
+            return self.locations.find({'study_id': study_id}).limit(24)
         except:
             return None
-    def getLocation(self,id):
+    
+    def getLocation(self,study_id):
         try:
-            return self.places.find({'_id': id})
+            return self.locations.find({'_id': study_id})
         except:
             return None
-        
+            
+    def updateLocation(self,study_id,heading,pitch):
+        try:
+            self.locations.update( { '_id' : ObjectId(study_id) } , { '$set' : { 'heading' : heading, 'pitch' : pitch } } )
+            return True
+        except:
+            return None
+    
+    def deleteLocation(self,location_id):
+        try:
+            self.locations.remove( { '_id' : ObjectId(location_id) })
+            return True
+        except:
+            return None
+    
     @property
     def votes(self):
         return self.db.votes
@@ -94,8 +109,8 @@ class database(object):
         return self.db.studies
         
     @property
-    def places(self):
-        return self.db.places
+    def locations(self):
+        return self.db.locations
     
     @property
     def db(self):

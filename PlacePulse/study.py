@@ -40,7 +40,7 @@ def serve_populate_study(study_id):
 
 @study.route('/study/populate/<study_id>/',methods=['POST'])
 def populate_study(study_id):
-    Database.places.insert({
+    Database.locations.insert({
         'loc': [request.form['lat'],request.form['lng']],
         'study_id': request.form['study_id'],
         'heading': 0,
@@ -58,20 +58,20 @@ def finish_populate_study(study_id):
         return jsonifyResponse({
             'error': 'Study doesn\'t exist!'
         })
-    placesInQueue = Database.places.find({
+    locationsInQueue = Database.locations.find({
         'study_id': study_id,
         'bucket': Buckets.Queue
     })
-    placesToGet = Buckets.QueueSize-placesInQueue.count()
+    locationsToGet = Buckets.QueueSize-locationsInQueue.count()
 
     # TODO: See if Mongo lets you do this in one update call.
-    for i in range(placesToGet):
-        place = Database.places.find_one({
+    for i in range(locationsToGet):
+        location = Database.locations.find_one({
             'study_id': study_id,
             'bucket': Buckets.Unknown
         })
-        place['bucket'] = Buckets.Queue
-        Database.places.save(place)
+        location['bucket'] = Buckets.Queue
+        Database.locations.save(location)
     
     return jsonifyResponse({
         'success': True
@@ -96,6 +96,24 @@ def curate_location():
         'pitch': str(location.pitch)
     })
 
+@study.route('/study/curate/location/update/<id>',methods=['POST'])
+def update_location(id):
+    lat = request.form['lat']
+    lng = request.form['lng']
+    heading = request.form['heading']
+    pitch = request.form['pitch']
+    locationUpdated = Database.updateLocation(id,heading,pitch)
+    return jsonifyResponse({
+    'success': str(locationUpdated)
+    })
+    
+@study.route('/study/curate/location/delete/<id>',methods=['POST'])
+def delete_location(id):
+    locationDeleted = Database.deleteLocation(id)
+    return jsonifyResponse({
+    'success': str(locationDeleted)
+    })
+
 #--------------------Vote
 @study.route("/study/vote/<study_id>/",methods=['POST'])
 def post_new_vote(study_id):
@@ -104,10 +122,10 @@ def post_new_vote(study_id):
         if obj['votes'] > 30:
             obj.bucket = Buckets.Archive
 
-            newForQueue = Database.places.find_one({ 'bucket': Buckets.Unknown })
+            newForQueue = Database.locations.find_one({ 'bucket': Buckets.Unknown })
             newForQueue['bucket'] = Buckets.Queue
-            Database.places.save(newForQueue)
-        Database.places.save(obj)
+            Database.locations.save(newForQueue)
+        Database.locations.save(obj)
 
 
     leftObj = Database.getPlace(request.form['left'])
@@ -129,13 +147,13 @@ def post_new_vote(study_id):
 
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
-    placesInQueueCursor = Database.places.find({ 'bucket': Buckets.Queue, 
+    locationsInQueueCursor = Database.locations.find({ 'bucket': Buckets.Queue, 
                             'study_id': study_id }).limit(Buckets.QueueSize)
-    placesInQueue = [place for place in placesInQueueCursor]
+    locationsInQueue = [location for location in locationsInQueueCursor]
 
-    placesToDisplay = sample(placesInQueue,2)
+    locationsToDisplay = sample(locationsInQueue,2)
     return jsonifyResponse({
-        'locs' : map(objifyPlace, placesToDisplay)
+        'locs' : map(objifyPlace, locationsToDisplay)
     })
 
 #--------------------View
@@ -146,11 +164,11 @@ def server_view_study(study_id):
         return redirect('/')
     return render_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'))
 
-@study.route('/place/view/<place_id>/',methods=['GET'])
-def get_place(place_id):
-	placeCursor = Database.getPlace(place_id)
-	lat = placeCursor['loc'][0]
-	lng = placeCursor['loc'][1]
+@study.route('/location/view/<location_id>/',methods=['GET'])
+def get_location(location_id):
+	locationCursor = Database.getPlace(location_id)
+	lat = locationCursor['loc'][0]
+	lng = locationCursor['loc'][1]
 	return "<img src='http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false'/>"
 
 #--------------------Results

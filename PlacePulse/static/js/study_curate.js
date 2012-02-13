@@ -1,30 +1,3 @@
-function editsv(id, lat, lng, heading, pitch) {
-    $('#edit_street_view').modal();
-    var location = new google.maps.LatLng(lat,lng);
-    var mapOptions = {
-      center: location,
-      zoom: 14,
-      mapTypeId: google.maps.MapTypeId.HYBRID
-    };
-    var map = new google.maps.Map(document.getElementById("map4"), mapOptions);
-    var panoramaOptions = {
-      position: location,
-      pov: {
-        heading: heading,
-        pitch: pitch,
-        zoom: 1
-      },
-      	addressControl: false,
-  		linksControl: false,
-  		disableDoubleClickZoom: true,
-  		zoomControl: false,
-  		navigationControl: false,
-  		enableCloseButton: false
-    };
-    var panorama = new  google.maps.StreetViewPanorama(document.getElementById("edit_pano"), panoramaOptions);
-    map.setStreetView(panorama);
-    panorama.setVisible(true);
-}
 var map; //Google Map
 var randomPoint; //Random Lat/Long Point
 var isWithinCity;
@@ -32,7 +5,11 @@ var studyArea = new Object();
 var studyPolygon = [];
 var polygon;
 var markerIcon = '/static/images/yellow.png';
-
+var gLat;
+var gLng;
+var gHeading;
+var gPitch;
+var gId;
 
 function initialize(_studyID, polygonStr) {
     studyID = _studyID;
@@ -148,7 +125,104 @@ function extendGmaps() {
       return inPoly;
     }
 }
+function save_changes(id,lat,lng,heading,pitch)
+{
+    $.ajax({
+            url:'/study/curate/location/update/' + id,
+            // Expect JSON to be returned. This is also enforced on the server via mimetype.
+            dataType: 'json',
+            data: {
+                id: id,
+                lat: lat,
+                lng: lng,
+                heading: heading,
+                pitch: pitch
+            },
+            type: 'POST',
+            success: function(data) {
+                if (data.success === "True")
+                {
+                    $("#close_modal").trigger('click');
+                    $('#'+ id).replaceWith('<a id="' + id + '" class="thumbnail cursor" data-toggle="modal" onMouseover="center_map(' + lat + ',' + lng + ')" onclick="editsv(\'' + id + '\',' + lat + ',' + lng + ',' + heading + ',' + pitch +')"><img id="img' + id + '" src="http://maps.googleapis.com/maps/api/streetview?size=160x120&location=' + lat + ',%20' + lng + '&fov=90&heading=' + heading + '&pitch=' + pitch +'&sensor=false" /></a>');
+                }
+            }
+        });
+}
+function delete_image(id)
+{
+    $.ajax({
+            url:'/study/curate/location/delete/' + id,
+            // Expect JSON to be returned. This is also enforced on the server via mimetype.
+            dataType: 'json',
+            data: {
+                id: id
+            },
+            type: 'POST',
+            success: function(data) {
+                if (data.success === "True")
+                {
+                    $("#close_modal").trigger('click');
+                    $('#li'+ id).remove()
+                }
+            }
+        });
+}
+function editsv(id, lat, lng, heading, pitch) {
+    $('#edit_street_view').modal();
+    var location = new google.maps.LatLng(lat,lng);
+    var panoramaOptions = {
+      position: location,
+      pov: {
+        heading: heading,
+        pitch: pitch,
+        zoom: 1
+      },
+      	addressControl: false,
+  		linksControl: false,
+  		disableDoubleClickZoom: true,
+  		zoomControl: false,
+  		navigationControl: false,
+  		enableCloseButton: false
+    };
+    gId = id;
+    gLat = lat;
+    gLng = lng;
+    gHeading = heading;
+    gPitch = pitch;
+    var panorama = new google.maps.StreetViewPanorama(document.getElementById("edit_pano"), panoramaOptions);
+    panorama.setVisible(true);
+    $('#edit_street_view').on('shown', function () 
+    {
+        google.maps.event.trigger(panorama, 'resize');
+        google.maps.event.addListener(panorama, 'position_changed', function() {
+            gLat = panorama.getPosition().lat();
+            gLng = panorama.getPosition().lng();
+        });
 
+        google.maps.event.addListener(panorama, 'pov_changed', function() {
+            gHeading = panorama.getPov().heading;
+            gPitch = panorama.getPov().pitch;
+        });
+    });
+}
+    
+function center_map(lat,lng){
+    var location = new google.maps.LatLng(lat,lng);
+    var mapOptions = {
+      center: location,
+      zoom: 14,
+      mapTypeId: google.maps.MapTypeId.HYBRID
+    };
+    var map = new google.maps.Map(document.getElementById("map4"), mapOptions);
+    marker = new google.maps.Marker({
+        icon: markerIcon,
+        map:map,
+        draggable:true,  
+        animation: google.maps.Animation.DROP,
+        position: location
+    });
+        //google.maps.event.addListener(marker, 'click', toggleBounce);     
+}
 // Array max/min monkeypatching
 // JavaScript Document
 Array.max = function( array ){
