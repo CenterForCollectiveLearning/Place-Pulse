@@ -79,19 +79,17 @@
               </fieldset>
             </div>
             <div class="form-horizontal" id="mapInterface">
+                <div class="well">
+                    <div id="map"></div>
+                      <div id="mapInterfaceButtons">
+                        <div id="selectionarea" class="alert alert-error">
+                          <strong>Selection Too Large</strong> Please reduce the area of your selection to under 500 square miles.
+                        </div>
+                      <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
+                    </div>
+                </div>
               <fieldset>
                 <legend>Define Area</legend>
-                <div class="control-group">
-                  <label class="control-label" for="map">Define Polygon</label>
-                  <div id="map"></div>
-                  <div id="mapInterfaceButtons">
-                    <div id="selectionarea" class="alert alert-error">
-                      <strong>Selection Too Large</strong> Please reduce the area of your selection to under 500 square miles.
-                    </div>
-                  <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
-                </div>
-                </div>
-                
                 <div class="control-group">
                   <label class="control-label" for="location_distribution">Location distribution</label>
                   <div class="controls">
