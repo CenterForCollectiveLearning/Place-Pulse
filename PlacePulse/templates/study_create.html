@@ -52,7 +52,7 @@
                   <div class="controls">
                     <div class="input-prepend">
                       <span class="add-on">Which place looks more </span>
-                      <input class="span2" id="study_question" size="16" type="text" placeholder="i.e. unique" data-provide="typeahead" data-items="6" data-source='["safe","upper-class","unique","livable","tourist friendly","modern","ghetto"]'>
+                      <input class="span2" id="study_question" size="16" type="text" placeholder="i.e. unique" data-provide="typeahead" data-items="{{numQs}}" data-source="{{studyQs}}">
                       ?
                       <span id="study_question_error" class="help-inline hidden">Please use at most three words.</span>
                     </div>
@@ -140,5 +140,5 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
 <script src="/static/js/bootstrap-typeahead.js"></script>
-<script src="/static/js/study_create.js"></script>
+<script src="/static/js/study_create.js"> </script>
 {% endblock %}

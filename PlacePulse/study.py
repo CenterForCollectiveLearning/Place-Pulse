@@ -1,5 +1,6 @@
 from flask import Module
 from flask import redirect,render_template,request
+import re
 
 from util import *
 
@@ -15,7 +16,16 @@ def serve_create_study():
         if(len(str(city))>0):
             cities+=str(city)+','
     cities=cities[:-1]
-    return render_template('study_create.html', cities=cities)
+    studyQuestions='['
+    Z=set()
+    for question in Database.studies.distinct('study_question'):
+	st = re.sub('[^\w]','',question.split(' ')[-1])
+	if(len(st)>0):
+		Z.add(st)
+    for u in list(Z):
+	studyQuestions+='"'+str(u)+'",'
+    studyQuestions=studyQuestions[:-1]+']'
+    return render_template('study_create.html', cities=cities,studyQs = str(studyQuestions),numQs = len(Z))
     
 @study.route('/study/create/',methods=['POST'])
 def create_study():    
