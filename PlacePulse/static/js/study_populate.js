@@ -9,9 +9,10 @@ var completed = 0;
 var virgin = 0;
 var pointsToAdd = 100;
 var studyID = ''
-var markerIcon = '/static/images/yellow.png';
 var waitingForFinish = false;
-
+var green;
+var shadow;
+var shape;
 
 function startPopulatingStudy(_studyID, polygonStr) {
     studyID = _studyID;
@@ -67,8 +68,8 @@ function checkPoly()
 		paths: studyArea.polygon,        
 		strokeWeight: 2,
         strokeOpacity: 1,
-        strokeColor: '#eeb44b',
-        fillColor: '#eeb44b'
+        strokeColor: '#4aea39',
+        fillColor: '#4aea39'
     });
 	while(!polygon.containsLatLng(randomPoint))
 	{
@@ -90,6 +91,24 @@ function plot()
     var nepoint = new google.maps.LatLng(studyArea.TLLat, studyArea.BRLng);
     var bounds = new google.maps.LatLngBounds(swpoint, nepoint);
     map.fitBounds(bounds);
+    green = new google.maps.MarkerImage(
+      '/static/img/marker-images/green.png',
+      new google.maps.Size(16,26),
+      new google.maps.Point(0,0),
+      new google.maps.Point(8,26)
+    );
+
+    shadow = new google.maps.MarkerImage(
+      '/static/img/marker-images/shadow.png',
+      new google.maps.Size(32,26),
+      new google.maps.Point(0,0),
+      new google.maps.Point(8,26)
+    );
+
+    shape = {
+      coord: [11,0,13,1,14,2,15,3,15,4,15,5,15,6,15,7,15,8,15,9,15,10,15,11,15,12,14,13,14,14,13,15,13,16,12,17,12,18,11,19,11,20,10,21,10,22,9,23,9,24,8,25,7,25,6,24,6,23,5,22,5,21,4,20,4,19,3,18,3,17,2,16,2,15,1,14,1,13,0,12,0,11,0,10,0,9,0,8,0,7,0,6,0,5,0,4,0,3,1,2,2,1,4,0,11,0],
+      type: 'poly'
+    };
 }
 function processSVData(data, status)
 {
@@ -157,12 +176,16 @@ function updateDB(lat,lng)
 }
 function refreshMap(lat,lng)
 {
-	var marker = new google.maps.Marker(
-	{
-		icon: markerIcon,
-		position: new google.maps.LatLng(lat, lng),
-		map: map
-	});
+	var marker = new google.maps.Marker({
+      draggable: true,
+      raiseOnDrag: false,
+      icon: green,
+      shadow: shadow,
+      shape: shape,
+      animation: google.maps.Animation.DROP,
+      map: map,
+      position: new google.maps.LatLng(lat, lng)
+    });
 	$("#progress_bar").css("width",completed/pointsToAdd*100 + "%");
 }
 

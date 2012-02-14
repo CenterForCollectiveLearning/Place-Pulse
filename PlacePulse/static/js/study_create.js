@@ -1,10 +1,13 @@
 var poly, map;
 var markers;
 var path;
-var markerIcon;
 var area=0;
 var cityList;
 var mapReady = false;
+var red;
+var green;
+var shadow;
+var shape;
 
 $(document).ready(function() {
 
@@ -94,7 +97,6 @@ $(document).ready(function() {
         }
 
 function setupUI() {
-
     $('#clearCurrentSelection').click(clearOverlays);
     
     $('#finishStudyForm').click(function() {
@@ -146,9 +148,33 @@ function startMap() {
     // Initialize map interface
     markers = [];
     path = new google.maps.MVCArray;
-    markerIcon = '/static/images/blue.png';
     var varzoom = 10;
     panMap(varzoom);
+    red = new google.maps.MarkerImage(
+      '/static/img/marker-images/red.png',
+      new google.maps.Size(16,26),
+      new google.maps.Point(0,0),
+      new google.maps.Point(8,26)
+    );
+
+    green = new google.maps.MarkerImage(
+      '/static/img/marker-images/green.png',
+      new google.maps.Size(16,26),
+      new google.maps.Point(0,0),
+      new google.maps.Point(8,26)
+    );
+
+    shadow = new google.maps.MarkerImage(
+      '/static/img/marker-images/shadow.png',
+      new google.maps.Size(32,26),
+      new google.maps.Point(0,0),
+      new google.maps.Point(8,26)
+    );
+
+    shape = {
+      coord: [11,0,13,1,14,2,15,3,15,4,15,5,15,6,15,7,15,8,15,9,15,10,15,11,15,12,14,13,14,14,13,15,13,16,12,17,12,18,11,19,11,20,10,21,10,22,9,23,9,24,8,25,7,25,6,24,6,23,5,22,5,21,4,20,4,19,3,18,3,17,2,16,2,15,1,14,1,13,0,12,0,11,0,10,0,9,0,8,0,7,0,6,0,5,0,4,0,3,1,2,2,1,4,0,11,0],
+      type: 'poly'
+    };
 }
 
 function panMap(varzoom)
@@ -165,8 +191,8 @@ function panMap(varzoom)
     poly = new google.maps.Polygon({
         strokeWeight: 2,
         strokeOpacity: 1,
-        strokeColor: '#eeb44b',
-        fillColor: '#eeb44b'
+        strokeColor: '#4aea39',
+        fillColor: '#4aea39'
     });
 
     // var swpoint = new google.maps.LatLng(point.swlat, point.swlng); //Google adds lat then lng, even though lat is Y coord and Lng is X
@@ -194,11 +220,16 @@ function panMap(varzoom)
 function addPointLatLng(lat, lng) {
     var point = new google.maps.LatLng(lat, lng);
     // path.insertAt(path.length, point);
+
     var marker = new google.maps.Marker({
-        position: point,
-        map: map,
-        draggable: true,
-        icon: markerIcon
+      draggable: true,
+      raiseOnDrag: false,
+      icon: green,
+      shadow: shadow,
+      shape: shape,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      position: point
     });
     markers.push(marker);
 
@@ -228,11 +259,10 @@ function clearOverlays() {
     poly.setOptions({
     strokeWeight: 2,
         strokeOpacity: 1,
-        strokeColor: '#eeb44b',
-        fillColor: '#eeb44b'
+        strokeColor: '#4aea39',
+        fillColor: '#4aea39'
     });
-    
-
+    $('#selectionarea').hide();
 }
 function removeMarker(index) {
     if (markers.length > 0) {
@@ -266,10 +296,14 @@ function addPoint(event) {
     }
 
     var marker = new google.maps.Marker({
-        position: event.latLng,
-        map: map,
-        draggable: true,
-        icon: markerIcon
+      draggable: true,
+      raiseOnDrag: false,
+      icon: green,
+      shadow: shadow,
+      shape: shape,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      position: event.latLng
     });
     var next = minPlace + 1;
     markers.splice(next, 0, marker);
@@ -359,14 +393,14 @@ function updateArea() {
         area =  google.maps.geometry.spherical.computeArea(poly.getPath())/numMetersInSquareMile;
         if(area>500.0) {
             $('#area').html(area.toFixed(3)+" square miles is above the limit of 500 ");
-            poly.setOptions({strokeColor: '#d70f37',fillColor:'#d70f37'});
-            toggleMarkers('/static/images/red.png');
+            poly.setOptions({strokeColor: '#ea4839',fillColor:'#ea4839'});
+            toggleMarkers(red);
             $('#selectionarea').html('<strong>Selection Too Large</strong><br />Your current selection area is ' + area.toFixed(0) + ' square miles. Please reduce the area of your selection to under 500 square miles.')
             $('#selectionarea').show();
         }
         else { 
-            poly.setOptions({strokeColor: '#9fe732',fillColor:'#9fe732'});
-            toggleMarkers('/static/images/blue.png');
+            poly.setOptions({strokeColor: '#4aea39',fillColor:'#4aea39'});
+            toggleMarkers(green);
             $('#selectionarea').hide();
         }
     }
