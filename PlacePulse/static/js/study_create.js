@@ -93,28 +93,6 @@ $(document).ready(function() {
                 return false;
         }
 
-function setupQuestions(qString) {
-	var list = qString.split(",");
-	var newStr = "[";
-	for(var i =0;i<list.length;i++) {
-		newStr+='"'+list[i]+'"';
-		if(i<list.length-1)
-			newStr+=',';
-		else
-			newStr+=']';
-	}
-	var questions = document.getElementById("study_question");
-	alert(questions.placeholder);
-	questions.data-source = newStr;
-	//questions.data-items=""+list.length;
-	alert("done");
-/*
-	document.getElementById("study_question").data-source = newStr;
-	alert(document.getElementById("study_question").value);
-	//document.getElementById("#study_question").data-source = newStr;
-	document.getElementById("study_question").data-items = ""+list.length;
-*/
-}
 function setupUI() {
 
     $('#clearCurrentSelection').click(clearOverlays);
