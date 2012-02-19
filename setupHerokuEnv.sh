@@ -8,3 +8,4 @@ heroku config:add MONGO_URI="mongodb://placepulse:Mr3D48wOe3H02D0@ds029287.mongo
 heroku config:add PLACEPULSE_HOST="place-pulse-staging.herokuapp.com"
 heroku config:add PLACEPULSE_BASEURL="place-pulse-staging.herokuapp.com"
 
+heroku config:add COOKIE_SECRET_KEY="a10ad1a40b754a4d9b663fac60556a78"

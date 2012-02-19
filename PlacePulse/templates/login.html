@@ -1,0 +1,58 @@
+{% extends "sub.html" %}
+
+{% block footer %}
+	<script>
+	const come_from = "{{ come_from }}";
+	</script>
+	<script src="https://browserid.org/include.js" type="text/javascript"></script>
+	<script>
+		function doBrowserID() {
+			navigator.id.getVerifiedEmail(function(assertion) {
+			    if (assertion) {
+			        // This code will be invoked once the user has successfully
+			        // selected an email address they control to sign in with.
+					$.ajax({
+						type: 'POST',
+						url: '/login/browserid/',
+						data: {
+							assertion: assertion
+						},
+						success: function(e) {
+							// Login success!
+							window.location = come_from;
+						}
+					});
+		
+			    } else {
+			        // something went wrong!  the user isn't logged in.
+			    }
+			});
+	}
+	
+	function init() {
+		$('#browserIDLoginButton').click(doBrowserID);
+	}
+	
+	$(document).ready(init);
+	</script>	
+{% endblock %}
+
+{% block body %}  
+	<p>
+		Click the below button to log in with your Facebook account:
+			<div class="fb-login-button" data-scope="email" data-redirect-uri="http://localhost:8000/finished">
+				<a href="{{ fb_login_link }}">
+					<img src="/static/images/fbconnect.png"/>
+				</a>
+			</div>
+	</p>
+	
+	<p>
+		Or log in with just an e-mail address via <a href="http://www.browserid.org">BrowserID</a>.
+		<div>
+			<a href="#" id="browserIDLoginButton">
+				<img src="/static/images/browserid.png"/>
+			</a>
+		</div>
+	</p>
+{% endblock %}

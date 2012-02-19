@@ -8,9 +8,16 @@ study = Module(__name__)
 
 from db import Database
 
+#--------------------Login
+@study.route("/study/create/login/")
+def create_study_login():
+    return auto_template('login.html',come_from="/study/create",fb_login_link=getFBLoginLink())
+
 #--------------------Create
 @study.route("/study/create/")
 def serve_create_study():
+    if getLoggedInUser() is None:
+        return redirect("/study/create/login/")
     cities=''
     for city in Database.studies.distinct('city'):
         if(len(str(city))>0):
@@ -25,7 +32,7 @@ def serve_create_study():
     for u in list(Z):
 	studyQuestions+='"'+str(u)+'",'
     studyQuestions=studyQuestions[:-1]+']'
-    return render_template('study_create.html', cities=cities,studyQs = str(studyQuestions),numQs = len(Z))
+    return auto_template('study_create.html', cities=cities,studyQs = str(studyQuestions),numQs = len(Z))
     
 @study.route('/study/create/',methods=['POST'])
 def create_study():    
@@ -46,7 +53,7 @@ def create_study():
 @study.route('/study/populate/<study_id>/',methods=['GET'])
 def serve_populate_study(study_id):
     study = Database.getStudy(study_id)
-    return render_template('study_populate.html',polygon=study['polygon'],study_id=study_id)
+    return auto_template('study_populate.html',polygon=study['polygon'],study_id=study_id)
 
 @study.route('/study/populate/<study_id>/',methods=['POST'])
 def populate_study(study_id):
