@@ -31,7 +31,7 @@ Site Setup
 		New python executable in ./bin/python
 		Installing distribute...............done.
 		Installing pip...............done.
-	$ source setupEnv.sh
+	$ source PlacePulse/setupEnv.sh
 	$ pip install flask
 		Installing flask...............done.
 	$ pip freeze > requirements.txt
