@@ -2,7 +2,7 @@ import os
 
 from PlacePulse import app
 
-from flask import render_template,session
+from flask import render_template,request,session,url_for
 
 import json
 
@@ -14,7 +14,8 @@ class Buckets:
 def auto_template(template_name, **kwargs):
     userObj = getLoggedInUser()
     extraObj = {
-        'userObj': userObj
+        'userObj': userObj,
+        'logoutUrl': url_for('login.logout',next=request.path)
     }
     kwargs.update(extraObj)
     return render_template(template_name, **kwargs)

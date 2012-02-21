@@ -1,5 +1,5 @@
 from flask import Module
-from flask import redirect,render_template,request
+from flask import redirect,request
 
 from random import sample
 from util import *
@@ -13,13 +13,13 @@ def load_admin():
 	popular_studies = Database.getPopularStudies(5)
 	new_cities = Database.getNewCities(5)
 	inactive_studies = Database.getInactiveStudies(5)
-	return render_template('admin.html',popular_studies=popular_studies,new_cities=new_cities,inactive_studies=inactive_studies)
+	return auto_template('admin.html',popular_studies=popular_studies,new_cities=new_cities,inactive_studies=inactive_studies)
 
 #--------------------Studies
 @admin.route("/admin/studies/")
 def view_studies():
 	studies = Database.getStudies()
-	return render_template('admin_studies.html',studies=studies)
+	return auto_template('admin_studies.html',studies=studies)
 
 #--------------------Places
 @admin.route('/admin/aggregate_studies/<study_id>',methods = ['POST'])
@@ -38,7 +38,7 @@ def classifyStudy(study_id):
         if(len(str(city))>0):
             cities+=str(city)+','
     cities=cities[:-1]
-    return render_template('admin.html',study_id=study_id,polygon=study['polygon'],cities=cities)
+    return auto_template('admin.html',study_id=study_id,polygon=study['polygon'],cities=cities)
 
 #--------------------Locations
 
@@ -48,6 +48,6 @@ def classifyStudy(study_id):
 @admin.route("/admin/votes/<study_id>/",methods=['GET'])
 def calculate_ranking(study_id):
 	votes = Database.getVotes(study_id)
-	return render_template('view_votes.html',votes=votes)
+	return auto_template('view_votes.html',votes=votes)
 
 #--------------------Results

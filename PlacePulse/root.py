@@ -1,5 +1,5 @@
 from flask import Module
-from flask import redirect,render_template,request
+from flask import redirect,request
 
 from random import sample
 from util import *
@@ -10,4 +10,4 @@ from db import Database
 
 @root.route("/about/")
 def load_about():
-	return render_template('about.html')
+	return auto_template('about.html')

@@ -1,5 +1,5 @@
 from flask import Module
-from flask import redirect,render_template,request
+from flask import redirect,request,url_for
 import re
 
 from util import *
@@ -11,7 +11,9 @@ from db import Database
 #--------------------Login
 @study.route("/study/create/login/")
 def create_study_login():
-    return auto_template('login.html',come_from="/study/create",fb_login_link=getFBLoginLink())
+    fbLoginLink = url_for('login.handle_facebook',next="/study/create/")
+    browserIDLoginLink = url_for('login.handle_browserid',next="/study/create/")
+    return auto_template('login.html',fb_login_link=fbLoginLink,browserid_login_link=browserIDLoginLink)
 
 #--------------------Create
 @study.route("/study/create/")
@@ -99,7 +101,7 @@ def finish_populate_study(study_id):
 def curate_study(study_id):
     study = Database.getStudy(study_id)
     locations = Database.getLocations(study_id)
-    return render_template('study_curate.html',polygon=study['polygon'],locations=locations)
+    return auto_template('study_curate.html',polygon=study['polygon'],locations=locations)
     
 @study.route('/study/curate/location/<id>',methods=['POST'])
 def curate_location():    
@@ -179,7 +181,7 @@ def server_view_study(study_id):
     studyObj = Database.getStudy(study_id)
     if studyObj is None:
         return redirect('/')
-    return render_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'))
+    return auto_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'))
 
 @study.route('/location/view/<location_id>/',methods=['GET'])
 def get_location(location_id):
@@ -197,4 +199,4 @@ def showData(study_id):
         rightStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['right'])['loc']))
         L+=str(leftStuff)+","+str(rightStuff)+","+str(x['choice'])+","
     L=L[:-1]
-    return render_template('results.html',study_id=study_id, L=L)
+    return auto_template('results.html',study_id=study_id, L=L)

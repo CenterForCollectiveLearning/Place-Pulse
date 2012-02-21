@@ -1,9 +1,6 @@
 {% extends "sub.html" %}
 
 {% block footer %}
-	<script>
-	const come_from = "{{ come_from }}";
-	</script>
 	<script src="https://browserid.org/include.js" type="text/javascript"></script>
 	<script>
 		function doBrowserID() {
@@ -13,13 +10,13 @@
 			        // selected an email address they control to sign in with.
 					$.ajax({
 						type: 'POST',
-						url: '/login/browserid/',
+						url: '{{ browserid_login_link }}',
 						data: {
 							assertion: assertion
 						},
 						success: function(e) {
 							// Login success!
-							window.location = come_from;
+							window.location = e.next;
 						}
 					});
 		

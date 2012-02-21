@@ -27,12 +27,14 @@
                 	{% if userObj %}
 						{% if userObj.source == 'browserid' %}
 							{{ userObj.email }}
+						{% elif userObj.source == 'facebook' %}
+							{{ userObj.name }}
 						{% endif %}
 					{% else %}
 						<strong>Error- user not found!</strong>
 					{% endif %}
                 </a></li>
-				<li><a href="/logout">Log out</a></li>
+				<li><a href="{{ logoutUrl}}">Log out</a></li>
             </ul>
           </div>
         </div>
