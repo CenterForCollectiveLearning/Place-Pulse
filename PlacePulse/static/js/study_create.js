@@ -302,7 +302,6 @@ function addPoint(event) {
       shadow: shadow,
       shape: shape,
       map: map,
-      animation: google.maps.Animation.DROP,
       position: event.latLng
     });
     var next = minPlace + 1;
