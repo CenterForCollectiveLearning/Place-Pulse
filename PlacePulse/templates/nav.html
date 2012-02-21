@@ -23,16 +23,16 @@
             <ul class="nav pull-right">
                 <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>
                 <li class="divider-vertical"></li>
-                <li><a href="/admin/profile/">
-                	{% if userObj %}
-						{% if userObj.source == 'browserid' %}
-							{{ userObj.email }}
-						{% endif %}
-					{% else %}
-						<strong>Error- user not found!</strong>
-					{% endif %}
-                </a></li>
-				<li><a href="/logout">Log out</a></li>
+                {% if userObj %}
+                  <li{% if active_page == 'profile' %} class="active"{% endif %}><a href="/admin/profile/">
+                    {% if userObj.source == 'browserid' %}
+                      {{ userObj.email }}
+                    {% endif %}
+                  </a></li>
+                  <li><a href="/logout">Sign out</a></li>
+                {% else %}
+                  <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="/login">Sign in</a></li>
+                {% endif %}
             </ul>
           </div>
         </div>

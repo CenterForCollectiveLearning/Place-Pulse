@@ -8,31 +8,12 @@ study = Module(__name__)
 
 from db import Database
 
-#--------------------Login
-@study.route("/study/create/login/")
-def create_study_login():
-    return auto_template('login.html',come_from="/study/create",fb_login_link=getFBLoginLink())
-
 #--------------------Create
 @study.route("/study/create/")
 def serve_create_study():
     if getLoggedInUser() is None:
-        return redirect("/study/create/login/")
-    cities=''
-    for city in Database.studies.distinct('city'):
-        if(len(str(city))>0):
-            cities+=str(city)+','
-    cities=cities[:-1]
-    studyQuestions='['
-    Z=set()
-    for question in Database.studies.distinct('study_question'):
-	st = re.sub('[^\w]','',question.split(' ')[-1])
-	if(len(st)>0):
-		Z.add(st)
-    for u in list(Z):
-	studyQuestions+='"'+str(u)+'",'
-    studyQuestions=studyQuestions[:-1]+']'
-    return auto_template('study_create.html', cities=cities,studyQs = str(studyQuestions),numQs = len(Z))
+        return redirect("/login/")
+    return auto_template('study_create.html')
     
 @study.route('/study/create/',methods=['POST'])
 def create_study():    
@@ -99,7 +80,7 @@ def finish_populate_study(study_id):
 def curate_study(study_id):
     study = Database.getStudy(study_id)
     locations = Database.getLocations(study_id)
-    return render_template('study_curate.html',polygon=study['polygon'],locations=locations)
+    return auto_template('study_curate.html',polygon=study['polygon'],locations=locations)
     
 @study.route('/study/curate/location/<id>',methods=['POST'])
 def curate_location():    
@@ -179,7 +160,7 @@ def server_view_study(study_id):
     studyObj = Database.getStudy(study_id)
     if studyObj is None:
         return redirect('/')
-    return render_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'))
+    return auto_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'))
 
 @study.route('/location/view/<location_id>/',methods=['GET'])
 def get_location(location_id):
@@ -197,4 +178,4 @@ def showData(study_id):
         rightStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['right'])['loc']))
         L+=str(leftStuff)+","+str(rightStuff)+","+str(x['choice'])+","
     L=L[:-1]
-    return render_template('results.html',study_id=study_id, L=L)
+    return auto_template('results.html',study_id=study_id, L=L)

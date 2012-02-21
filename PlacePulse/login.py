@@ -34,6 +34,12 @@ def handle_browserid():
             'error_description': 'BrowserID assertion check failed!'
         })
 
+@login.route("/login/")
+def signin():
+    if getLoggedInUser() is not None:
+        return redirect("/")
+    return auto_template('login.html',fb_login_link=getFBLoginLink())
+
 @login.route("/logout/")
 def logout():
     del session['userObj']

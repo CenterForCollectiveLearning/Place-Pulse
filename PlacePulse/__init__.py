@@ -35,7 +35,7 @@ def main():
 	if studyObj is None:
 		return redirect('/')
 	votesCount = Database.getVotesCount()
-	return render_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
+	return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
 
 def buildIndices():
     # Build spatial index

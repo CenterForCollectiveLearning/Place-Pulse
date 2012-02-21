@@ -10,4 +10,4 @@ from db import Database
 
 @root.route("/about/")
 def load_about():
-	return render_template('about.html')
+	return auto_template('about.html')
