@@ -54,12 +54,7 @@ def classifyStudy(study_id):
 #--------------------Votes
 @admin.route("/admin/votes/<study_id>/",methods=['GET'])
 def calculate_ranking(study_id):
-<<<<<<< HEAD
-	votes = Database.getVotes(study_id)
-	return auto_template('view_votes.html',votes=votes)
-=======
     votes = Database.getVotes(study_id)
     return auto_template('view_votes.html',votes=votes)
->>>>>>> 43c2fb28613dbe0f91b2e7d89819fa0d697ac4d7
 
 #--------------------Results
