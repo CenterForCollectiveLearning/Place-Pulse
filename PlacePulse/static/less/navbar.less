@@ -58,7 +58,7 @@
   .brand {
     float: left;
     display: block;
-    padding: (((@navbarHeight - 20) / 2) * 0.8) 20px (((@navbarHeight - 20) / 2) * 0.5);
+    padding: 8px 20px 12px;
     margin-left: -20px; // negative indent to left-align the text down the page
     font-size: 20px;
     font-weight: 200;
@@ -68,7 +68,7 @@
   // Plain text in topbar
   .navbar-text {
     margin-bottom: 0;
-    line-height: @navbarHeight;
+    line-height: 40px;
     color: @navbarText;
     a:hover {
       color: @white;
@@ -81,7 +81,7 @@
     margin-top: 5px; // make buttons vertically centered in navbar
   }
   .btn-group .btn {
-    margin-top: 0;
+    margin-top: 0; // then undo the margin here so we don't accidentally double it
   }
 }
 
@@ -103,6 +103,14 @@
   input[type="checkbox"],
   input[type="radio"] {
     margin-top: 3px;
+  }
+  .input-append,
+  .input-prepend {
+    margin-top: 6px;
+    white-space: nowrap; // preven two  items from separating within a .navbar-form that has .pull-left
+    input {
+      margin-top: 0; // remove the margin on top since it's on the parent
+    }
   }
 }
 
@@ -133,7 +141,7 @@
       background-color: @grayLight;
       background-color: rgba(255,255,255,.5);
     }
-    // Focus states (we use .focused since IE8 and down doesn't support :focus)
+    // Focus states (we use .focused since IE7-8 and down doesn't support :focus)
     &:focus,
     &.focused {
       padding: 5px 10px;
@@ -174,7 +182,6 @@
   display: block;
   float: left;
   margin: 0 10px 0 0;
-  height: @navbarHeight;
 }
 .navbar .nav.pull-right {
   float: right; // redeclare due to specificity
@@ -187,7 +194,7 @@
 // Links
 .navbar .nav > li > a {
   float: none;
-  padding: (@navbarHeight - 20)/2 10px ((@navbarHeight - 20)/2 + 1);
+  padding: 10px 10px 11px;
   line-height: 19px;
   color: @navbarLinkColor;
   text-decoration: none;
@@ -195,7 +202,7 @@
 }
 // Hover
 .navbar .nav > li > a:hover {
-  background-color: transparent;
+  background-color: @navbarLinkBackgroundHover; // "transparent" is default to differentiate :hover from .active
   color: @navbarLinkColorHover;
   text-decoration: none;
 }
@@ -206,7 +213,6 @@
   color: @navbarLinkColorHover;
   text-decoration: none;
   background-color: @navbarBackground;
-  background-color: rgba(0,0,0,.5);
 }
 
 // Dividers (basically a vertical hr)

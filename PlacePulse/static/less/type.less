@@ -28,7 +28,7 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-weight: 200;
+  font-weight: bold;
   color: @grayDark;
   text-rendering: optimizelegibility; // Fix the character spacing for headings
   small {
@@ -37,10 +37,8 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 h1 {
-  font-weight: bold;
   font-size: 30px;
   line-height: @baseLineHeight * 2;
-  margin-bottom: @baseLineHeight;
   small {
     font-size: 18px;
   }
@@ -53,16 +51,13 @@ h2 {
   }
 }
 h3 {
-  font-weight:bold;
   line-height: @baseLineHeight * 1.5;
-  margin-bottom: @baseLineHeight * 2 - @baseLineHeight * 1.5;
   font-size: 18px;
   small {
     font-size: 14px;
   }
 }
 h4, h5, h6 {
-  font-weight:bold;
   line-height: @baseLineHeight;
 }
 h4 {
@@ -79,9 +74,7 @@ h6 {
   color: @grayLight;
   text-transform: uppercase;
 }
-.hextra {
-margin-bottom: @baseLineHeight;
-}
+
 // Page header
 .page-header {
   padding-bottom: @baseLineHeight - 1;
@@ -117,7 +110,8 @@ ol {
 li {
   line-height: @baseLineHeight;
 }
-ul.unstyled {
+ul.unstyled,
+ol.unstyled {
   margin-left: 0;
   list-style: none;
 }
@@ -144,7 +138,7 @@ dd {
 hr {
   margin: @baseLineHeight 0;
   border: 0;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid @hrBorder;
   border-bottom: 1px solid @white;
 }
 
