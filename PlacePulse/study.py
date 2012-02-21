@@ -1,6 +1,6 @@
 from flask import Module
 from flask import redirect,render_template,request
-import re
+from random import sample
 
 from util import *
 
@@ -148,7 +148,6 @@ def get_study_pairing(study_id):
     locationsInQueueCursor = Database.locations.find({ 'bucket': Buckets.Queue, 
                             'study_id': study_id }).limit(Buckets.QueueSize)
     locationsInQueue = [location for location in locationsInQueueCursor]
-
     locationsToDisplay = sample(locationsInQueue,2)
     return jsonifyResponse({
         'locs' : map(objifyPlace, locationsToDisplay)

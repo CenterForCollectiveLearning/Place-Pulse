@@ -1,18 +1,60 @@
-{% extends "base_old.html" %}
+{% extends "base.html" %}
+
+{% block header %}
+<!-- Le styles -->
+<link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/responsive.css" rel="stylesheet">
+<link href="/static/css/main.css" rel="stylesheet">
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = "index" %}
+    {% include 'nav.html' %}
+{% endblock %}
+
+{% block body %}
+<header class="jumbotron subhead">
+    <h1>Which place looks more {{ study_prompt }}?</h1>
+</header>
+<div class="row">
+  <div class="span10 offset2">
+    <ul class="thumbnails">
+     <li class="span5">
+       <div id="pano_left" class="thumbnail"><img class="place" /></div>
+     </li>
+     <li class="span5">
+       <div id="pano_right" class="thumbnail"><img class="place" /></div>
+     </li>
+    </ul>
+  </div><!--/span-->
+</div><!--/row-->
+{% endblock %}
 
 {% block footer %}
+  <hr>
+
+  <footer>
+    <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
+  </footer>
+
+</div><!--/.fluid-container-->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script>
 var study_id = "{{ study_id }}";
 $(document).ready(function() {
-	
-	// On page load, load the GMaps API. Once that's loaded, callback to init()
+  
+  // On page load, load the GMaps API. Once that's loaded, callback to init()
     function loadScript() {
       var script = document.createElement("script");
       script.type = "text/javascript";
       script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init";
       document.body.appendChild(script);
     }
-	loadScript();
+  loadScript();
 });
 </script>
 <script src="/static/js/main.js"></script>
