@@ -1,6 +1,7 @@
 from flask import Module
-from flask import redirect,request,url_for
-import re
+
+from flask import redirect,render_template,request,url_for
+from random import sample
 
 from util import *
 
@@ -8,33 +9,12 @@ study = Module(__name__)
 
 from db import Database
 
-#--------------------Login
-@study.route("/study/create/login/")
-def create_study_login():
-    fbLoginLink = url_for('login.handle_facebook',next="/study/create/")
-    browserIDLoginLink = url_for('login.handle_browserid',next="/study/create/")
-    return auto_template('login.html',fb_login_link=fbLoginLink,browserid_login_link=browserIDLoginLink)
-
 #--------------------Create
 @study.route("/study/create/")
 def serve_create_study():
     if getLoggedInUser() is None:
-        return redirect("/study/create/login/")
-    cities=''
-    for city in Database.studies.distinct('city'):
-        if(len(str(city))>0):
-            cities+=str(city)+','
-    cities=cities[:-1]
-    studyQuestions='['
-    Z=set()
-    for question in Database.studies.distinct('study_question'):
-	st = re.sub('[^\w]','',question.split(' ')[-1])
-	if(len(st)>0):
-		Z.add(st)
-    for u in list(Z):
-	studyQuestions+='"'+str(u)+'",'
-    studyQuestions=studyQuestions[:-1]+']'
-    return auto_template('study_create.html', cities=cities,studyQs = str(studyQuestions),numQs = len(Z))
+        return redirect("/login/")
+    return auto_template('study_create.html')
     
 @study.route('/study/create/',methods=['POST'])
 def create_study():    
@@ -169,7 +149,6 @@ def get_study_pairing(study_id):
     locationsInQueueCursor = Database.locations.find({ 'bucket': Buckets.Queue, 
                             'study_id': study_id }).limit(Buckets.QueueSize)
     locationsInQueue = [location for location in locationsInQueueCursor]
-
     locationsToDisplay = sample(locationsInQueue,2)
     return jsonifyResponse({
         'locs' : map(objifyPlace, locationsToDisplay)

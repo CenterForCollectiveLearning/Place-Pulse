@@ -6,37 +6,30 @@
 ] -%}
 {% set active_page = active_page|default('index') -%}
 <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="/"><img src="/static/img/place_pulse_logo_15.png" alt="" /></a>
-          <div class="nav-collapse">
-            <ul class="nav">
-                {% for href, id, caption in navigation_bar %}
-                <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-                {% endfor %}
-            </ul>
-            <ul class="nav pull-right">
-                <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>
-                <li class="divider-vertical"></li>
-                <li><a href="/admin/profile/">
-                	{% if userObj %}
-						{% if userObj.source == 'browserid' %}
-							{{ userObj.email }}
-						{% elif userObj.source == 'facebook' %}
-							{{ userObj.name }}
-						{% endif %}
-					{% else %}
-						<strong>Error- user not found!</strong>
-					{% endif %}
-                </a></li>
-				<li><a href="{{ logoutUrl}}">Log out</a></li>
-            </ul>
-          </div>
-        </div>
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="/"><img src="/static/img/place_pulse_logo_15.png" alt="" /></a>
+      <div class="nav-collapse">
+        <ul class="nav">
+            {% for href, id, caption in navigation_bar %}
+            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+            {% endfor %}
+        </ul>
+        <ul class="nav pull-right">
+          {% if userObj %}
+            <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>
+            <li class="divider-vertical"></li>
+            <li><a href="/logout">Sign out</a></li>
+          {% else %}
+            <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="/login">Sign in</a></li>
+          {% endif %}
+        </ul>
       </div>
     </div>
+  </div>
+</div>

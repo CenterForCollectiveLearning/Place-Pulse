@@ -77,6 +77,12 @@ def handle_browserid():
 def get_facebook_oauth_token():
     return session.get('oauth_token')
 
+@login.route("/login/")
+def signin():
+    if getLoggedInUser() is not None:
+        return redirect("/")
+    return auto_template('login.html',fb_login_link=getFBLoginLink())
+
 @login.route("/logout/")
 def logout():
     if getLoggedInUser():
