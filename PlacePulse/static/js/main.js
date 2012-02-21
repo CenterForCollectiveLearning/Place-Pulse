@@ -4,7 +4,7 @@ var buffer_left;
 var buffer_right;
 var uiLocked = true;
 
-function onStreetViewChoice() {
+function onStreetViewChoice(choice) {
     if (uiLocked) return;
     uiLocked = true;
     $.ajax({
@@ -14,7 +14,7 @@ function onStreetViewChoice() {
             study_id: study_id,
             left: locs[0].id,
             right: locs[1].id,
-            choice: $(this).hasClass('left') ? 'left' : 'right'
+            choice: choice
         },
         success: function(data) {
             getImagesFromBuffer();
@@ -41,7 +41,6 @@ function loadImagesToBuffer() {
             uiLocked = false;
         }
     });
-    $('.streetViewChoice').click(onStreetViewChoice);
 }
 function init() {
     $.ajax({
@@ -51,7 +50,7 @@ function init() {
             locs = data.locs;
             $('#pano_left img.place').attr('src', getSVURL(locs[0].loc[0],locs[0].loc[1]));
             $('#pano_right img.place').attr('src', getSVURL(locs[1].loc[0],locs[1].loc[1]));
-            //loadImagesToBuffer();
+            loadImagesToBuffer();
         }
     });
 }
