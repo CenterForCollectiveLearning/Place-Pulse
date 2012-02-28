@@ -46,7 +46,8 @@ def create_study():
 @study.route('/study/populate/<study_id>/',methods=['GET'])
 def serve_populate_study(study_id):
     study = Database.getStudy(study_id)
-    return render_template('study_populate.html',polygon=study['polygon'],study_id=study_id)
+    return render_template('study_populate.html',polygon=study['polygon'],study_id=study_id,
+                           locDist = study['location_distribution'], dataRes = study['data_resolution'])
 
 @study.route('/study/populate/<study_id>/',methods=['POST'])
 def populate_study(study_id):
@@ -73,16 +74,22 @@ def finish_populate_study(study_id):
         'bucket': Buckets.Queue
     })
     locationsToGet = Buckets.QueueSize-locationsInQueue.count()
-
+    print locationsToGet," ARGGGGGGHHHH"
     # TODO: See if Mongo lets you do this in one update call.
-    for i in range(locationsToGet):
+    c=0
+    #Temporary modification to allow for variable sizes of studies
+    location = 'fill'
+    while(location!=None):
         location = Database.locations.find_one({
             'study_id': study_id,
             'bucket': Buckets.Unknown
         })
+	if(location==None):
+		break
         location['bucket'] = Buckets.Queue
         Database.locations.save(location)
-    
+        c+=1
+    print(c)
     return jsonifyResponse({
         'success': True
     })

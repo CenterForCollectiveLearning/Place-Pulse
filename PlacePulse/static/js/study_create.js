@@ -8,6 +8,7 @@ var red;
 var green;
 var shadow;
 var shape;
+var maxPointsPerStudy=350;
 
 $(document).ready(function() {
 
@@ -133,6 +134,7 @@ function setupUI() {
         alert("Please limit your polygon to less than 500 square miles in area.");
     }
     });
+    addValues();
 }
 
 /*
@@ -388,9 +390,11 @@ function updateDB() {
 }
 
 function updateArea() {
+
     if(poly.getPath().length>2) {
         var numMetersInSquareMile = Math.pow(5280.0*12*2.54/100,2);
         area =  google.maps.geometry.spherical.computeArea(poly.getPath())/numMetersInSquareMile;
+	updateOptions();
         if(area>500.0) {
             $('#area').html(area.toFixed(3)+" square miles is above the limit of 500 ");
             poly.setOptions({strokeColor: '#ea4839',fillColor:'#ea4839'});
@@ -406,8 +410,38 @@ function updateArea() {
     }
     else {
     area=0.0;
+    updateOptions();
     $('#area').html(area);
     }
+}
+
+function addValues() {
+	var resOptions = [100,250,500,1000,1500,2000,2500];
+	var resolutions = document.getElementById('data_resolution');
+	var metersInSqMile = Math.pow(5280.0*12*2.54/100,2);
+	for(var i=0;i<resOptions.length;i++){
+		if(area*metersInSqMile/(Math.pow(resOptions[i]*2,2))<maxPointsPerStudy) {
+			resolutions.options[resolutions.options.length] = new Option((resOptions[i]+" meters"),resOptions[i],false,false);
+		}
+	}
+}
+
+function updateOptions() {
+	var first=true;
+	var resOptions = [100,250,500,1000,1500,2000,2500];
+	var resolutions = document.getElementById('data_resolution');
+	var metersInSqMile = Math.pow(5280.0*12*2.54/100,2);
+	for(var i=0;i<resOptions.length;i++){
+		resolutions.options[i].selected=false;
+		resolutions.options[i].disabled=true;
+		if(area*metersInSqMile/Math.pow(resOptions[i]*2,2)<maxPointsPerStudy) {
+			resolutions.options[i].disabled=false;
+			if(first) {
+				resolutions.options[i].selected=true;
+				first=false;
+			}
+		}
+	}
 }
 
 function toggleMarkers(markerIcon) {
