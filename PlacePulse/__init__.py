@@ -26,6 +26,7 @@ app.register_module(admin)
 app.register_module(study)
 
 
+
 @app.route("/")
 def main():
 	studyObj = Database.getRandomStudy()
