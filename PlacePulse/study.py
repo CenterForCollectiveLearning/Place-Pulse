@@ -1,9 +1,11 @@
 from flask import Module
 
 from flask import redirect,render_template,request,url_for
-from random import sample
 
 from util import *
+
+from datetime import datetime
+from random import sample
 
 study = Module(__name__)
 
@@ -138,7 +140,8 @@ def post_new_vote(study_id):
         'study_id' : request.form['study_id'],
         'left' : request.form['left'],
         'right' : request.form['right'],
-        'choice' : request.form['choice']
+        'choice' : request.form['choice'],
+        'timestamp': datetime.now()
     })
     return jsonifyResponse({
         'success': True
