@@ -33,7 +33,7 @@ app.secret_key = os.environ['COOKIE_SECRET_KEY']
 def main():
 	studyObj = Database.getRandomStudy()
 	if studyObj is None:
-		return redirect('/')
+		return "I don't have any studies. Go to /study/create and make one."
 	votesCount = Database.getVotesCount()
 	return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
 
