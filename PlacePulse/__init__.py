@@ -1,4 +1,4 @@
-from flask import Flask,redirect,render_template,request
+from flask import Flask,redirect,request
 app = Flask(__name__)
 
 import os
@@ -20,11 +20,14 @@ To pull a random place, simply load the study obj, look at the places, and choos
 # TODO: Move from modules to blueprints, see http://flask.pocoo.org/docs/blueprints/
 from root import root
 from admin import admin
+from login import login
 from study import study
 app.register_module(root)
 app.register_module(admin)
+app.register_module(login)
 app.register_module(study)
 
+app.secret_key = os.environ['COOKIE_SECRET_KEY']
 
 
 @app.route("/")
@@ -33,7 +36,7 @@ def main():
 	if studyObj is None:
 		return redirect('/')
 	votesCount = Database.getVotesCount()
-	return render_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
+	return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
 
 def buildIndices():
     # Build spatial index

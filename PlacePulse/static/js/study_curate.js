@@ -235,7 +235,7 @@ function center_map(lat,lng){
     };
     var map = new google.maps.Map(document.getElementById("map4"), mapOptions);
     marker = new google.maps.Marker({
-      draggable: true,
+      draggable: false,
       raiseOnDrag: false,
       icon: green,
       shadow: shadow,

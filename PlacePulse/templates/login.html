@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block header %}
+<!-- Le styles -->
+<link href="/static/css/bootstrap.css" rel="stylesheet">
+<link href="/static/css/responsive.css" rel="stylesheet">
+<link href="/static/css/main.css" rel="stylesheet">
+<link href="/static/css/study_create.css" rel="stylesheet">
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = "signin" %}
+    {% include 'nav.html' %}
+{% endblock %}
+
+{% block body %}
+<header class="jumbotron subhead">
+    <h1>Login to your account</h1>
+    <p class="lead">I will come up with a new design soon.</p>
+</header>
+  <div class="row">
+    <div class="span6"> 
+      <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis orci tortor. Cras augue sapien, aliquam id tristique vel, blandit et magna. Maecenas vitae nibh a odio accumsan tincidunt. Ut in eleifend augue. Aliquam nisi diam, consectetur quis pretium sit amet, laoreet at elit. Aliquam tempus blandit elit, eget porta neque dapibus eget. Pellentesque suscipit leo vitae tellus eleifend nec varius nunc tempus. Ut tristique fermentum elit tempor eleifend. Ut mi magna, vehicula eget bibendum varius, egestas at felis. Vivamus ut suscipit leo. Fusce sapien magna, luctus vel tincidunt a, pellentesque sit amet dui. Integer suscipit, nunc vel elementum blandit, mauris nisi consectetur dolor, sed scelerisque velit sem vitae augue. Pellentesque a eros consequat diam porttitor ultricies. Quisque sed justo libero.
+      </p>
+      <p>
+      Sed faucibus porta est id volutpat. Phasellus sit amet mollis leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse bibendum diam eu neque elementum lacinia. Mauris tempor risus eget lectus mattis et rutrum lectus condimentum. Vestibulum tincidunt, urna eget euismod venenatis, diam nisi euismod augue, non consectetur nulla quam semper turpis. Sed ultricies dolor non ligula lacinia sed consequat justo sagittis. Integer mollis mauris eget ipsum blandit euismod. Duis dictum leo ut sem semper cursus. Proin euismod nibh quis urna eleifend sit amet imperdiet augue ornare. Phasellus volutpat erat sit amet dolor tincidunt lobortis. Sed laoreet tortor ut ligula bibendum ut imperdiet tellus varius. Vivamus eleifend sodales ligula at mollis. Praesent quam nisl, fermentum eget fringilla et, venenatis sed ipsum. Sed facilisis ullamcorper mauris nec dapibus.
+      </p>
+      <p>
+      Aliquam quis ipsum sed ipsum vehicula adipiscing imperdiet vel nisl. Pellentesque mattis ligula a sapien viverra in cursus quam volutpat. Aenean et ipsum erat, vitae cursus odio. Sed nibh sem, ornare nec mollis posuere, cursus eu justo. Maecenas nec lacus sapien. Ut ligula purus, mollis vitae lobortis at, facilisis non dui. Quisque dignissim dignissim ligula, id congue ipsum tempor sed. Nullam convallis tortor nec nulla suscipit non laoreet tortor condimentum. Praesent dignissim neque ultrices ligula accumsan lobortis. Pellentesque vel magna imperdiet lectus adipiscing consectetur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Fusce tincidunt facilisis elit, quis ornare dui laoreet ac. Donec sed purus sit amet metus tristique porttitor a eget leo. Pellentesque arcu quam, pulvinar sit amet mattis in, rutrum ut ipsum.
+      </p>
+      <p>
+      Nulla nisi neque, ornare ut eleifend id, sodales ut velit. Praesent sed nulla lacus, nec gravida urna. Proin quis libero velit, vitae congue urna. Aenean sit amet nulla ligula. Proin semper lacinia facilisis. Nam congue accumsan diam eu blandit. Nunc urna risus, tempus eu rhoncus a, laoreet eget turpis. Donec in libero quis velit rhoncus congue. Nullam ut leo nulla. Integer sodales tincidunt augue, et porttitor tortor convallis nec. Nulla placerat condimentum porta.
+      </p>
+      <p>
+      Aliquam erat volutpat. Nullam consequat nisl ut sapien semper ac facilisis lorem scelerisque. Maecenas malesuada enim lectus, ac placerat felis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur elementum, lacus et rutrum tincidunt, metus tortor tempus eros, nec consectetur tortor ante in dolor. Vestibulum sed mauris erat, quis luctus nulla. Vestibulum dolor sapien, tristique eget vehicula sit amet, faucibus sit amet est. Vestibulum vitae purus nulla, vitae fermentum lorem. Sed luctus sapien eget nulla auctor dapibus. Mauris ut augue nisi. Maecenas at dui purus, et rutrum massa. Aliquam vel augue ante. Vestibulum risus arcu, condimentum at laoreet quis, bibendum ut elit.
+      </p>
+    </div>
+    <div class="span4 well">
+      <p>
+        Click the below button to log in with your Facebook account:
+          <div class="fb-login-button" data-scope="email" data-redirect-uri="http://localhost:8000/finished">
+            <a href="{{ fb_login_link }}">
+              <img src="/static/images/fbconnect.png"/>
+            </a>
+          </div>
+      </p>
+      <p>
+        Or log in with just an e-mail address via <a href="http://www.browserid.org">BrowserID</a>.
+        <div>
+          <a href="#" id="browserIDLoginButton">
+            <img src="/static/images/browserid.png"/>
+          </a>
+        </div>
+      </p>
+    </div><!--/span-->
+  </div><!--/row-->
+{% endblock %}
+
+{% block footer %}
+	  <hr>
+
+	  <footer>
+	    <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
+	  </footer>
+
+	</div><!--/.fluid-container-->
+
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+
+	<script src="https://browserid.org/include.js" type="text/javascript"></script>
+	<script>
+		function doBrowserID() {
+			navigator.id.getVerifiedEmail(function(assertion) {
+			    if (assertion) {
+			        // This code will be invoked once the user has successfully
+			        // selected an email address they control to sign in with.
+					$.ajax({
+						type: 'POST',
+						url: '{{ browserid_login_link }}',
+						data: {
+							assertion: assertion
+						},
+						success: function(e) {
+							// Login success!
+							window.location = e.next;
+						}
+					});
+		
+			    } else {
+			        // something went wrong!  the user isn't logged in.
+			    }
+			});
+	}
+	
+	function init() {
+		$('#browserIDLoginButton').click(doBrowserID);
+	}
+	
+	$(document).ready(init);
+	</script>
+{% endblock %}
+
