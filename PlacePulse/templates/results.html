@@ -1,33 +1,80 @@
-{% extends "sub.html" %}
+{% extends "base.html" %}
+
+{% block header %}
+	<style>
+	.rankings img {
+		padding:5px;
+		cursor:pointer;
+	}
+	#results_map {
+	  width: 300px;
+	  height: 300px;
+
+	}
+	#results_map_container {
+  	  /*FIXME: position:fixed may not work in IE7&8, need testing.*/
+  	  position:fixed;
+  	  bottom:30%;
+  	  right:3%;
+	}
+	</style>
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/responsive.css" rel="stylesheet">
+	<link href="/static/css/main.css" rel="stylesheet">
+	
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = "results" %}
+    {% include 'nav.html' %}
+{% endblock %}
 
 
-{% block footer %}
+{% block footer %}	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/js/lib/underscore-min.js"></script>
+	<script src="/static/js/bootstrap-dropdown.js"></script>
 	<script src="/static/js/results.js"></script>
+	
+		<script type="text/template" id="rankItemTemplate">
+			<div>
+				<h3><%= city_name %></h3>
+				<div class="topRanked rankings">
+					<h4>Top:</h4>
+				</div>
+				<div class="bottomRanked rankings">
+					<h4>Bottom:</h4>
+				</div>
+			</div>
+		</script>
 {% endblock %}
 
 {% block body %}
-<div>
+<header class="jumbotron subhead">
+    <h1>Our Results</h1>
+    <p class="lead">See our rankings thus far.</p>
+</header>
 
-	<script>
-	var study_id ="{{study_id}}";
-	var listStr="{{L}}";
-	var list1=listStr.split(",");
+<div class="row">
+	<div>
+		<li class="dropdown" id="menu1">
+		    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
+		      <h1 class="questionName">Dropdown</h1>
+		      <b class="caret"></b>
+		    </a>
+		    <ul class="dropdown-menu">
+		      <li><a href="#">Which place looks safer?</a></li>
+		      <li><a href="#">Which place looks more upper-class?</a></li>
+		    </ul>
+		  </li>
+		<!-- <h1 class="questionName">
 
-	for(var i=0;i<list1.length;i+=5)
-	{
-		document.write(list1[i]+",");
-		document.write(list1[i+1]+" ");
-		document.write(list1[i+2]+",");
-		document.write(list1[i+3]+" ");
-		document.write(list1[i+4]);
-		document.write("<br>");
-	}
-
-
-	</script>
+		</h1> -->
+		<div class="rankItems"></div>
+	</div>
 </div>
-<div>
-	<input type = "submit" id = "goToAdminPage" value = "Proceed to Admin?"/>
+<div id="results_map_container">
+	<div id="results_map"></div>
 </div>
 {% endblock %}
 
