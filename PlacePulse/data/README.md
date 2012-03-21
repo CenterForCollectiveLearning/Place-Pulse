@@ -2,7 +2,9 @@ Place Pulse Data
 ============
 Old data from the previous version of Place Pulse. Pull it into mongo by running:
 
-    mongoimport -d placepulse -c locations_data data/mongo_dump.json 
+	mongoimport --host localhost -db placepulse --collection votes PlacePulse/data/votes_dump.json
+	mongoimport --host localhost -db placepulse --collection studies PlacePulse/data/studies_dump.json
+	mongoimport --host localhost -db placepulse --collection locations PlacePulse/data/locations_dump.json
 
 dbrip.py
 ----------
