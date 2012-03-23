@@ -76,7 +76,7 @@ function renderResults(resultsData) {
 		renderImgList(cityItem.find('.bottomRanked'),cityRanking.bottom);
 	}
 	
-	$('.rankItems').on('mouseover','img',null,function() {
+	$('.rankItems').on('click','img',null,function() {
 		var gmapsCoords = new google.maps.LatLng(this.mapCoords[0],this.mapCoords[1]);
 		map.panTo(gmapsCoords);
 		marker.setPosition(gmapsCoords);
@@ -85,5 +85,7 @@ function renderResults(resultsData) {
 }
 
 function getSVURL(lat,lng) {
-    return "http://maps.googleapis.com/maps/api/streetview?size=160x120&location=" + lat + "," + lng + "&sensor=false";
+	var imageWidth = $('.rankItems').width()/3 - 50;
+	var imageHeight = Math.round(imageWidth*0.75);
+    return "http://maps.googleapis.com/maps/api/streetview?size=" + imageWidth + "x" + imageHeight + "&location=" + lat + "," + lng + "&sensor=false";
 }
