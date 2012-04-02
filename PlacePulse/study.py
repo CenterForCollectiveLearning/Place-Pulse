@@ -15,7 +15,7 @@ from db import Database
 @study.route("/study/create/")
 def serve_create_study():
     if getLoggedInUser() is None:
-        return redirect("/login/")
+        return redirect(url_for('login.signin',next="/study/create"))
     return auto_template('study_create.html')
     
 @study.route('/study/create/',methods=['POST'])
