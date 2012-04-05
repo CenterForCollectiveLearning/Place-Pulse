@@ -3,8 +3,11 @@ import os
 from PlacePulse import app
 
 from flask import render_template,request,session,url_for
+from pymongo.objectid import ObjectId
 
 import json
+import re
+from unicodedata import normalize
 
 class Buckets:
     Unknown, Queue, Archive = range(3)
@@ -29,7 +32,11 @@ def getLoggedInUser():
     return session.get('userObj')
 
 def jsonifyResponse(obj):
-    resp = app.make_response(json.dumps(obj))
+    def default_handler(_obj):
+        if isinstance(_obj,ObjectId):
+            return str(_obj)
+        raise TypeError,"Unknown obj in JSON, %s, %s" % (type(_obj),_obj)
+    resp = app.make_response(json.dumps(obj,default=default_handler))
     resp.mimetype = 'application/json'
     return resp
 
@@ -38,3 +45,14 @@ def objifyPlace(place):
         'id' : str(place['_id']),
         'loc' : place['loc']
     }
+
+# Public domain snippet from http://flask.pocoo.org/snippets/5/
+_punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
+def slugify(text, delim=u'-'):
+    """Generates an slightly worse ASCII-only slug."""
+    result = []
+    for word in _punct_re.split(text.lower()):
+        word = normalize('NFKD', unicode(word)).encode('ascii', 'ignore')
+        if word:
+            result.append(word)
+    return unicode(delim.join(result))

@@ -2,16 +2,42 @@
 
 {% block header %}
 	<style>
+	.clear {
+		clear:both;
+	}
+	.rank {
+		font-weight:bold;
+	}
 	.rankings img {
 		padding:5px;
+		z-index:99;
 	}
 	.rankings img:hover {
 		cursor:pointer;
 	}
+	.rankedImage {
+		float:left;
+		width:230px;
+		height:173px;
+		
+		margin:3px;
+		
+		cursor:pointer;
+	}
+	.rankedImageStats {
+		visibility:hidden;
+		color:white;
+/*		float:left;*/
+	}
+	.rankedImage:hover .rankedImageStats {
+		visibility:visible;
+		opacity:0.7;
+		background-color:black;
+		position:absolute;
+	}
 	#results_map {
 	  width: 300px;
 	  height: 300px;
-
 	}
 	#results_map_container {
   	  /*FIXME: position:fixed may not work in IE7&8, need testing.*/
@@ -23,6 +49,10 @@
 	<link href="/static/css/bootstrap.css" rel="stylesheet">
 	<link href="/static/css/responsive.css" rel="stylesheet">
 	<link href="/static/css/main.css" rel="stylesheet">
+	
+	<script>
+	var STUDY_NAME = "{{ study_name }}";
+	</script>
 	
 {% endblock %}
 
@@ -40,13 +70,24 @@
 	
 		<script type="text/template" id="rankItemTemplate">
 			<div>
-				<h3><%= city_name %></h3>
+				<h2><a href="/rankings/<%= city_name_id %>"><%= city_name %></a></h2>
 				<div class="topRanked rankings">
 					<h4>Top:</h4>
 				</div>
+				<div class="clear"/>
 				<div class="bottomRanked rankings">
 					<h4>Bottom:</h4>
 				</div>
+				<div class="clear"/>
+			</div>
+		</script>
+		
+		<script type="text/template" id="rankedImageTemplate">
+			<div class="rankedImage" style="background-image: url(<% print(getSVURL(coords[0],coords[1],230,173)); %>)">
+				<span class="rankedImageStats">
+					<span>City rank: <span class="rank cityRank"><%= city_rank %></span></span>
+					<span>Site rank: <span class="rank siteRank"><%= site_rank %></span></span>
+				</span>
 			</div>
 		</script>
 {% endblock %}
@@ -65,13 +106,11 @@
 		      <b class="caret"></b>
 		    </a>
 		    <ul class="dropdown-menu">
-		      <li><a href="#">Which place looks safer?</a></li>
-		      <li><a href="#">Which place looks more upper-class?</a></li>
+				{% for question in study_questions %}
+			      <li><a href="/results/{{ question[1] }}">{{ question[0] }}</a></li>				
+				{% endfor %}
 		    </ul>
 		  </li>
-		<!-- <h1 class="questionName">
-
-		</h1> -->
 		<div class="rankItems"></div>
 	</div>
 </div>

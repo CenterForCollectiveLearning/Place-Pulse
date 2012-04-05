@@ -11,7 +11,7 @@ $(document).ready(function() {
 	loadScript();
 	$.ajax({
 		'type': 'GET',
-		'url': '/results_data',
+		'url': '/top_results_data/' + STUDY_NAME,
 		'dataType': 'json',
 		'success': renderResults
 	});
@@ -57,6 +57,7 @@ function renderResults(resultsData) {
 	$('.questionName').html(resultsData.question);
 	
 	var resultTemplate = _.template($('#rankItemTemplate').html());
+	var imageTemplate = _.template($('#rankedImageTemplate').html());
 	
 	for (var city in resultsData.ranking) {
 		var cityItem = $(resultTemplate(resultsData.ranking[city]));
@@ -67,8 +68,8 @@ function renderResults(resultsData) {
 		function renderImgList(appendTo,coordsList) {
 			for (var item in coordsList) {
 				var imgCoords = coordsList[item].coords;
-				var newImg = $('<img>').attr('src',getSVURL(imgCoords[0],imgCoords[1]));
-				$(appendTo).append(newImg);	
+				var newImg = $(imageTemplate(coordsList[item]));
+				$(appendTo).append(newImg);
 				newImg.get()[0].mapCoords = imgCoords;
 			}
 		}
@@ -76,7 +77,7 @@ function renderResults(resultsData) {
 		renderImgList(cityItem.find('.bottomRanked'),cityRanking.bottom);
 	}
 	
-	$('.rankItems').on('click','img',null,function() {
+	$('.rankItems').on('click','.rankedImage',null,function() {
 		var gmapsCoords = new google.maps.LatLng(this.mapCoords[0],this.mapCoords[1]);
 		map.panTo(gmapsCoords);
 		marker.setPosition(gmapsCoords);
@@ -84,8 +85,10 @@ function renderResults(resultsData) {
 	});
 }
 
-function getSVURL(lat,lng) {
-	var imageWidth = $('.rankItems').width()/3 - 50;
-	var imageHeight = Math.round(imageWidth*0.75);
+function getSVURL(lat,lng,imageWidth,imageHeight) {
+	if (!imageWidth)
+		imageWidth = $('.rankItems').width()/3 - 50;
+	if (!imageHeight)
+		imageHeight = Math.round(imageWidth*0.75);
     return "http://maps.googleapis.com/maps/api/streetview?size=" + imageWidth + "x" + imageHeight + "&location=" + lat + "," + lng + "&sensor=false";
 }

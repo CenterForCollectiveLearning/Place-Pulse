@@ -173,51 +173,61 @@ def get_location(location_id):
 	return "<img src='http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false'/>"
 
 #--------------------Results
+@study.route('/results/<studyName>/',methods = ['GET'])
+def showSpecificBigStudyResults(studyName):
+    return showBigStudyResults(studyName)
+
 @study.route('/results/',methods = ['GET'])
-def showBigStudyResults():
-    return auto_template('results.html')
+def showBigStudyResults(studyName='unique'):
+    # 'unique' is the default study
+    studyQuestions = [
+        ("Which place looks more unique?","unique"),
+        ("Which place looks safer?","safer"),
+        ("Which place looks more upper class?","upper_class"),
+        ("Which place looks more lively?","lively"),
+        ("Which place looks more modern?","modern"),
+        ("Which place looks more central?","central"),
+        ("Which place looks more groomed?","groomed")
+    ]
+    return auto_template('results.html', study_name=studyName, study_questions=studyQuestions)
     
-@study.route('/results_data/',methods = ['GET'])
-def getResultsData():
-    safestCityResults = {
-        'question': "Which place looks more unique?",
-        'ranking': [
-            {
-                'city_name': 'Sao Paulo',
-                'top': [{'coords': [-23.547865000000002, -46.675600000000031], 'type': 'streetview'}, {'coords': [-23.541809000000001, -46.642515000000003], 'type': 'streetview'}, {'coords': [-23.530771000000001, -46.651857000000007]}],
-                'bottom': [{'coords': [-23.600961999999999, -46.654426999999998], 'type': 'streetview'}, {'coords': [-23.566029, -46.613223000000005], 'type': 'streetview'}, {'coords': [-23.588011000000002, -46.668845000000033], 'type': 'streetview'}]
-            },
-            {
-                'city_name': 'New York City',
-                'top': [{'coords': [40.766919999999999, -73.898903000000018], 'type': 'streetview'}, {'coords': [40.799993999999998, -73.913370999999984], 'type': 'streetview'}, {'coords': [40.737164999999997, -73.885324999999966], 'type': 'streetview'}],
-                'bottom': [{'coords': [40.74297, -73.891733999999985], 'type': 'streetview'}, {'coords': [40.711815000000001, -73.807912999999985], 'type': 'streetview'}, {'coords': [40.687119000000003, -73.949285000000032], 'type': 'streetview'}]
-            },
-            {
-                'city_name': 'Los Angeles',
-                'top': [{'coords': [33.997357999999998, -118.28591], 'type': 'streetview'}, {'coords': [33.991506000000001, -118.39314000000002], 'type': 'streetview'}, {'coords': [34.019933999999999, -118.37815399999999], 'type': 'streetview'}],
-                'bottom': [{'coords': [33.939588999999998, -118.348253], 'type': 'streetview'}, {'coords': [33.983154999999996, -118.33376900000002], 'type': 'streetview'}, {'coords': [34.017209999999999, -118.27480800000001], 'type': 'streetview'}]
-            },
-            {
-                'city_name': 'Tokyo',
-                'top': [{'coords': [35.680777999999997, 139.71636599999999], 'type': 'streetview'}, {'coords': [35.63702, 139.74308799999994], 'type': 'streetview'}, {'coords': [35.676063999999997, 139.65205000000003], 'type': 'streetview'}],
-                'bottom': [{'coords': [35.703251999999999, 139.75068299999998], 'type': 'streetview'}, {'coords': [35.706812999999997, 139.77918699999998], 'type': 'streetview'}, {'coords': [35.727221999999998, 139.86986000000002], 'type': 'streetview'}]
-            },
-            {
-                'city_name': 'Mexico City',
-                'top': [{'coords': [19.424503999999999, -99.13759600000003], 'type': 'streetview'}, {'coords': [19.457988, -99.116128000000003], 'type': 'streetview'}, {'coords': [19.445329000000001, -99.147404999999992], 'type': 'streetview'}],
-                'bottom': [{'coords': [19.458265999999998, -99.133131999999989], 'type': 'streetview'}, {'coords': [19.414881000000001, -99.139445000000023], 'type': 'streetview'}, {'coords': [19.401679000000001, -99.021538000000021], 'type': 'streetview'}]
-            }
-        ]
-    }
-    return jsonifyResponse(safestCityResults)
+@study.route('/results_data/<studyName>/',methods = ['GET'])
+def getResultsData(studyName):
+    return jsonifyResponse(Database.getResultsForStudy(studyName))
+    
+@study.route('/top_results_data/<studyName>/',methods = ['GET'])
+def getTopResultsData(studyName):
+    studyResults = Database.getResultsForStudy(studyName)
+    # To save space, show only the top and bottom 3 for each city
+    for city in studyResults['ranking']:
+        city['top'] = city['places'][0:3]
+        city['bottom'] = city['places'][-3:]
+        del city['places']
+    return jsonifyResponse(studyResults)
+    
+@study.route('/rankings/<cityNameId>/',methods = ['GET'])
+def getCityResults(cityNameId):
+    return auto_template('city_results.html',city_name_id=cityNameId)
+    
+@study.route('/rankings_data/<cityNameId>/',methods = ['GET'])    
+def getCityResultsData(cityNameId):
+    mainStudyResults = [i for i in Database.results.find({'study_type': 'main_study'})]
+    cityResults = []
+    for results in mainStudyResults:
+        resultsForStudy = [i for i in results['ranking'] if i['city_name_id'] == cityNameId]
+        cityResults.append({
+            'question': results['question'],
+            'question_shortid': results['question_shortid'],
+            'ranking': resultsForStudy
+        })
+    return jsonifyResponse(cityResults)
 
-
-@study.route('/results/<study_id>/',methods = ['GET'])
-def showData(study_id):
-    L=""
-    for x in Database.votes.find({'study_id':study_id}):
-        leftStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['left'])['loc']))
-        rightStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['right'])['loc']))
-        L+=str(leftStuff)+","+str(rightStuff)+","+str(x['choice'])+","
-    L=L[:-1]
-    return auto_template('results.html',study_id=study_id, L=L)
+# @study.route('/results/<study_id>/',methods = ['GET'])
+# def showData(study_id):
+#     L=""
+#     for x in Database.votes.find({'study_id':study_id}):
+#         leftStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['left'])['loc']))
+#         rightStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['right'])['loc']))
+#         L+=str(leftStuff)+","+str(rightStuff)+","+str(x['choice'])+","
+#     L=L[:-1]
+#     return auto_template('results.html',study_id=study_id, L=L)

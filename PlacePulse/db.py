@@ -6,6 +6,15 @@ from pymongo.objectid import ObjectId
 from random import choice
 
 class database(object):
+#--------------------Results
+    def getResultsForStudy(self,studyName):
+        try:
+            return self.results.find_one({
+                'question_shortid': studyName
+            })
+        except:
+            return None
+
 #--------------------Studies
     def getStudy(self,study_id):
         try:
@@ -74,9 +83,9 @@ class database(object):
             return None
 
 #--------------------Locations
-    def getLocations(self,study_id):
+    def getLocations(self,study_id,limit=24):
         try:
-            return self.locations.find({'study_id': study_id}).limit(24)
+            return self.locations.find({'study_id': study_id}).limit(limit)
         except:
             return None
     
@@ -99,18 +108,22 @@ class database(object):
             return True
         except:
             return None
-    
-    @property
-    def votes(self):
-        return self.db.votes
-    
-    @property
-    def studies(self):
-        return self.db.studies
-        
+
     @property
     def locations(self):
         return self.db.locations
+
+    @property
+    def results(self):
+        return self.db.results
+
+    @property
+    def studies(self):
+        return self.db.studies
+
+    @property
+    def votes(self):
+        return self.db.votes
     
     @property
     def db(self):
