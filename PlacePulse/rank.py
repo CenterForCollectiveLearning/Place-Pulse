@@ -4,10 +4,11 @@ import sys
 import csv, random, operator, math, numpy
 from scipy.stats import norm
 from scipy.optimize import fmin_powell
+from scipy.optimize import fmin_ncg
 from collections import defaultdict
 from db import Database
 
-# TODO: load_from_db should specify study instead of random
+# TODO: load_from_db should specify study instead of random, e.g.
 #     if Database.getStudy(study_id) is None:
 #         return jsonifyResponse({
 #             'error': 'Study doesn\'t exist!'
@@ -37,7 +38,7 @@ def load_places_from_csv(filename):
     id_locations = {}
     places = csv.DictReader(open(filename, 'rb'), delimiter=',', quotechar='"')
     for place in places:
-        id_locations[int(place['id'])] = (float(place['lat']),float(place['lng']),str(place['id_city']),int(place['id_location']))
+        id_locations[place['id']] = (float(place['lat']),float(place['lng']),str(place['id_city']),int(place['id_location']))
     return id_locations
 
 def select_votes_from_csv(question, filename):
@@ -75,13 +76,17 @@ def calculate_max_likelihood_rank(images, votes_selected):
         elif vote['winner'] == '0':
             m[index_left, index_right] += 0.5
             m[index_right, index_left] += 0.5
+    
+    #test
+    m = test_matrix1()
 
     # log likelihood function
     def neg_log_likelihood(s, m):
+    	s = numpy.append(s, 0.)
         sum = 0.
-        for i in range(m.shape[0]):
-            for j in range(m.shape[1]):
-                x = s[i]- s[j]
+        for i in range(s.shape[0]):
+            for j in range(s.shape[0]):
+                x = s[i] - s[j]
                 y = 1.5976 * x * (1 + 0.04417 * x * x)
                 try: z = y - math.log(1 + math.exp(y))
                 except OverflowError: z = 0.
@@ -95,12 +100,26 @@ def calculate_max_likelihood_rank(images, votes_selected):
             return math.exp(y)/(1 + math.exp(y))
         except OverflowError:
             return 1.
+        
+    def gradient(s, m):
+        g = numpy.zeros(shape=(s.shape[0]))
+        for i in range(g.shape[0]):
+        	sum = 0
+        	for j in range(g.shape[0]):
+        		r1 = norm.pdf(s[i]- s[j])/norm_cdf(s[i]- s[j])
+        		if math.isinf(r1): r1 = 0.
+        		r2 = norm.pdf(s[j]- s[i])/norm_cdf(s[j]- s[i])
+        		if math.isinf(r2): r2 = 0.
+        		sum += m[i,j] * r1
+        		sum -= m[j,i] * r2
+        	g[i] = sum
+        return g
     
     def hessian(s, m):
-        h = numpy.zeros(shape=(len(s), len(s)))
+        s = numpy.append(s, 0.)
+        h = numpy.zeros(shape=(s.shape[0], s.shape[0]))
         h = numpy.matrix(h)
         for i in range(h.shape[0]):
-            h_diag = 0
             for k in range(i+1, h.shape[1]):
                 r1 = norm.pdf(s[i]- s[k])/norm_cdf(s[i]- s[k])
                 if math.isinf(r1): r1 = 0.
@@ -110,18 +129,22 @@ def calculate_max_likelihood_rank(images, votes_selected):
                 h[i,k] = temp
                 h[k,i] = temp
                 h[i,i] -= temp
-        return h
+                h[k,k] -= temp
+        return h[:-1,:-1]
     
     # find strength parameters that minimize log likelihood function
-    s0 = numpy.zeros(len(image_ids))
-    s = fmin_powell(neg_log_likelihood, s0, args=(m,), maxfun=1, maxiter=1, disp=True)
+    s0 = numpy.zeros(m.shape[0]-1)
+    s = fmin_powell(neg_log_likelihood, s0, args=(m,), disp=True)
+    s = fmin_ncg(neg_log_likelihood, s0, gradient, fhess=hessian, args=(m,))
 
     h = hessian(s, m)
     covar = numpy.linalg.inv(-h)
+    print covar
     
     # return strength rankings
     rankings = defaultdict(lambda: defaultdict(int))
-    for i in range(len(s)):
+    s = numpy.append(s, 0.)
+    for i in range(s.shape[0]):
         rankings[image_ids[i]] = s[i]
     return rankings
     
@@ -209,7 +232,7 @@ def output_ranking_file(final_rankings, FILENAME, id_locations=None):
     if id_locations != None:
         temp = "id","wr1","id_city","lat","lng","id_location"
         rankings.writerow(temp)
-        for id_place, wr1 in final_rankings_sorted.iteritems():
+        for id_place, wr1 in final_rankings.iteritems():
             temp = id_place,wr1,id_locations[id_place][2],id_locations[id_place][0],id_locations[id_place][1],id_locations[id_place][3]
             rankings.writerow(temp)
     else:
@@ -275,9 +298,7 @@ def output_corr_file(chart_values, FILENAME):
         temp = key,chart_values[key]['corr'],chart_values[key]['stddev']
         rankings.writerow(temp)
 
-def rank_csv():
-    votes_selected = load_from_db()
-    
+def rank_csv():    
     question = "safer"
     output_file = "data/"+question+".csv"
     places_csv = "data/places2.csv"
@@ -316,6 +337,42 @@ def rank_mongo():
     #Output Results to File
     output_ranking_file(final_rankings, output_file)
 
+def test_matrix1():
+	m = numpy.matrix([[0,.1,.1,.1,.1],[.1,0,.1,.1,.1],[.1,.1,0,.1,.1],[.1,.1,.1,0,.1],[.1,.1,.1,.1,0]])
+	m[0,1] += 5
+	m[1,0] += 4
+	m[0,2] += 3
+	m[0,3] += 5
+	m[0,4] += 6
+	m[1,2] += 4
+	m[1,3] += 6
+	m[1,4] += 3
+	m[2,3] += 5
+	m[2,4] += 4
+	m[3,4] += 2
+	return m
+
+def test_matrix2():
+	m = numpy.matrix([[0,.1,.1,.1,.1],[.1,0,.1,.1,.1],[.1,.1,0,.1,.1],[.1,.1,.1,0,.1],[.1,.1,.1,.1,0]])
+	m[0,1] += 50
+	m[1,0] += 40
+	m[0,2] += 30
+	m[0,3] += 50
+	m[0,4] += 60
+	m[1,2] += 40
+	m[1,3] += 60
+	m[1,4] += 30
+	m[2,3] += 50
+	m[2,4] += 40
+	m[3,4] += 20
+	return m
+
+	
+def test_basic():
+	m = numpy.matrix([[0,.1],[.1,0]])
+	m[0,1] += 1
+	m[1,0] += 1
+	return m
 
 if __name__ == '__main__':
-    sys.exit(rank_mongo())
+    sys.exit(rank_csv())
