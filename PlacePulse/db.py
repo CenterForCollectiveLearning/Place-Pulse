@@ -82,7 +82,7 @@ class database(object):
     
     def getLocation(self,location_id):
         try:
-            return self.locations.find({'_id': study_id})
+            return self.locations.find({'_id': location_id})
         except:
             return None
             
