@@ -86,9 +86,9 @@ class database(object):
         except:
             return None
             
-    def updateLocation(self,study_id,heading,pitch):
+    def updateLocation(self,location_id,heading,pitch):
         try:
-            self.locations.update( { '_id' : ObjectId(study_id) } , { '$set' : { 'heading' : heading, 'pitch' : pitch } } )
+            self.locations.update( { '_id' : ObjectId(location_id) } , { '$set' : { 'heading' : heading, 'pitch' : pitch } } )
             return True
         except:
             return None
