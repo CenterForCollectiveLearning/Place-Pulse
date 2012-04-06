@@ -80,7 +80,7 @@ class database(object):
         except:
             return None
     
-    def getLocation(self,study_id):
+    def getLocation(self,location_id):
         try:
             return self.locations.find({'_id': study_id})
         except:

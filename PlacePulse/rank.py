@@ -1,30 +1,37 @@
 #Phil Salesses 2/2/2012
 #Michael Wong 3/22/2012
-
+import sys
 import csv, random, operator, math, numpy
+from scipy.stats import norm
+from scipy.optimize import fmin_powell
 from collections import defaultdict
+from db import Database
 
-def pearson_corr(x, y):
-    assert len(x) == len(y)
-    n = len(x)
-    assert n > 0
-    avg_x = numpy.average(x)
-    avg_y = numpy.average(y)
-    diffprod = 0
-    xdiff2 = 0
-    ydiff2 = 0
-    for idx in range(n):
-        xdiff = x[idx] - avg_x
-        ydiff = y[idx] - avg_y
-        diffprod += xdiff * ydiff
-        xdiff2 += xdiff * xdiff
-        ydiff2 += ydiff * ydiff
-    return diffprod / math.sqrt(xdiff2 * ydiff2)
+# TODO: load_from_db should specify study instead of random
+#     if Database.getStudy(study_id) is None:
+#         return jsonifyResponse({
+#             'error': 'Study doesn\'t exist!'
+#         })
+
+def load_from_db():
+    study = Database.getRandomStudy()
+    study_id = study.get('_id')
     
-def split_list(a_list):
-    half = len(a_list)/2
-    return a_list[:half], a_list[half:]
-
+    # load votes from db
+    votesCursor = Database.getVotes(str(study_id))
+    votes = [vote for vote in votesCursor]
+    votes_selected = []
+    for vote in votes:
+		reformatted_vote = {}
+		reformatted_vote['id_left'] = vote.get('left')
+		reformatted_vote['id_right'] = vote.get('right')
+		if vote.get('choice') == 'left':
+			reformatted_vote['winner'] = vote.get('left')
+		elif vote.get('choice') == 'right':
+			reformatted_vote['winner'] = vote.get('right')
+		votes_selected.append(reformatted_vote)
+    return votes_selected
+    
 def load_places_from_csv(filename):
     #Load Places (id, lat, lon, id_city)
     id_locations = {}
@@ -44,11 +51,81 @@ def select_votes_from_csv(question, filename):
 def set_image_hash(votes_selected):
     images = {}
     for vote in votes_selected:
-        images[int(vote['id_left'])] = 1
-        images[int(vote['id_right'])] = 1
+        images[vote['id_left']] = 1
+        images[vote['id_right']] = 1
     return images
     
-def calculate_rank(id_locations, images, votes_selected):    
+def calculate_max_likelihood_rank(images, votes_selected):
+    # prepare lookup tables
+    image_ids = images.keys()
+    image_index_lookup = dict([(image_ids[i], i) for i in range(len(image_ids))])
+    
+    # make vote matrix
+    m = [[0.08]*len(image_ids)]*len(image_ids)
+    m = numpy.matrix(m)
+    for i in range(len(image_ids)):
+        m[i,i] =  0.
+    for vote in votes_selected:
+        index_left = image_index_lookup.get(vote['id_left'])
+        index_right = image_index_lookup.get(vote['id_right'])
+        if vote['winner'] == vote['id_left']:
+            m[index_left, index_right] += 1.
+        elif vote['winner'] == vote['id_right']:
+            m[index_right, index_left] += 1.
+        elif vote['winner'] == '0':
+            m[index_left, index_right] += 0.5
+            m[index_right, index_left] += 0.5
+
+    # log likelihood function
+    def neg_log_likelihood(s, m):
+        sum = 0.
+        for i in range(m.shape[0]):
+            for j in range(m.shape[1]):
+                x = s[i]- s[j]
+                y = 1.5976 * x * (1 + 0.04417 * x * x)
+                try: z = y - math.log(1 + math.exp(y))
+                except OverflowError: z = 0.
+                sum -= m[i,j] * z
+        return sum
+    
+    # normal dist cdf approximation
+    def norm_cdf(x):
+        y = 1.5976 * x * (1 + 0.04417 * x * x)
+        try:
+            return math.exp(y)/(1 + math.exp(y))
+        except OverflowError:
+            return 1.
+    
+    def hessian(s, m):
+        h = numpy.zeros(shape=(len(s), len(s)))
+        h = numpy.matrix(h)
+        for i in range(h.shape[0]):
+            h_diag = 0
+            for k in range(i+1, h.shape[1]):
+                r1 = norm.pdf(s[i]- s[k])/norm_cdf(s[i]- s[k])
+                if math.isinf(r1): r1 = 0.
+                r2 = norm.pdf(s[k]- s[i])/norm_cdf(s[k]- s[i])
+                if math.isinf(r2): r2 = 0.
+                temp = m[i,k] * r1 * (s[i] - s[k] + r1) + m[k,i] * r2 * (s[k] - s[i] + r2)
+                h[i,k] = temp
+                h[k,i] = temp
+                h[i,i] -= temp
+        return h
+    
+    # find strength parameters that minimize log likelihood function
+    s0 = numpy.zeros(len(image_ids))
+    s = fmin_powell(neg_log_likelihood, s0, args=(m,), maxfun=1, maxiter=1, disp=True)
+
+    h = hessian(s, m)
+    covar = numpy.linalg.inv(-h)
+    
+    # return strength rankings
+    rankings = defaultdict(lambda: defaultdict(int))
+    for i in range(len(s)):
+        rankings[image_ids[i]] = s[i]
+    return rankings
+    
+def calculate_rank(images, votes_selected):    
     temp_scores = defaultdict(lambda: defaultdict(float))
     for j in range(1,101):
         #Variables
@@ -74,8 +151,8 @@ def calculate_rank(id_locations, images, votes_selected):
         #Cycle through votes and set hashes
         for vote in votes_selected:
             #Is it one of the the selected images?
-            if selected_images.get(int(vote['id_left'])) is not None:
-                if selected_images.get(int(vote['id_right'])) is not None:
+            if selected_images.get(vote['id_left']) is not None:
+                if selected_images.get(vote['id_right']) is not None:
                     counter += 1
                     play[vote['id_left']] += 1
                     play[vote['id_right']] += 1
@@ -127,35 +204,62 @@ def calculate_rank(id_locations, images, votes_selected):
         final_rankings[key] = wr1
     return final_rankings
 
-def output_ranking_file(final_rankings_sorted, id_locations, FILENAME):
-    rankings = csv.writer(open(FILENAME, 'wb'), delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)        
-    temp = "id","wr1","id_city","lat","lng","id_location"
-    rankings.writerow(temp)
-    for id_place, wr1 in final_rankings_sorted.iteritems():
-        temp = id_place,wr1,id_locations[id_place][2],id_locations[id_place][0],id_locations[id_place][1],id_locations[id_place][3]
+def output_ranking_file(final_rankings, FILENAME, id_locations=None):
+    rankings = csv.writer(open(FILENAME, 'wb'), delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)       
+    if id_locations != None:
+        temp = "id","wr1","id_city","lat","lng","id_location"
         rankings.writerow(temp)
+        for id_place, wr1 in final_rankings_sorted.iteritems():
+            temp = id_place,wr1,id_locations[id_place][2],id_locations[id_place][0],id_locations[id_place][1],id_locations[id_place][3]
+            rankings.writerow(temp)
+    else:
+        temp = "id","score"
+        for id_place, score in final_rankings.iteritems():
+            temp = id_place, score
+            rankings.writerow(temp)
 
 # TODO: needs to be refactored before going to production
-def calculate_corr(id_locations, images, votes_selected):    	
-    chart_values = defaultdict(lambda: defaultdict(float))    
+def calculate_corr(images, votes_selected):
+    
+    def split_list(a_list):
+        half = len(a_list)/2
+        return a_list[:half], a_list[half:]
+        
+    def pearson_corr(x, y):
+        assert len(x) == len(y)
+        n = len(x)
+        assert n > 0
+        avg_x = numpy.average(x)
+        avg_y = numpy.average(y)
+        diffprod = 0
+        xdiff2 = 0
+        ydiff2 = 0
+        for idx in range(n):
+            xdiff = x[idx] - avg_x
+            ydiff = y[idx] - avg_y
+            diffprod += xdiff * ydiff
+            xdiff2 += xdiff * xdiff
+            ydiff2 += ydiff * ydiff
+        return diffprod / math.sqrt(xdiff2 * ydiff2)
+        
+    chart_values = defaultdict(lambda: defaultdict(float))
     for i in range (1,40):
         corr_values = []
         for j in range(1,101):
-            #Shuffle Votes
             random.shuffle(votes_selected)
             #Select 10% of votes
             votes_sample = random.sample(votes_selected,int(len(votes_selected) * i/100))
             votes_half1,votes_half2  = split_list(votes_sample)
     
-            final_rankings_half1 = calculate_rank(id_locations, images, votes_half1)
-            final_rankings_half2 = calculate_rank(id_locations, images, votes_half2)
+            final_rankings_half1 = calculate_rank(images, votes_half1)
+            final_rankings_half2 = calculate_rank(images, votes_half2)
             
             final_rankings_half1_array = []
             final_rankings_half2_array = []
             for key, value in final_rankings_half1.iteritems():
                 if key in final_rankings_half2 and not (final_rankings_half2[key] is None):
-                	final_rankings_half1_array.append(float(final_rankings_half1[key]))
-                	final_rankings_half2_array.append(float(final_rankings_half2[key])) 
+                    final_rankings_half1_array.append(float(final_rankings_half1[key]))
+                    final_rankings_half2_array.append(float(final_rankings_half2[key])) 
             corr_values.append(pearson_corr(final_rankings_half1_array,final_rankings_half2_array))
         chart_values[i]['corr'] = numpy.average(corr_values)
         chart_values[i]['stddev'] = numpy.std(corr_values)
@@ -171,15 +275,19 @@ def output_corr_file(chart_values, FILENAME):
         temp = key,chart_values[key]['corr'],chart_values[key]['stddev']
         rankings.writerow(temp)
 
-def main(argv=None):
-    QUESTION = "safer"
-    FILENAME = "data/" + str(QUESTION) + "1.csv"
-  
+def rank_csv():
+    votes_selected = load_from_db()
+    
+    question = "safer"
+    output_file = "data/"+question+".csv"
+    places_csv = "data/places2.csv"
+    votes_csv = "data/votes50.csv"
+
     #Load Places
-    id_locations = load_places_from_csv("data/places2.csv")
+    id_locations = load_places_from_csv(places_csv)
     
     #Generate list of approved votes based on input criteria
-    votes_selected = select_votes_from_csv(QUESTION, "data/votes.csv")
+    votes_selected = select_votes_from_csv(question, votes_csv)
     print str(len(votes_selected)) + " eligible votes"
 
     #Set Image Hash
@@ -187,11 +295,27 @@ def main(argv=None):
     print str(len(images)) + " images in total"
     
     #Rank all images
-    final_rankings = calculate_rank(id_locations, images, votes_selected)
+    final_rankings = calculate_max_likelihood_rank(images, votes_selected)
     
     #Output Results to File
-    output_ranking_file(final_rankings, id_locations, FILENAME)
+    output_ranking_file(final_rankings, output_file, id_locations)
+
+def rank_mongo():
+    votes_selected = load_from_db()
+    
+    output_file = "data/db.csv"
+    print str(len(votes_selected)) + " eligible votes"
+
+    #Set Image Hash
+    images = set_image_hash(votes_selected)
+    print str(len(images)) + " images in total"
+    
+    #Rank all images
+    final_rankings = calculate_max_likelihood_rank(images, votes_selected)
+    
+    #Output Results to File
+    output_ranking_file(final_rankings, output_file)
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    sys.exit(rank_mongo())
