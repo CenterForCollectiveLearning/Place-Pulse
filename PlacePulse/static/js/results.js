@@ -58,7 +58,8 @@ function prepGmapsIcons() {
 }
 
 function initGmaps() {
-	const loc = new google.maps.LatLng(-34.397, 150.644);
+	// FIXME: Have the coordinate set to a point within the dataset? For now, it's preset to bldg E-14.
+	const loc = new google.maps.LatLng(42.36050, -71.08737);
     gmaps_green = new google.maps.MarkerImage(
       '/static/img/marker-images/green.png',
       new google.maps.Size(16,26),
@@ -82,15 +83,14 @@ function initGmaps() {
     };
     map = new google.maps.Map($('#results_map').get()[0],mapOptions);
 	marker = new google.maps.Marker({
-      draggable: false,
-      raiseOnDrag: false,
-      icon: gmaps_green,
-      shadow: gmaps_shadow,
-      shape: gmaps_shape,
-      animation: google.maps.Animation.DROP,
-      map: map,
-      position: loc
-    });
+	      draggable: false,
+	      raiseOnDrag: false,
+	      icon: gmaps_green,
+	      shadow: gmaps_shadow,
+	      shape: gmaps_shape,
+	      animation: google.maps.Animation.DROP,
+	      map: map
+	    });
 	prepGmapsIcons();
 	if (typeof CITY_NAME != 'undefined')
 		fetchCityResults();
@@ -120,6 +120,8 @@ function renderCityResults(resultsData) {
 	var lowerRight = [-9999,-9999];
 	
 	var imageTemplate = _.template($('#appearRankedImageTemplate').html());
+	
+	$('.question').text(resultsData['question']);
 	for (var imgIdx in resultsData.ranking[0].places) {
 		var place = resultsData.ranking[0].places[imgIdx];
 		var newImg = $(imageTemplate(place));
@@ -128,13 +130,28 @@ function renderCityResults(resultsData) {
 		$('.resultsImgs').append(newImg);
 		
 		var newMarkerParams = markerParams;
-		newMarkerParams['icon'] = gmaps_icons[parseInt(Math.random()*gmaps_icons.length)];
+		var rank = parseFloat(imgIdx)/resultsData.ranking[0].places.length;
+		newMarkerParams['icon'] = gmaps_icons[parseInt(rank*gmaps_icons.length)];
 		newMarkerParams['position'] = new google.maps.LatLng(place.coords[0], place.coords[1]);
 		var marker = new google.maps.Marker(newMarkerParams);
 		
+		function attachMarkerEvent(marker_, img_) {
+			google.maps.event.addListener(marker_, 'click', function() {
+				$('.mapSelected').removeClass('mapSelected');
+				img_.addClass('mapSelected');
+                // Thanks, http://oncemade.com/animated-page-scroll-with-jquery/
+				// Make the destination 30px above the top of the image
+                var scrollDestination = img_.offset().top - 30;
+                $("html,body").stop();
+                $("html,body").animate({ scrollTop: scrollDestination-20}, 250);
+			});
+		}
+		
+		attachMarkerEvent(marker,newImg);
+		
+		// Keep updating bounding rect coords
 		upperLeft[0] = Math.min(upperLeft[0],place.coords[0]);
 		upperLeft[1] = Math.min(upperLeft[1],place.coords[1]);
-		
 		lowerRight[0] = Math.max(lowerRight[0],place.coords[0]);
 		lowerRight[1] = Math.max(lowerRight[1],place.coords[1]);		
 	}
@@ -145,6 +162,7 @@ function renderCityResults(resultsData) {
 		$(this).show();
 		
 	});
+	// Keep all points in bounding rect
 	map.fitBounds(new google.maps.LatLngBounds(new google.maps.LatLng(upperLeft[0],upperLeft[1]),new google.maps.LatLng(lowerRight[0],lowerRight[1])));
 }
 

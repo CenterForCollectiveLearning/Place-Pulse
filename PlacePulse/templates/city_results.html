@@ -5,9 +5,12 @@
 	{{ super() }}	
 	
 	<style>
-		#results_map {
+/*		#results_map {
 			width:1024px;
 			height:400px;
+		}*/
+		.mapSelected {
+			border: 5px solid yellow;
 		}
 		.backgroundHolder {
 			width:230px;
@@ -35,14 +38,24 @@
 	
 	<header class="jumbotron subhead">
 	    <h1>{{ city_name_id }}</h1>
-	    <p class="lead">{{ question }}</p>
+	    <p class="lead question"></p>
 	</header>
 
 	<div class="row">
-		<div class="span12">
+		<!-- <div class="span12">
 			<div id="results_map"></div>
+		</div> -->
+		<div class="span4">
+			<div class="sidebar-nav">
+		  		<div id="results_map_container">
+		  			<div>Click on an image to see its location on the map.</div>
+		  			<div id="results_map"></div>
+		  		</div>
+			</div>
 		</div>
-		<div class="span12 resultsImgs"/>
+		
+		<div class="span8 resultsImgs"/>
+		
 	</div>
 	
 	<script type="text/template" id="appearRankedImageTemplate">

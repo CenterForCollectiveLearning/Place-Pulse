@@ -3,18 +3,7 @@
 {% block header %}
 
 	{{ super() }}
-	
-	<style>
-	#results_map {
-	  width: 300px;
-	  height: 300px;
-	}
-	#results_map_container {
-  	  /*FIXME: position:fixed may not work in IE7&8, need testing.*/
-  	  position:fixed;
-	}
-	</style>
-	
+
 {% endblock %}
 
 {% block footer %}
@@ -65,7 +54,6 @@
   			<div>Click on an image to see its location on the map.</div>
   			<div id="results_map"></div>
   		</div>
-		
 	</div>
 	
 	<div class="span8">
