@@ -1,40 +1,10 @@
-{% extends "base.html" %}
+{% extends "base_results.html" %}
 
 {% block header %}
+
+	{{ super() }}
+	
 	<style>
-	.clear {
-		clear:both;
-	}
-	.rank {
-		font-weight:bold;
-	}
-	.rankings img {
-		padding:5px;
-		z-index:99;
-	}
-	.rankings img:hover {
-		cursor:pointer;
-	}
-	.rankedImage {
-		float:left;
-		width:230px;
-		height:173px;
-		
-		margin:3px;
-		
-		cursor:pointer;
-	}
-	.rankedImageStats {
-		visibility:hidden;
-		color:white;
-/*		float:left;*/
-	}
-	.rankedImage:hover .rankedImageStats {
-		visibility:visible;
-		opacity:0.7;
-		background-color:black;
-		position:absolute;
-	}
 	#results_map {
 	  width: 300px;
 	  height: 300px;
@@ -42,35 +12,18 @@
 	#results_map_container {
   	  /*FIXME: position:fixed may not work in IE7&8, need testing.*/
   	  position:fixed;
-  	  bottom:30%;
-  	  right:3%;
 	}
 	</style>
-	<link href="/static/css/bootstrap.css" rel="stylesheet">
-	<link href="/static/css/responsive.css" rel="stylesheet">
-	<link href="/static/css/main.css" rel="stylesheet">
-	
-	<script>
-	var STUDY_NAME = "{{ study_name }}";
-	</script>
 	
 {% endblock %}
 
-{% block nav %}
-    {% set active_page = "results" %}
-    {% include 'nav.html' %}
-{% endblock %}
-
-
-{% block footer %}	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="/static/js/lib/underscore-min.js"></script>
-	<script src="/static/js/bootstrap-dropdown.js"></script>
+{% block footer %}
+	{{ super() }}
 	<script src="/static/js/results.js"></script>
 	
 		<script type="text/template" id="rankItemTemplate">
 			<div>
-				<h2><a href="/rankings/<%= city_name_id %>"><%= city_name %></a></h2>
+				<h2><a href="/rankings/{{ study_name }}/<%= city_name_id %>"><%= city_name %></a></h2>
 				<div class="topRanked rankings">
 					<h4>Top:</h4>
 				</div>
@@ -99,24 +52,25 @@
 </header>
 
 <div class="row">
-	<div>
-		<li class="dropdown" id="menu1">
-		    <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
-		      <h1 class="questionName">Dropdown</h1>
-		      <b class="caret"></b>
-		    </a>
-		    <ul class="dropdown-menu">
-				{% for question in study_questions %}
-			      <li><a href="/results/{{ question[1] }}">{{ question[0] }}</a></li>				
-				{% endfor %}
-		    </ul>
-		  </li>
+	<div class="span4">
+	    <div class="well sidebar-nav">
+	      <ul class="nav nav-list">
+	        <li class="nav-header">Questions Under Study</li>
+			{% for question in study_questions %}
+		      <li {% if study_name == question[1] %} class="active" {% endif %}><a href="/results/{{ question[1] }}"><i class="icon-plane"></i>{{ question[0] }}</a></li>				
+			{% endfor %}
+	      </ul>		  
+	    </div><!--/.well -->
+  		<div id="results_map_container">
+  			<div>Click on an image to see its location on the map.</div>
+  			<div id="results_map"></div>
+  		</div>
+		
+	</div>
+	
+	<div class="span8">
 		<div class="rankItems"></div>
 	</div>
-</div>
-<div id="results_map_container">
-	<div>Click on an image to see its location on the map.</div>
-	<div id="results_map"></div>
 </div>
 {% endblock %}
 

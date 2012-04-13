@@ -1,0 +1,63 @@
+{% extends "base_results.html" %}
+
+{% block header %}
+
+	{{ super() }}	
+	
+	<style>
+		#results_map {
+			width:1024px;
+			height:400px;
+		}
+		.backgroundHolder {
+			width:230px;
+			height:137px;
+		}
+		.rankedImage {
+			width:230px;
+			height:137px;
+			float:left;
+		}
+		.rankedImageUnappeared {
+			visibility:hidden;
+		}
+
+	</style>
+	
+	<script>
+		const CITY_NAME = '{{ city_name_id }}';
+	</script>
+
+{% endblock %}
+
+{% block body %}
+
+	
+	<header class="jumbotron subhead">
+	    <h1>{{ city_name_id }}</h1>
+	    <p class="lead">{{ question }}</p>
+	</header>
+
+	<div class="row">
+		<div class="span12">
+			<div id="results_map"></div>
+		</div>
+		<div class="span12 resultsImgs"/>
+	</div>
+	
+	<script type="text/template" id="appearRankedImageTemplate">
+	<div class="rankedImage rankedImageUnappeared">
+			<span class="rankedImageStats">
+				<span>City rank: <span class="rank cityRank"><%= city_rank %></span></span>
+				<span>Site rank: <span class="rank siteRank"><%= site_rank %></span></span>
+			</span>
+	</div>
+	</script>
+
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	<script src="/static/js/lib/jquery.appear-1.1.1.min.js"></script>
+	<script src="/static/js/results.js"></script>
+{% endblock %}

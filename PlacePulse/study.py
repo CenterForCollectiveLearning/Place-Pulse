@@ -201,7 +201,18 @@ def showBigStudyResults(studyName='unique'):
 @study.route('/results_data/<studyName>/',methods = ['GET'])
 def getResultsData(studyName):
     return jsonifyResponse(Database.getResultsForStudy(studyName))
-    
+
+@study.route('/city_results_data/<studyName>/<cityName>/',methods = ['GET'])
+def getCityResultsData(studyName,cityName):
+    studyResults = Database.getResultsForStudy(studyName)
+    cityResults = [i for i in studyResults['ranking'] if i['city_name_id'] == cityName]
+    retObj = {
+            'question': studyResults['question'],
+            'question_shortid': studyResults['question_shortid'],
+            'ranking': cityResults
+    }
+    return jsonifyResponse(retObj)
+
 @study.route('/top_results_data/<studyName>/',methods = ['GET'])
 def getTopResultsData(studyName):
     studyResults = Database.getResultsForStudy(studyName)
@@ -212,22 +223,22 @@ def getTopResultsData(studyName):
         del city['places']
     return jsonifyResponse(studyResults)
     
-@study.route('/rankings/<cityNameId>/',methods = ['GET'])
-def getCityResults(cityNameId):
-    return auto_template('city_results.html',city_name_id=cityNameId)
+@study.route('/rankings/<studyName>/<cityNameId>/',methods = ['GET'])
+def getCityResults(cityNameId,studyName):
+    return auto_template('city_results.html',city_name_id=cityNameId, study_name=studyName)
     
-@study.route('/rankings_data/<cityNameId>/',methods = ['GET'])    
-def getCityResultsData(cityNameId):
-    mainStudyResults = [i for i in Database.results.find({'study_type': 'main_study'})]
-    cityResults = []
-    for results in mainStudyResults:
-        resultsForStudy = [i for i in results['ranking'] if i['city_name_id'] == cityNameId]
-        cityResults.append({
-            'question': results['question'],
-            'question_shortid': results['question_shortid'],
-            'ranking': resultsForStudy
-        })
-    return jsonifyResponse(cityResults)
+# @study.route('/rankings_data/<cityNameId>/',methods = ['GET'])    
+# def getCityResultsData(cityNameId):
+#     mainStudyResults = [i for i in Database.results.find({'study_type': 'main_study'})]
+#     cityResults = []
+#     for results in mainStudyResults:
+#         resultsForStudy = [i for i in results['ranking'] if i['city_name_id'] == cityNameId]
+#         cityResults.append({
+#             'question': results['question'],
+#             'question_shortid': results['question_shortid'],
+#             'ranking': resultsForStudy
+#         })
+#     return jsonifyResponse(cityResults)
 
 # @study.route('/results/<study_id>/',methods = ['GET'])
 # def showData(study_id):

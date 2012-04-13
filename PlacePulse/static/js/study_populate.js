@@ -270,7 +270,6 @@ function findGridBox(lat,lng) {
 
 function refreshMap(lat,lng)
 {
-
 	var marker = new google.maps.Marker({
       draggable: true,
       raiseOnDrag: false,

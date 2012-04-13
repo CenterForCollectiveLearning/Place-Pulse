@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block nav %}
+    {% set active_page = "results" %}
+    {% include 'nav.html' %}
+{% endblock %}
+
+{% block header %}
+	<script>
+	const STUDY_NAME = "{{ study_name }}";
+	</script>
+
+	<style>
+		.clear {
+			clear:both;
+		}
+		.rank {
+			font-weight:bold;
+		}
+		.rankings img {
+			padding:5px;
+			z-index:99;
+		}
+		.rankings img:hover {
+			cursor:pointer;
+		}
+		.rankedImage {
+			float:left;
+			width:230px;
+			height:173px;
+		
+			margin:3px;
+		
+			cursor:pointer;
+		
+		    border: 1px solid #ddd;
+		    -webkit-border-radius: 4px;
+		    -moz-border-radius: 4px;
+		    border-radius: 4px;
+		    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+		    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+		    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+		
+		}
+		.rankedImageStats {
+			visibility:hidden;
+			color:white;
+	/*		float:left;*/
+		}
+		.rankedImage:hover .rankedImageStats {
+			visibility:visible;
+			opacity:0.7;
+			background-color:black;
+			position:absolute;
+		}
+	</style>
+	<link href="/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/static/css/responsive.css" rel="stylesheet">
+	<link href="/static/css/main.css" rel="stylesheet">
+	
+{% endblock %}
+
+{% block footer %}	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/static/js/lib/underscore-min.js"></script>
+	<script src="/static/js/bootstrap-dropdown.js"></script>
+{% endblock %}
