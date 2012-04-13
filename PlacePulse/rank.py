@@ -56,7 +56,7 @@ def set_image_hash(votes_selected):
         images[vote['id_right']] = 1
     return images
     
-def calculate_max_likelihood_rank(images, votes_selected):
+def calculate_max_likelihood(images, votes_selected):
     # prepare lookup tables
     image_ids = images.keys()
     image_index_lookup = dict([(image_ids[i], i) for i in range(len(image_ids))])
@@ -78,7 +78,7 @@ def calculate_max_likelihood_rank(images, votes_selected):
             m[index_right, index_left] += 0.5
     
     #test
-    m = test_matrix1()
+    #m = test_matrix1()
 
     # log likelihood function
     def neg_log_likelihood(s, m):
@@ -134,7 +134,7 @@ def calculate_max_likelihood_rank(images, votes_selected):
     
     # find strength parameters that minimize log likelihood function
     s0 = numpy.zeros(m.shape[0]-1)
-    s = fmin_powell(neg_log_likelihood, s0, args=(m,), disp=True)
+    #s = fmin_powell(neg_log_likelihood, s0, args=(m,), disp=True)
     s = fmin_ncg(neg_log_likelihood, s0, gradient, fhess=hessian, args=(m,))
 
     h = hessian(s, m)
@@ -147,8 +147,12 @@ def calculate_max_likelihood_rank(images, votes_selected):
     for i in range(s.shape[0]):
         rankings[image_ids[i]] = s[i]
     return rankings
-    
-def calculate_rank(images, votes_selected):    
+
+# TODO: implement elo
+def calculate_elo(images, votes_selected):
+	pass
+   
+def calculate_win_loss(images, votes_selected):    
     temp_scores = defaultdict(lambda: defaultdict(float))
     for j in range(1,101):
         #Variables
@@ -241,7 +245,6 @@ def output_ranking_file(final_rankings, FILENAME, id_locations=None):
             temp = id_place, score
             rankings.writerow(temp)
 
-# TODO: needs to be refactored before going to production
 def calculate_corr(images, votes_selected):
     
     def split_list(a_list):
@@ -302,7 +305,7 @@ def rank_csv():
     question = "safer"
     output_file = "data/"+question+".csv"
     places_csv = "data/places2.csv"
-    votes_csv = "data/votes50.csv"
+    votes_csv = "data/votes200.csv"
 
     #Load Places
     id_locations = load_places_from_csv(places_csv)
@@ -316,7 +319,7 @@ def rank_csv():
     print str(len(images)) + " images in total"
     
     #Rank all images
-    final_rankings = calculate_max_likelihood_rank(images, votes_selected)
+    final_rankings = calculate_max_likelihood(images, votes_selected)
     
     #Output Results to File
     output_ranking_file(final_rankings, output_file, id_locations)
@@ -332,7 +335,7 @@ def rank_mongo():
     print str(len(images)) + " images in total"
     
     #Rank all images
-    final_rankings = calculate_max_likelihood_rank(images, votes_selected)
+    final_rankings = calculate_max_likelihood(images, votes_selected)
     
     #Output Results to File
     output_ranking_file(final_rankings, output_file)
@@ -367,7 +370,6 @@ def test_matrix2():
 	m[3,4] += 20
 	return m
 
-	
 def test_basic():
 	m = numpy.matrix([[0,.1],[.1,0]])
 	m[0,1] += 1
