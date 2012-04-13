@@ -9,16 +9,32 @@ var completed = 0;
 var virgin = 0;
 var pointsToAdd = 100;
 var studyID = ''
+var totalPoints=0;
+var goodHits=0;
 var waitingForFinish = false;
 var green;
 var shadow;
 var shape;
+var dataRes;
+var locDist;
+var maxHitsPerBox=5;
+var maxRows;
+var maxCols;
+var colDiff;
+var rowDiff;
+var counter=0;
+var hitsInGrid=0;
+var countCalls=0;
+var countReturns=0;
+var progressBarMax=0;
 
-function startPopulatingStudy(_studyID, polygonStr) {
+function startPopulatingStudy(_studyID, polygonStr, dataResolution, locDistribution) {
     studyID = _studyID;
     pointsToAdd = 100;
+    progressBarMax=pointsToAdd;
     extendGmaps();
-    
+    dataRes = parseInt(dataResolution);
+    locDist = locDistribution;
     studyPolygon = [];
     var polyArray = polygonStr.split(',');
     // polygonStr is formatted like x1,y1,x2,y2, etc...
@@ -30,11 +46,12 @@ function startPopulatingStudy(_studyID, polygonStr) {
     console.log(studyPolygon);
     
     sv = new google.maps.StreetViewService(); //Google Street View Service
-
+    
 	studyArea = {name: "studyArea", polygon: studyPolygon, TLLat: null, TLLng: null, BRLat: null, BRLng: null};
 	//Calculate Bounding box for fetched city
-	calcBoundingBox();
-	newPoint();
+    calcBoundingBox();
+    pickPoints();
+
 }
 function calcBoundingBox() 
 {
@@ -49,32 +66,90 @@ function calcBoundingBox()
 	studyArea.TLLng = Math.min.apply(Math, arrayLng);
 	studyArea.BRLat = Math.min.apply(Math, arrayLat);
 	studyArea.BRLng = Math.max.apply(Math, arrayLng);
-}
-function newPoint()
-{
-	guessPoint();
-	checkPoly();
-	sv.getPanoramaByLocation(randomPoint, 50, processSVData);
-}
-function guessPoint() 
-{
-   	var lat = Math.random() * (studyArea.TLLat - studyArea.BRLat) + studyArea.BRLat;
-	var lng = Math.random() * (studyArea.BRLng - studyArea.TLLng) + studyArea.TLLng;
-	randomPoint = new google.maps.LatLng(lat, lng);
-}
-function checkPoly()
-{
-    polygon = new google.maps.Polygon({
+	if(locDist=='randomly') {
+		maxRows=0;
+		maxCols=0;
+		colDiff=studyArea.BRLng-studyArea.TLLng;
+		rowDiff=studyArea.TLLat-studyArea.BRLat;
+	}
+	else {
+		var boundingBox =[]
+		boundingBox.push(new google.maps.LatLng(studyArea.TLLat,studyArea.TLLng));
+		boundingBox.push(new google.maps.LatLng(studyArea.TLLat,studyArea.BRLng));
+		boundingBox.push(new google.maps.LatLng(studyArea.BRLat,studyArea.BRLng));
+		boundingBox.push(new google.maps.LatLng(studyArea.BRLat,studyArea.TLLng));
+		var area = google.maps.geometry.spherical.computeArea(boundingBox);
+		var h = studyArea.TLLat-studyArea.BRLat;
+		var l = studyArea.BRLng-studyArea.TLLng;
+		var c = Math.pow(area/(h*l),.5);
+		maxRows = Math.round(c*h/dataRes/2.0);
+		maxCols = Math.round(c*l/dataRes/2.0);
+		rowDiff = h/maxRows;
+		colDiff = l/maxCols;
+	}
+
+	polygon = new google.maps.Polygon({
 		paths: studyArea.polygon,        
 		strokeWeight: 2,
         strokeOpacity: 1,
         strokeColor: '#4aea39',
         fillColor: '#4aea39'
-    });
-	while(!polygon.containsLatLng(randomPoint))
-	{
-		guessPoint();
+        });
+        pointsToAdd = Math.round(google.maps.geometry.spherical.computeArea(studyArea.polygon)/Math.pow(dataRes*2,2));
+}
+
+
+function pickPoints() {
+    if(locDist=='randomly') {
+	for(var i=0;i<pointsToAdd*5;i++)
+		newPoint(0,0);
+    }
+    else {
+	    for(var r=0;r<maxRows;r++) {
+			for(var c=0;c<maxCols;c++) {
+					newPoint(r,c);
+			}
+	    }
+    	progressBarMax=countCalls;
+    }
+}
+
+function newPoint(r,c)
+{
+	var point = guessPoint(r,c);
+	point = checkPoly(point,r,c);
+	if(point!=false){
+		++countCalls;
+		sv.getPanoramaByLocation(point, 50, processSVData);
 	}
+	
+
+}
+function guessPoint(row,col) 
+{
+	if(locDist=='evenly') {
+		var lat = rowDiff*.5+studyArea.TLLat-rowDiff*(row+1.0);
+		var lng = colDiff*.5+studyArea.TLLng+colDiff*(col);
+	}
+	else {
+		var lat = Math.random()*rowDiff+studyArea.TLLat-rowDiff*(row+1.0);
+		var lng = Math.random()*colDiff+studyArea.TLLng+colDiff*(col);
+	}
+	return new google.maps.LatLng(lat, lng);
+
+}
+function checkPoly(point,r,c)
+{
+	var p = new google.maps.LatLng(point.lat(),point.lng());
+	var count=0;
+	while(!polygon.containsLatLng(p) && count<2)
+	{	
+		p = guessPoint(r,c);
+		++count;
+	}
+	if(count>=2)
+		return false
+	return p;
 }
 function plot()
 {
@@ -111,9 +186,16 @@ function plot()
     };
 }
 function processSVData(data, status)
-{
+{	
+	++countReturns;
+	if((goodHits+1)*12.5<totalPoints && locDist=='randomly') {
+		//alert("Bad Polygon");
+	} 
+	++totalPoints;
 	if (status == google.maps.StreetViewStatus.OK)
 	{
+
+		++goodHits;
 		if(virgin==0)
 		{
 			plot();
@@ -121,30 +203,32 @@ function processSVData(data, status)
 		}
 		if(completed < pointsToAdd)
 		{
-			updateDB(data.location.latLng.lat(), data.location.latLng.lng());
+			var lat = data.location.latLng.lat();
+			var lng = data.location.latLng.lng();
+			refreshMap(lat,lng);
+			updateDB(lat,lng);
 		}
-        else
-        {
-            // Only call /study/finish_populate once
-            if (waitingForFinish) return;
 
-            $.ajax({
-                dataType: 'json',
-                url: "/study/finish_populate/" + studyID + '/',
-                type: "POST",
-                data: {
-                    'study_id': studyID
-                },
-                success: function(e) {
-                    window.location = "/study/curate/" + studyID;
-                }
-            });
-            
-            waitingForFinish = true;
-        }
 	}
-	newPoint();
+	if(countReturns==countCalls) {
+		endStudyPopulation();
+	}
 }
+
+function endStudyPopulation() {
+		    $.ajax({
+		        dataType: 'json',
+		        url: "/study/finish_populate/" + studyID + '/',
+		        type: "POST",
+		        data: {
+		            'study_id': studyID
+		        },
+		        success: function(e) {
+		            window.location = "/study/curate/" + studyID;
+		        }
+		    });
+}
+
 function updateDB(lat,lng)
 {
 	console.log('updateDB: ' + completed)
@@ -158,24 +242,35 @@ function updateDB(lat,lng)
 		success: function(result) {
 			if(result.success)
 			{
+			
 			    console.log(completed + ' places sent.');
 				completed++;
 				if(completed<=pointsToAdd)
 				{
 					refreshMap(lat,lng);
 				}
+				else {
+					endStudyPopulation();
+				}
+
 			}
 		},
 		error: function(data){
 			//alert(data.responseText);
 		},
 		complete: function(data){
-			newPoint();
 		}
 	});
+
 }
+
+function findGridBox(lat,lng) {
+	return [Math.floor((studyArea.TLLat-lat)/rowDiff),Math.floor((lng-studyArea.TLLng)/colDiff)]
+}
+
 function refreshMap(lat,lng)
 {
+
 	var marker = new google.maps.Marker({
       draggable: true,
       raiseOnDrag: false,
@@ -186,7 +281,7 @@ function refreshMap(lat,lng)
       map: map,
       position: new google.maps.LatLng(lat, lng)
     });
-	$("#progress_bar").css("width",completed/pointsToAdd*100 + "%");
+	$("#progress_bar").css("width",countReturns/progressBarMax*100 + "%");
 }
 
 // Gmaps API extension
@@ -248,6 +343,9 @@ function extendGmaps() {
     }
 }
 
+function generateGrid() {
+	
+}
 // Array max/min monkeypatching
 // JavaScript Document
 Array.max = function( array ){

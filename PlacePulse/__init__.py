@@ -29,6 +29,7 @@ app.register_module(study)
 
 app.secret_key = os.environ['COOKIE_SECRET_KEY']
 
+
 @app.route("/")
 def main():
 	studyObj = Database.getRandomStudy()
