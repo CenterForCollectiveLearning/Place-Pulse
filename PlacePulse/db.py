@@ -102,6 +102,14 @@ class database(object):
         except:
             return None
     
+    def updateLocationScore(self,location_id,score):
+        try:
+            self.locations.update( { '_id' : ObjectId(location_id) } , { '$set' : { 'score' : score } } )
+            return True
+        except:
+            return None
+    
+    
     def deleteLocation(self,location_id):
         try:
             self.locations.remove( { '_id' : ObjectId(location_id) })

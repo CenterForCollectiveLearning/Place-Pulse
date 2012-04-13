@@ -14,11 +14,8 @@ from db import Database
 #             'error': 'Study doesn\'t exist!'
 #         })
 
-def load_from_db():
-    study = Database.getRandomStudy()
-    study_id = study.get('_id')
-    
-    # load votes from db
+def load_from_db(study_id):
+	# load votes from db
     votesCursor = Database.getVotes(str(study_id))
     votes = [vote for vote in votesCursor]
     votes_selected = []
@@ -62,7 +59,7 @@ def calculate_max_likelihood(images, votes_selected):
     image_index_lookup = dict([(image_ids[i], i) for i in range(len(image_ids))])
     
     # make vote matrix
-    m = [[0.08]*len(image_ids)]*len(image_ids)
+    m = [[0.2]*len(image_ids)]*len(image_ids)
     m = numpy.matrix(m)
     for i in range(len(image_ids)):
         m[i,i] =  0.
@@ -139,6 +136,7 @@ def calculate_max_likelihood(images, votes_selected):
 
     h = hessian(s, m)
     covar = numpy.linalg.inv(-h)
+    print "covariance matrix:" 
     print covar
     
     # return strength rankings
@@ -301,6 +299,13 @@ def output_corr_file(chart_values, FILENAME):
         temp = key,chart_values[key]['corr'],chart_values[key]['stddev']
         rankings.writerow(temp)
 
+def update_mongo_score(final_rankings):
+	for location_id, score in final_rankings.iteritems():
+		print location_id
+		if not Database.updateLocationScore(location_id,score):
+		 	print "Could not update location score for %s" % location_id
+	return
+
 def rank_csv():    
     question = "safer"
     output_file = "data/"+question+".csv"
@@ -325,7 +330,11 @@ def rank_csv():
     output_ranking_file(final_rankings, output_file, id_locations)
 
 def rank_mongo():
-    votes_selected = load_from_db()
+    study = Database.getRandomStudy()
+    study_id = study.get('_id')
+    print "processing study: %s" % study_id
+
+    votes_selected = load_from_db(study_id)
     
     output_file = "data/db.csv"
     print str(len(votes_selected)) + " eligible votes"
@@ -337,8 +346,8 @@ def rank_mongo():
     #Rank all images
     final_rankings = calculate_max_likelihood(images, votes_selected)
     
-    #Output Results to File
-    output_ranking_file(final_rankings, output_file)
+    #Load Results to db
+    update_mongo_score(final_rankings)
 
 def test_matrix1():
 	m = numpy.matrix([[0,.1,.1,.1,.1],[.1,0,.1,.1,.1],[.1,.1,0,.1,.1],[.1,.1,.1,0,.1],[.1,.1,.1,.1,0]])
@@ -377,4 +386,4 @@ def test_basic():
 	return m
 
 if __name__ == '__main__':
-    sys.exit(rank_csv())
+    sys.exit(rank_mongo())
