@@ -19,7 +19,7 @@ $(document).ready(function() {
 	if (typeof CITY_NAME == 'undefined') {
 		$.ajax({
 			'type': 'GET',
-			'url': '/top_results_data/' + STUDY_NAME,
+			'url': '/top_results_data/' + STUDY_NAME + '/',
 			'dataType': 'json',
 			'success': renderStudyResults
 		});
@@ -99,7 +99,7 @@ function initGmaps() {
 function fetchCityResults() {
 	$.ajax({
 		'type': 'GET',
-		'url': '/city_results_data/' + STUDY_NAME + '/' + CITY_NAME,
+		'url': '/city_results_data/' + STUDY_NAME + '/' + CITY_NAME + '/',
 		'dataType': 'json',
 		'success': renderCityResults
 	});	
@@ -107,7 +107,7 @@ function fetchCityResults() {
 
 function renderCityResults(resultsData) {
 	var markerParams = {
-      draggable: true,
+      draggable: false,
       raiseOnDrag: false,
       icon: gmaps_green,
       // shadow: gmaps_green,

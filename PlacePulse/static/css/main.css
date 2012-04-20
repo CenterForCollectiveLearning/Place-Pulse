@@ -128,6 +128,11 @@ body {
 .vote {
   text-align: center;
 }
+.voteEquals {
+	font-size:48pt;
+	padding-bottom:30px;
+	text-align:center;
+}
 .report {
   margin-top: -30px;
   cursor: pointer;

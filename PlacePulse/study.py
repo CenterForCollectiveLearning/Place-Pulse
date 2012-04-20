@@ -150,6 +150,7 @@ def post_new_vote(study_id):
         'choice' : request.form['choice'],
         'timestamp': datetime.now()
     })
+    print "saving choice: %s" % request.form['choice']
     return jsonifyResponse({
         'success': True
     })

@@ -35,12 +35,6 @@
 
 {% block body %}
 
-	
-	<header class="jumbotron subhead">
-	    <h1>{{ city_name_id }}</h1>
-	    <p class="lead question"></p>
-	</header>
-
 	<div class="row">
 		<!-- <div class="span12">
 			<div id="results_map"></div>
@@ -48,6 +42,11 @@
 		<div class="span4">
 			<div class="sidebar-nav">
 		  		<div id="results_map_container">
+					<header class="jumbotron subhead">
+					    <h1>{{ city_name_id }}</h1>
+					    <p class="lead question"></p>
+					</header>
+					
 		  			<div>Click on an image to see its location on the map.</div>
 		  			<div id="results_map"></div>
 		  		</div>
