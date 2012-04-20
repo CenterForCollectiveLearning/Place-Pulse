@@ -67,6 +67,10 @@
 						},
 						success: function(e) {
 							// Login success!
+							if (e.error) {
+								alert(e.error_description);
+								return;
+							}
 							window.location = e.next;
 						}
 					});
