@@ -1,11 +1,11 @@
 {% set navigation_bar = [
     ('/about/', 'about', 'About Project'),
     ('/study/create/', 'create', 'Create Study'),
-    ('/vote/', 'vote', 'Contribute Data'),
+    ('/vote/', 'vote', 'Contribute Votes'),
     ('/results/', 'results', 'Browse Results'),
 ] -%}
 {% set active_page = active_page|default('index') -%}
-<div class="navbar navbar-fixed-top">
+<div class="navbar">
   <div class="navbar-inner">
     <div class="container">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -13,7 +13,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <a class="brand" href="/"><img src="/static/img/place_pulse_logo_15.png" alt="" /></a>
+      <a class="brand" href="/"><img src="/static/img/place_pulse_logo_20.png" alt="" /></a>
       <div class="nav-collapse">
         <ul class="nav">
             {% for href, id, caption in navigation_bar %}

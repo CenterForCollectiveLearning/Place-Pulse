@@ -4,7 +4,7 @@
 <!-- Le styles -->
 <link href="/static/css/bootstrap.css" rel="stylesheet">
 <link href="/static/css/responsive.css" rel="stylesheet">
-<link href="/static/css/main.css" rel="stylesheet">
+<link href="/static/css/sub.css" rel="stylesheet">
 <link href="/static/css/study_create.css" rel="stylesheet">
 {% endblock %}
 
@@ -15,8 +15,7 @@
 
 {% block body %}
 <header class="jumbotron subhead">
-    <h1>Create a Study</h1>
-    <p class="lead">Studying urban perception has never been easier.</p>
+    <h1 class="h1extra">Create a Study</h1>
 </header>
   <div class="row">
     <div class="span3">
@@ -43,7 +42,7 @@
                   <label class="control-label" for="study_name">Study Name</label>
                   <div class="controls">
                     <input type="text" class="input-xlarge" id="study_name" placeholder="i.e. Boston Tourism Study">
-                    <span id="study_name_error" class="help-inline hidden">Please use at least three words.</span>
+                    <span id="study_name_error" class="help-inline hidden">Please use at least one word.</span>
                     <p class="help-block">This is how we will refer to your study on our site.</p>
                   </div>
                 </div>

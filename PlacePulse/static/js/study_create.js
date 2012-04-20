@@ -54,7 +54,7 @@ $(document).ready(function() {
     function validate_study_name(){
         //testing regular expression
         var a = $("#study_name").val();
-        var filter = /^(?:\b\w+\b[\s\r\n]*){3,10}$/;
+        var filter = /^(?:\b\w+\b[\s\r\n]*){1,10}$/;
         //if it's valid email
         if(filter.test(a)){
             study_name_cg.removeClass("error");

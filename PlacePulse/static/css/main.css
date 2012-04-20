@@ -1,7 +1,7 @@
 body {
-  background: url('/static/img/header_background.jpg') repeat-x #ffffff;
-  background-position: top;
-  padding-top: 60px;
+  background: url('/static/img/header.jpg') repeat-x #ffffff;
+  background-position: center top;
+  padding-top: 0px;
   padding-bottom: 40px;
 }
 .sidebar-nav {
@@ -14,7 +14,7 @@ body {
 }
 .jumbotron h1 {
   margin-bottom: 9px;
-  font-size: 81px;
+  font-size: 72px;
   letter-spacing: -1px;
   line-height: 1;
 }
@@ -31,16 +31,28 @@ body {
   -moz-border-radius: 6px;
   border-radius: 6px;
 }
+.h1bold {
+  font-family: 'TradeGothicNextW01-Heav 693241';
+  color: #ea4839;
+}
 /* Specific jumbotrons
 ------------------------- */
 /* supporting docs pages */
 .subhead {
   padding-bottom: 0;
   margin-top: 18px;
-  margin-bottom: 36px;
+  margin-bottom: 40px;
 }
 .subhead h1 {
-  font-size: 36px;
+  font-size: 96px;
+  margin-bottom: 48px;
+  color: #FFFFFF;
+}
+.subhead .mainquestion {
+  font-size: 60px;
+}
+.subhead .h1extra {
+  margin-bottom: 109px;
 }
 /* Subnav */
 .subnav {
