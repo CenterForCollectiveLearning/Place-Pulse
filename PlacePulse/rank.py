@@ -15,19 +15,19 @@ from db import Database
 #         })
 
 def load_from_db(study_id):
-	# load votes from db
+    # load votes from db
     votesCursor = Database.getVotes(str(study_id))
     votes = [vote for vote in votesCursor]
     votes_selected = []
     for vote in votes:
-		reformatted_vote = {}
-		reformatted_vote['id_left'] = vote.get('left')
-		reformatted_vote['id_right'] = vote.get('right')
-		if vote.get('choice') == 'left':
-			reformatted_vote['winner'] = vote.get('left')
-		elif vote.get('choice') == 'right':
-			reformatted_vote['winner'] = vote.get('right')
-		votes_selected.append(reformatted_vote)
+        reformatted_vote = {}
+        reformatted_vote['id_left'] = vote.get('left')
+        reformatted_vote['id_right'] = vote.get('right')
+        if vote.get('choice') == 'left':
+            reformatted_vote['winner'] = vote.get('left')
+        elif vote.get('choice') == 'right':
+            reformatted_vote['winner'] = vote.get('right')
+        votes_selected.append(reformatted_vote)
     return votes_selected
     
 def load_places_from_csv(filename):
@@ -66,6 +66,7 @@ def calculate_max_likelihood(images, votes_selected):
     for vote in votes_selected:
         index_left = image_index_lookup.get(vote['id_left'])
         index_right = image_index_lookup.get(vote['id_right'])
+        print vote
         if vote['winner'] == vote['id_left']:
             m[index_left, index_right] += 1.
         elif vote['winner'] == vote['id_right']:
@@ -79,7 +80,7 @@ def calculate_max_likelihood(images, votes_selected):
 
     # log likelihood function
     def neg_log_likelihood(s, m):
-    	s = numpy.append(s, 0.)
+        s = numpy.append(s, 0.)
         sum = 0.
         for i in range(s.shape[0]):
             for j in range(s.shape[0]):
@@ -101,15 +102,15 @@ def calculate_max_likelihood(images, votes_selected):
     def gradient(s, m):
         g = numpy.zeros(shape=(s.shape[0]))
         for i in range(g.shape[0]):
-        	sum = 0
-        	for j in range(g.shape[0]):
-        		r1 = norm.pdf(s[i]- s[j])/norm_cdf(s[i]- s[j])
-        		if math.isinf(r1): r1 = 0.
-        		r2 = norm.pdf(s[j]- s[i])/norm_cdf(s[j]- s[i])
-        		if math.isinf(r2): r2 = 0.
-        		sum += m[i,j] * r1
-        		sum -= m[j,i] * r2
-        	g[i] = sum
+            sum = 0
+            for j in range(g.shape[0]):
+                r1 = norm.pdf(s[i]- s[j])/norm_cdf(s[i]- s[j])
+                if math.isinf(r1): r1 = 0.
+                r2 = norm.pdf(s[j]- s[i])/norm_cdf(s[j]- s[i])
+                if math.isinf(r2): r2 = 0.
+                sum += m[i,j] * r1
+                sum -= m[j,i] * r2
+            g[i] = sum
         return g
     
     def hessian(s, m):
@@ -148,7 +149,7 @@ def calculate_max_likelihood(images, votes_selected):
 
 # TODO: implement elo
 def calculate_elo(images, votes_selected):
-	pass
+    pass
    
 def calculate_win_loss(images, votes_selected):    
     temp_scores = defaultdict(lambda: defaultdict(float))
@@ -300,11 +301,14 @@ def output_corr_file(chart_values, FILENAME):
         rankings.writerow(temp)
 
 def update_mongo_score(final_rankings):
-	for location_id, score in final_rankings.iteritems():
-		print location_id
-		if not Database.updateLocationScore(location_id,score):
-		 	print "Could not update location score for %s" % location_id
-	return
+    print "\n\n\n"
+    print "FINAL RANKINGS"
+    print final_rankings
+    for location_id, score in final_rankings.iteritems():
+        print location_id
+        if not Database.updateLocationScore(location_id,score):
+             print "Could not update location score for %s" % location_id
+    return
 
 def rank_csv():    
     question = "safer"
@@ -336,6 +340,10 @@ def rank_mongo():
 
     votes_selected = load_from_db(study_id)
     
+    if votes_selected == 0:
+        print "no votes eligible, exiting"
+        return
+    
     output_file = "data/db.csv"
     print str(len(votes_selected)) + " eligible votes"
 
@@ -350,40 +358,40 @@ def rank_mongo():
     update_mongo_score(final_rankings)
 
 def test_matrix1():
-	m = numpy.matrix([[0,.1,.1,.1,.1],[.1,0,.1,.1,.1],[.1,.1,0,.1,.1],[.1,.1,.1,0,.1],[.1,.1,.1,.1,0]])
-	m[0,1] += 5
-	m[1,0] += 4
-	m[0,2] += 3
-	m[0,3] += 5
-	m[0,4] += 6
-	m[1,2] += 4
-	m[1,3] += 6
-	m[1,4] += 3
-	m[2,3] += 5
-	m[2,4] += 4
-	m[3,4] += 2
-	return m
+    m = numpy.matrix([[0,.1,.1,.1,.1],[.1,0,.1,.1,.1],[.1,.1,0,.1,.1],[.1,.1,.1,0,.1],[.1,.1,.1,.1,0]])
+    m[0,1] += 5
+    m[1,0] += 4
+    m[0,2] += 3
+    m[0,3] += 5
+    m[0,4] += 6
+    m[1,2] += 4
+    m[1,3] += 6
+    m[1,4] += 3
+    m[2,3] += 5
+    m[2,4] += 4
+    m[3,4] += 2
+    return m
 
 def test_matrix2():
-	m = numpy.matrix([[0,.1,.1,.1,.1],[.1,0,.1,.1,.1],[.1,.1,0,.1,.1],[.1,.1,.1,0,.1],[.1,.1,.1,.1,0]])
-	m[0,1] += 50
-	m[1,0] += 40
-	m[0,2] += 30
-	m[0,3] += 50
-	m[0,4] += 60
-	m[1,2] += 40
-	m[1,3] += 60
-	m[1,4] += 30
-	m[2,3] += 50
-	m[2,4] += 40
-	m[3,4] += 20
-	return m
+    m = numpy.matrix([[0,.1,.1,.1,.1],[.1,0,.1,.1,.1],[.1,.1,0,.1,.1],[.1,.1,.1,0,.1],[.1,.1,.1,.1,0]])
+    m[0,1] += 50
+    m[1,0] += 40
+    m[0,2] += 30
+    m[0,3] += 50
+    m[0,4] += 60
+    m[1,2] += 40
+    m[1,3] += 60
+    m[1,4] += 30
+    m[2,3] += 50
+    m[2,4] += 40
+    m[3,4] += 20
+    return m
 
 def test_basic():
-	m = numpy.matrix([[0,.1],[.1,0]])
-	m[0,1] += 1
-	m[1,0] += 1
-	return m
+    m = numpy.matrix([[0,.1],[.1,0]])
+    m[0,1] += 1
+    m[1,0] += 1
+    return m
 
 if __name__ == '__main__':
     sys.exit(rank_mongo())
