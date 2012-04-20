@@ -89,7 +89,7 @@ def finish_populate_study(study_id):
 @study.route('/study/curate/<study_id>/',methods=['GET'])
 def curate_study(study_id):
     study = Database.getStudy(study_id)
-    locations = Database.getLocations(study_id)
+    locations = Database.getLocations(study_id,4)
     return auto_template('study_curate.html',polygon=study['polygon'],locations=locations)
     
 @study.route('/study/curate/location/<id>',methods=['POST'])
