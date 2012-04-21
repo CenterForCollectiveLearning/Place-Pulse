@@ -49,7 +49,6 @@ def populate_study(study_id):
         'pitch': 0,
         'votes' : 0
     })
-    print location_id
     Database.qs.update({
         'location_id' : location_id, 
         'study_id': request.form['study_id'],
