@@ -102,10 +102,10 @@ class database(object):
         except:
             return None
     
-    def updateLocationScore(self,location_id,score):
+    def updateLocationScore(self,study_id,location_id,q,num_votes):
         try:
-            self.locations.update( { '_id' : ObjectId(location_id) } , { '$set' : { 'score' : score } } )
-            return True
+        	self.qs.update( { 'study_id': study_id ,'location_id' : location_id } , { '$set' : { 'q' : q, 'num_votes': num_votes } }, True )
+        	return True
         except:
             return None
     
@@ -132,6 +132,10 @@ class database(object):
     @property
     def votes(self):
         return self.db.votes
+
+    @property
+    def qs(self):
+        return self.db.qs
     
     @property
     def db(self):

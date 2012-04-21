@@ -27,6 +27,8 @@ def load_from_db(study_id):
             reformatted_vote['winner'] = vote.get('left')
         elif vote.get('choice') == 'right':
             reformatted_vote['winner'] = vote.get('right')
+        elif vote.get('choice') == 'equal':
+            reformatted_vote['winner'] = '0'
         votes_selected.append(reformatted_vote)
     return votes_selected
     
@@ -49,8 +51,8 @@ def select_votes_from_csv(question, filename):
 def set_image_hash(votes_selected):
     images = {}
     for vote in votes_selected:
-        images[vote['id_left']] = 1
-        images[vote['id_right']] = 1
+        images[vote['id_left']] = images.get(vote['id_left'], 0) + 1
+        images[vote['id_right']] = images.get(vote['id_right'], 0) + 1
     return images
     
 def calculate_max_likelihood(images, votes_selected):
@@ -146,10 +148,6 @@ def calculate_max_likelihood(images, votes_selected):
     for i in range(s.shape[0]):
         rankings[image_ids[i]] = s[i]
     return rankings
-
-# TODO: implement elo
-def calculate_elo(images, votes_selected):
-    pass
    
 def calculate_win_loss(images, votes_selected):    
     temp_scores = defaultdict(lambda: defaultdict(float))
@@ -210,8 +208,8 @@ def calculate_win_loss(images, votes_selected):
                 WR1[key] -= alpha * LR[key1] / len(neighbors[key1])
         #Write to temp_scores
         for key, value in WR1.iteritems():
-            temp_scores[int(key)]['WR1'] = temp_scores[int(key)]['WR1'] + value
-            temp_scores[int(key)]['votes'] += 1   
+            temp_scores[key]['WR1'] = temp_scores[key]['WR1'] + value
+            temp_scores[key]['votes'] += 1   
     final_rankings = defaultdict(lambda: defaultdict(float))
     for key, value in temp_scores.iteritems():
         #Need to calculate STD Deviation
@@ -300,16 +298,6 @@ def output_corr_file(chart_values, FILENAME):
         temp = key,chart_values[key]['corr'],chart_values[key]['stddev']
         rankings.writerow(temp)
 
-def update_mongo_score(final_rankings):
-    print "\n\n\n"
-    print "FINAL RANKINGS"
-    print final_rankings
-    for location_id, score in final_rankings.iteritems():
-        print location_id
-        if not Database.updateLocationScore(location_id,score):
-             print "Could not update location score for %s" % location_id
-    return
-
 def rank_csv():    
     question = "safer"
     output_file = "data/"+question+".csv"
@@ -352,10 +340,16 @@ def rank_mongo():
     print str(len(images)) + " images in total"
     
     #Rank all images
-    final_rankings = calculate_max_likelihood(images, votes_selected)
+    final_rankings = calculate_win_loss(images, votes_selected)
     
     #Load Results to db
-    update_mongo_score(final_rankings)
+    print "\n\n\n"
+    print "FINAL RANKINGS"
+    print final_rankings
+    for location_id, q in final_rankings.iteritems():
+        if not Database.updateLocationScore(study_id,location_id,q,images[location_id]):
+             print "Could not update score for %s" % location_id
+    return
 
 def test_matrix1():
     m = numpy.matrix([[0,.1,.1,.1,.1],[.1,0,.1,.1,.1],[.1,.1,0,.1,.1],[.1,.1,.1,0,.1],[.1,.1,.1,.1,0]])
