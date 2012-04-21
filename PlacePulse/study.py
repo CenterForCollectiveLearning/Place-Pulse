@@ -155,8 +155,8 @@ def get_study_pairing(study_id):
                 'q' : { '$exists' : True }
             }
             count = Database.qs.find(obj).count()
-            rand = randint(0,min(0,count-25))
-            QSCursor = Database.qs.find(obj).skip(rand).limit(25)            
+            s = randint(0,min(0,count-25))
+            QSCursor = Database.qs.find(obj).skip(s).limit(25)            
             
             #pick location with closest score
             dist = lambda QS: abs(QS.get('q') - QS1['q'])
