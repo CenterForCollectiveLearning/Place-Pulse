@@ -134,41 +134,44 @@ def post_new_vote(study_id):
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
     def randomLocation(exclude=None, sort=False):
-        # get locations depending on flags
+        # build obj to find in db
         obj = { 'study_id': study_id }
         if exclude is not None: 
             obj['_id'] = { '$ne' : exclude }
-        if sort:
-            location = Database.locations.find(obj).sort('votes', ASCENDING).skip(randint(0,5)).limit(1).next()
+        if sort: 
+        	# get a random location with fewest votes
+            location = Database.locations.find(obj).sort('votes', ASCENDING).skip(randint(0,10)).limit(1).next()
         else:
+        	# get a completely random location
             count = Database.locations.find(obj).count()
             location = Database.locations.find(obj).skip(randint(0,count)).limit(1).next()
-        
-        #check if over 30 and has Q score
+        #check if location has over 30 vote and has Q score
         QS = Database.getQS(study_id, location.get('_id'))
         if QS is not None:
             if QS.get('num_votes')  > 30 and not sort:
-                return randomLocation(exclude)
+                return randomLocation(exclude, sort=True)
             if QS.get('q', None) is None:
                 QS = None
         return location, QS
     
+    # get location 1
     location1, QS1 = randomLocation(sort=True)
+    
+    #get location 2
     try:
-        if QS1 == None: 
+        if QS1 == None: # location 1 has no q score
             location2, QS2 = randomLocation(exclude=location1.get('_id'))  
         else: 
-            #get locations with fewest votes
+            #get 25 locations with q scores
             QSCursor = Database.qs.find({ 
                 'study_id': study_id,
                 'location_id' : { '$ne' : location1.get('_id') },
-                'num_votes' : { '$lte' : 30 }
-                }).limit(25)
-            QSs = [QS for QS in QSCursor]
-            
+                'num_votes' : { '$lte' : 30 },
+                'q' : { '$exists' : True }
+                }).limit(25)            
             #pick location with closest score
-            dist = lambda QS: abs(QS.get('q', random()) - QS1['q'])
-            QS2 = min(QSs, key=dist)
+            dist = lambda QS: abs(QS.get('q') - QS1['q'])
+            QS2 = min(QSCursor, key=dist)
             location2 = Database.getLocation(QS2.get('location_id'))
     except:
         return jsonifyResponse({ 'error': "Only 1 location in study!" })
