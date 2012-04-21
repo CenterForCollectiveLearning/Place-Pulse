@@ -22,27 +22,81 @@
 <div class="row" align="center">
    <h1>We measure <span class="h1bold">urban aesthetics</span></h1>
    <div class="span6" align="left">
-     <p>Imagine traveling through a strange city. Inside your mind, subconscious judgements about your surroundings are made in real time. Do you feel safe? Does the area you are in seem unique? Does it appear wealthy, clean or even energetic? You may not think about, let alone understand, what goes into making these anecdotal determinations, but when elicited, your opinions can be understood as part of a more substantial collective and used in powerful ways.</p>
-    
+      <ul class="thumbnails">
+          <li class="span6">
+            <div class="thumbnail">
+              <img src="/static/img/about/visualization.jpg" alt="" />
+              <div class="caption">
+              <p><strong>Dynamic Visualization</strong></p>
+              <p>The data for "Which place looks safer?" is displayed for Salzburg, Austria.  The color green corresponds to positive perceptions of safety while red corresponds to negative perceptions of safety. The height of the white bar represents the amount of votes collected for each point.</p>
+              </div>
+            </div>
+          </li>
+        </ul>
    </div>
    <div class="span6" align="left">
-     <p>In 1960, Kevin Lynch published "The Image of the City" and established how people perceive and create mental models of the cities they inhabit. Since then, the fields of both architecture and urban planning have heavily studied urban perception, placing emphasis on everything from the macro scale of a city to the intricate details of an individual building. Institutional limitations, however, have limited the throughput of urban perception studies by constraining the quantity of both images and subjects used.</p>
+     <h3>Imagine traveling through a strange city...</h3>
+     <p>Inside your mind, subconscious judgements about your surroundings are made in real time. Do you feel safe? Does the area you are in seem unique? Does it appear wealthy, clean or energetic? You may not think about, let alone understand, what goes into making these anecdotal determinations, but when elicited, your opinions can be understood as part of a more substantial collective and used in powerful ways.</p>
+     <p>Place Pulse is a website that allows anybody to quickly run a perception study and visualize the results in powerful ways. Developed at the MIT Media Lab by the Macro Connections group, Place Pulse crowdsources surveys to internet participants, asking binary perception questions across a large number of geotagged images. From the responses of each participant we generate perception layers that can be plugged into existing applications. Any company, from Android to Yahoo, could make use of this data and incorporate human perception data into their apps.</p>
    </div>   
 </div><!--/row-->
-<div class="row" style="margin-top:60px; margin-bottom:60px;">
-  <div class="span12">
-    <p><img src="/static/img/about/visualization.jpg" /></p>
-  </div>
+<div class="row">
+  <div class="span12" align="left">
+    <h1 style="">The Team</h1>
+    <ul class="thumbnails">
+        <li class="span2">
+          <div class="thumbnail">
+           <img id="phil" src="/static/img/about/phil.jpg" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="paul" src="/static/img/about/paul.jpg" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="michaelw" src="/static/img/about/michaelw.jpg" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="michaelx" src="/static/img/about/michaelx.jpg" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="tony" src="/static/img/about/tony.jpg" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="kiran" src="/static/img/about/kiran.jpg" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="amanda" src="/static/img/about/amanda.png" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="mauro" src="/static/img/about/mauro.jpg" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="katja" src="/static/img/about/katja.jpg" alt="" />
+          </div>
+        </li>
+        <li class="span2">
+          <div class="thumbnail">
+            <img id="cesar" src="/static/img/about/cesar.jpg" alt="" />
+          </div>
+        </li>
+      </ul>
+   </div>
 </div>
-<div class="row" align="center">
-   <div class="span6" align="left">
-     <p>To mitigate these past limitations, we present Place Pulse. Place Pulse is a website that allows anybody to quickly run a perception study and visualize the results in powerful ways. Developed at the MIT Media Lab by the Macro Connections group, Place Pulse crowdsources surveys to internet participants, asking binary perception questions across a large number of geotagged images. From the responses of each participant, directed graphs are generated, which are then layered with the graphs of others, forming what we call a perception network. This perception network can be analyzed and visualized in a multitude of ways, allowing the experimenter to identify interesting patterns in the data, possibly forming the basis for a future hypothesis.</p>
-    
-   </div>
-   <div class="span6" align="left">
-     <p>This is all made possible by manipulating readily available data on the internet and by employing massively scalable web technologies to aid in data collection and computation. Data collection is empowered by a community of participants who act as both survey creators and takers, while computation of this data relies on machine learning algorithms to identify which features contribute to held perceptions. With an increased understanding of perception from a more broad societal point of view, it may be possible for targeted changes, such as cleaning building facades and removing trash, but deciding to leave graffiti as-is, to have a disproportionate impact on the opinions of inhabitants and visitors alike.</p>
-   </div>   
-</div><!--/row-->
 
 {% endblock %}
 
@@ -72,6 +126,16 @@
 <script src="/static/js/bootstrap-carousel.js"></script>
 <script src="/static/js/bootstrap-typeahead.js"></script>
 <script>
+$('#phil').popover({'placement':'top','title':'Phil Salesses','content':'Phil is a graduate researcher at the MIT Media Lab who has worked with web technologies, geographic information systems and various forms of remote sensing data.'});
+$('#paul').popover({'placement':'top','title':'Paul Sawaya','content':'Paul is a graduate researcher at Hampshire College and has worked for industry titans such as Apple, Bloomberg and up-and-coming Justin.tv.'});
+$('#michaelw').popover({'placement':'top','title':'Michael Wong','content':'Michael is an undergraduate researcher at Harvard.'});
+$('#michaelx').popover({'placement':'top','title':'Michael Xu','content':'Michael is an undergraduate researcher at MIT.'});
+$('#tony').popover({'placement':'top','title':'Anthony DeVincenzi','content':'Anthony is a creative director, designer and graduate researcher at the Media Lab.'});
+$('#kiran').popover({'placement':'top','title':'Kiran Bhattaram','content':'Kiran is an undergraduate researcher at MIT.'});
+$('#amanda').popover({'placement':'top','title':'Amanda Davis','content':'Amanda works as a researcher at the Design and Usability Center.'});
+$('#mauro').popover({'placement':'top','title':'Mauro Martino','content':'Mauro is an Assistant Professor at the Northeastern University Center for Complex Network Research, working to visualize and explore complex network data.'});
+$('#katja').popover({'placement':'top','title':'Katja Schechtner','content':'Katja leads Europe\'s largest research group that focuses on Urban Transportation and Mobility. '});
+$('#cesar').popover({'placement':'top','title':'César Hidalgo','content':'César is an assistant professor and the Asahi Broadcast Corporation Career Development Professor at the MIT Media Lab and a faculty associate at Harvard’s University Center for International Development.'});
 $(document).ready(function() {
     // On page load, load the GMaps API. Once that's loaded, callback to init()
     function loadScript() {

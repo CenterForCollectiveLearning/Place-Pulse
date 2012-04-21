@@ -107,9 +107,9 @@ textarea {
 body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 20px;
-  color: #333333;
+  font-size: 18px;
+  line-height: 24px;
+  color: #555555;
   background-color: #ffffff;
 }
 a {
@@ -284,20 +284,20 @@ a:hover {
   clear: both;
 }
 p {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 24px;
 }
 p small {
-  font-size: 12px;
+  font-size: 16px;
   color: #999999;
 }
 .lead {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   font-size: 20px;
   font-weight: 200;
-  line-height: 30px;
+  line-height: 36px;
 }
 h1,
 h2,
@@ -321,7 +321,7 @@ h6 small {
 }
 h1 {
   font-size: 60px;
-  line-height: 40px;
+  line-height: 48px;
   color: #343a4a;
   margin-bottom: 63px;
 }
@@ -330,38 +330,38 @@ h1 small {
 }
 h2 {
   font-size: 40px;
-  line-height: 40px;
+  line-height: 48px;
 }
 h2 small {
   font-size: 18px;
 }
 h3 {
-  line-height: 30px;
-  font-size: 20px;
+  line-height: 36px;
+  font-size: 30px;
 }
 h3 small {
   font-size: 15px;
 }
 h4, h5, h6 {
-  line-height: 20px;
+  line-height: 24px;
 }
 h4 {
-  font-size: 15px;
+  font-size: 24px;
 }
 h4 small {
   font-size: 12px;
 }
 h5 {
-  font-size: 12px;
+  font-size: 22px;
 }
 h6 {
-  font-size: 11px;
+  font-size: 18px;
   color: #999999;
   text-transform: uppercase;
 }
 .page-header {
-  padding-bottom: 19px;
-  margin: 20px 0;
+  padding-bottom: 23px;
+  margin: 24px 0;
   border-bottom: 1px solid #eeeeee;
 }
 .page-header h1 {
@@ -369,7 +369,7 @@ h6 {
 }
 ul, ol {
   padding: 0;
-  margin: 0 0 10px 25px;
+  margin: 0 0 12px 25px;
 }
 ul ul,
 ul ol,
@@ -384,26 +384,26 @@ ol {
   list-style: decimal;
 }
 li {
-  line-height: 20px;
+  line-height: 24px;
 }
 ul.unstyled, ol.unstyled {
   margin-left: 0;
   list-style: none;
 }
 dl {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 dt, dd {
-  line-height: 20px;
+  line-height: 24px;
 }
 dt {
   font-weight: bold;
 }
 dd {
-  margin-left: 10px;
+  margin-left: 12px;
 }
 hr {
-  margin: 20px 0;
+  margin: 24px 0;
   border: 0;
   border-top: 1px solid #eeeeee;
   border-bottom: 1px solid #ffffff;
@@ -425,18 +425,18 @@ abbr {
 }
 blockquote {
   padding: 0 0 0 15px;
-  margin: 0 0 20px;
+  margin: 0 0 24px;
   border-left: 5px solid #eeeeee;
 }
 blockquote p {
   margin-bottom: 0;
   font-size: 16px;
   font-weight: 300;
-  line-height: 25px;
+  line-height: 30px;
 }
 blockquote small {
   display: block;
-  line-height: 20px;
+  line-height: 24px;
   color: #999999;
 }
 blockquote small:before {
@@ -460,8 +460,8 @@ blockquote:after {
 }
 address {
   display: block;
-  margin-bottom: 20px;
-  line-height: 20px;
+  margin-bottom: 24px;
+  line-height: 24px;
   font-style: normal;
 }
 small {
@@ -473,7 +473,7 @@ cite {
 code, pre {
   padding: 0 3px 2px;
   font-family: Menlo, Monaco, "Courier New", monospace;
-  font-size: 13px;
+  font-size: 17px;
   color: #333333;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -487,10 +487,10 @@ code {
 }
 pre {
   display: block;
-  padding: 9.5px;
-  margin: 0 0 10px;
+  padding: 11.5px;
+  margin: 0 0 12px;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 24px;
   background-color: #f5f5f5;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.15);
@@ -503,7 +503,7 @@ pre {
   word-wrap: break-word;
 }
 pre.prettyprint {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 pre code {
   padding: 0;
@@ -516,7 +516,7 @@ pre code {
   overflow-y: scroll;
 }
 form {
-  margin: 0 0 20px;
+  margin: 0 0 24px;
 }
 fieldset {
   padding: 0;
@@ -527,15 +527,15 @@ legend {
   display: block;
   width: 100%;
   padding: 0;
-  margin-bottom: 30px;
-  font-size: 21px;
-  line-height: 40px;
+  margin-bottom: 36px;
+  font-size: 27px;
+  line-height: 48px;
   color: #333333;
   border: 0;
   border-bottom: 1px solid #eee;
 }
 legend small {
-  font-size: 15px;
+  font-size: 18px;
   color: #999999;
 }
 label,
@@ -543,9 +543,9 @@ input,
 button,
 select,
 textarea {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: normal;
-  line-height: 20px;
+  line-height: 24px;
 }
 input,
 button,
@@ -564,11 +564,11 @@ select,
 .uneditable-input {
   display: inline-block;
   width: 210px;
-  height: 20px;
+  height: 24px;
   padding: 4px;
   margin-bottom: 9px;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 24px;
   color: #555555;
   border: 1px solid #ccc;
   -webkit-border-radius: 3px;
@@ -833,9 +833,9 @@ input:focus:required:invalid:focus, textarea:focus:required:invalid:focus, selec
   box-shadow: 0 0 6px #f8b9b7;
 }
 .form-actions {
-  padding: 19px 20px 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  padding: 23px 20px 24px;
+  margin-top: 24px;
+  margin-bottom: 24px;
   background-color: #f5f5f5;
   border-top: 1px solid #ddd;
 }
@@ -907,11 +907,11 @@ input:focus:required:invalid:focus, textarea:focus:required:invalid:focus, selec
   display: block;
   width: auto;
   min-width: 16px;
-  height: 20px;
+  height: 24px;
   margin-right: -1px;
   padding: 4px 5px;
   font-weight: normal;
-  line-height: 20px;
+  line-height: 24px;
   color: #999999;
   text-align: center;
   text-shadow: 0 1px 0 #ffffff;
@@ -1004,14 +1004,14 @@ input:focus:required:invalid:focus, textarea:focus:required:invalid:focus, selec
   vertical-align: middle;
 }
 .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 legend + .control-group {
-  margin-top: 20px;
+  margin-top: 24px;
   -webkit-margin-top-collapse: separate;
 }
 .form-horizontal .control-group {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   *zoom: 1;
 }
 .form-horizontal .control-group:before, .form-horizontal .control-group:after {
@@ -1040,11 +1040,11 @@ table {
 }
 .table {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .table th, .table td {
   padding: 8px;
-  line-height: 20px;
+  line-height: 24px;
   text-align: left;
   vertical-align: top;
   border-top: 1px solid #ddd;
@@ -1623,7 +1623,7 @@ table .span12 {
   padding: 3px 15px;
   clear: both;
   font-weight: normal;
-  line-height: 20px;
+  line-height: 24px;
   color: #555555;
   white-space: nowrap;
 }
@@ -1695,7 +1695,7 @@ table .span12 {
   float: right;
   font-size: 20px;
   font-weight: bold;
-  line-height: 20px;
+  line-height: 24px;
   color: #000000;
   text-shadow: 0 1px 0 #ffffff;
   opacity: 0.2;
@@ -1712,8 +1712,8 @@ table .span12 {
   display: inline-block;
   padding: 4px 10px 4px;
   margin-bottom: 0;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 24px;
   color: #333333;
   text-align: center;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
@@ -1792,7 +1792,7 @@ table .span12 {
 }
 .btn-large {
   padding: 9px 14px;
-  font-size: 16px;
+  font-size: 20px;
   line-height: normal;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -1803,16 +1803,16 @@ table .span12 {
 }
 .btn-small {
   padding: 5px 9px;
-  font-size: 12px;
-  line-height: 18px;
+  font-size: 16px;
+  line-height: 22px;
 }
 .btn-small [class^="icon-"] {
   margin-top: -1px;
 }
 .btn-mini {
   padding: 2px 6px;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 16px;
+  line-height: 20px;
 }
 .btn-primary,
 .btn-primary:hover,
@@ -2044,8 +2044,8 @@ button.btn.small, input[type="submit"].btn.small {
   margin-left: 5px;
 }
 .btn-toolbar {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 .btn-toolbar .btn-group {
   display: inline-block;
@@ -2152,7 +2152,7 @@ button.btn.small, input[type="submit"].btn.small {
 }
 .alert {
   padding: 8px 35px 8px 14px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   background-color: #fcf8e3;
   border: 1px solid #fbeed5;
@@ -2205,7 +2205,7 @@ button.btn.small, input[type="submit"].btn.small {
 }
 .nav {
   margin-left: 0;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   list-style: none;
 }
 .nav > li > a {
@@ -2220,7 +2220,7 @@ button.btn.small, input[type="submit"].btn.small {
   padding: 3px 15px;
   font-size: 11px;
   font-weight: bold;
-  line-height: 20px;
+  line-height: 24px;
   color: #999999;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
@@ -2466,7 +2466,7 @@ button.btn.small, input[type="submit"].btn.small {
 }
 .navbar {
   overflow: visible;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .navbar-inner {
   padding-left: 20px;
@@ -2749,7 +2749,7 @@ button.btn.small, input[type="submit"].btn.small {
 }
 .breadcrumb {
   padding: 7px 14px;
-  margin: 0 0 20px;
+  margin: 0 0 24px;
   background-color: #fbfbfb;
   background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -ms-linear-gradient(top, #ffffff, #f5f5f5);
@@ -2779,8 +2779,8 @@ button.btn.small, input[type="submit"].btn.small {
   color: #333333;
 }
 .pagination {
-  height: 40px;
-  margin: 20px 0;
+  height: 48px;
+  margin: 24px 0;
 }
 .pagination ul {
   display: inline-block;
@@ -2803,7 +2803,7 @@ button.btn.small, input[type="submit"].btn.small {
 .pagination a {
   float: left;
   padding: 0 14px;
-  line-height: 38px;
+  line-height: 46px;
   text-decoration: none;
   border: 1px solid #ddd;
   border-left-width: 0;
@@ -2839,7 +2839,7 @@ button.btn.small, input[type="submit"].btn.small {
 }
 .pager {
   margin-left: 0;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   list-style: none;
   text-align: center;
   *zoom: 1;
@@ -3155,7 +3155,7 @@ button.btn.small, input[type="submit"].btn.small {
 }
 .thumbnails > li {
   float: left;
-  margin: 0 0 20px 20px;
+  margin: 0 0 24px 20px;
 }
 .thumbnail {
   display: block;
@@ -3183,11 +3183,11 @@ a.thumbnail:hover {
   margin-right: auto;
 }
 .thumbnail .caption {
-  padding: 9px;
+  padding: 10px;
 }
 .label {
   padding: 2px 4px 3px;
-  font-size: 11.9px;
+  font-size: 15.299999999999999px;
   font-weight: bold;
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -3375,7 +3375,7 @@ a.thumbnail:hover {
   background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }
 .accordion {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 .accordion-group {
   margin-bottom: 2px;
@@ -3397,7 +3397,7 @@ a.thumbnail:hover {
 }
 .carousel {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   line-height: 1;
 }
 .carousel-inner {
@@ -3503,7 +3503,7 @@ a.thumbnail:hover {
 .hero-unit p {
   font-size: 18px;
   font-weight: 200;
-  line-height: 30px;
+  line-height: 36px;
 }
 .pull-right {
   float: right;

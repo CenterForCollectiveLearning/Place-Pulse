@@ -12,7 +12,7 @@
   display: none;
 }
 #mapInterfaceButtons {
-  margin-top: 20px;
+  margin-top: 24px;
 }
 .cursor {
   cursor: pointer;
@@ -20,5 +20,5 @@
 #edit_pano {
   width: 300px;
   height: 223px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
