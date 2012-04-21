@@ -116,7 +116,10 @@ class database(object):
 #--------------------QS
     def getQS(self,study_id,location_id):
         try:
-            return self.qs.find({ "study_id": study_id, "location_id": location_id }).next()
+            return self.qs.find({ 
+                "study_id": study_id, 
+                "location_id": location_id 
+            }).next()
         except:
             return None
 
@@ -141,18 +144,21 @@ class database(object):
             return None
 
     def randomQS(self, study_id, exclude=None, fewestVotes=False):
-        o = { 'study_id': study_id }
-        if exclude is not None: o['location_id'] = { '$ne' : exclude }
-        if fewestVotes: 
-            f = 10
-            s = randint(0,f) 
-            QS = self.qs.find(o).sort('num_votes',ASCENDING).limit(f).skip(s).next()
-        else:
-            s = randint(0, self.qs.find(o).count())
-            QS = self.qs.find(o).skip(s).limit(1).next()
-        if QS.get('num_votes')  > 30 and not sort:
-            return self.randomQS(study_id, exclude=exclude, sort=True)
-        return QS
+        try:
+            o = { 'study_id': study_id }
+            if exclude is not None: o['location_id'] = { '$ne' : exclude }
+            if fewestVotes: 
+                f = 10
+                s = randint(0,f) 
+                QS = self.qs.find(o).sort('num_votes',ASCENDING).limit(f).skip(s).next()
+            else:
+                s = randint(0, self.qs.find(o).count())
+                QS = self.qs.find(o).skip(s).limit(1).next()
+            if QS.get('num_votes')  > 30 and not sort:
+                return self.randomQS(study_id, exclude=exclude, sort=True)
+            return QS
+        except:
+            return None
 
     @property
     def locations(self):
