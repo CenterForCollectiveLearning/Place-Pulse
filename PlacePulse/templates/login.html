@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 
 {% block header %}
-<!-- Le styles -->
-<link href="/static/css/bootstrap.css" rel="stylesheet">
-<link href="/static/css/responsive.css" rel="stylesheet">
+{{ super() }}
 <link href="/static/css/sub.css" rel="stylesheet">
 <link href="/static/css/study_create.css" rel="stylesheet">
 {% endblock %}
 
 {% block nav %}
-    {% set active_page = "signin" %}
-    {% include 'nav.html' %}
+{% set active_page = "signin" %}
+{{ super() }}
 {% endblock %}
 
 {% block body %}
@@ -18,8 +16,8 @@
     <h1 class="h1extra">Member Log In</h1>
 </header>
   <div class="row" align="center">
-    <div class="span4 offset2" align="center">
-      <h3>Already a member?</h3>
+    <div class="span5 offset1" align="center">
+      <h2>Already a member?</h2>
       <br />
       <p>Log in using your email</p>
       <a class="browserIDLoginButton" href="#"><img src="/static/images/button_browserid.png" /></a>
@@ -28,8 +26,8 @@
             <a href="{{ fb_login_link }}"><img src="/static/images/button_fb.jpg" /></a>
         </div>
   </div>
-  <div class="span4" align="center">
-    <h3>New to Place Pulse?</h3>
+  <div class="span5" align="center">
+    <h2>New to Place Pulse?</h2>
     <br />
     <p>Create an account for free using only your email</p>
     <a class="browserIDLoginButton" href="#"><img src="/static/images/button_browserid.png" /></a>
@@ -39,13 +37,7 @@
 {% endblock %}
 
 {% block footer %}
-	  <hr>
-
-	  <footer>
-	    <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
-	  </footer>
-
-	</div><!--/.fluid-container-->
+{{ super() }}
 
 	<!-- Le javascript
 	================================================== -->

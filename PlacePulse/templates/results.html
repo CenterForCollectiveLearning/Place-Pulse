@@ -6,34 +6,6 @@
 
 {% endblock %}
 
-{% block footer %}
-	{{ super() }}
-	<script src="/static/js/results.js"></script>
-	
-		<script type="text/template" id="rankItemTemplate">
-			<div>
-				<h2><a href="/rankings/{{ study_name }}/<%= city_name_id %>"><%= city_name %></a></h2>
-				<div class="topRanked rankings">
-					<h4>Top:</h4>
-				</div>
-				<div class="clear"/>
-				<div class="bottomRanked rankings">
-					<h4>Bottom:</h4>
-				</div>
-				<div class="clear"/>
-			</div>
-		</script>
-		
-		<script type="text/template" id="rankedImageTemplate">
-			<div class="rankedImage" style="background-image: url(<% print(getSVURL(coords[0],coords[1],230,173)); %>)">
-				<span class="rankedImageStats">
-					<span>City rank: <span class="rank cityRank"><%= city_rank %></span></span>
-					<span>Site rank: <span class="rank siteRank"><%= site_rank %></span></span>
-				</span>
-			</div>
-		</script>
-{% endblock %}
-
 {% block body %}
 <header class="jumbotron subhead">
     <h1 class="h1extra">Our Results</h1>
@@ -62,3 +34,29 @@
 {% endblock %}
 
 
+{% block footer %}
+	<script src="/static/js/results.js"></script>
+	
+		<script type="text/template" id="rankItemTemplate">
+			<div>
+				<h2><a href="/rankings/{{ study_name }}/<%= city_name_id %>"><%= city_name %></a></h2>
+				<div class="topRanked rankings">
+					<h4>Top:</h4>
+				</div>
+				<div class="clear"/>
+				<div class="bottomRanked rankings">
+					<h4>Bottom:</h4>
+				</div>
+				<div class="clear"/>
+			</div>
+		</script>
+		
+		<script type="text/template" id="rankedImageTemplate">
+			<div class="rankedImage" style="background-image: url(<% print(getSVURL(coords[0],coords[1],230,173)); %>)">
+				<span class="rankedImageStats">
+					<span>City rank: <span class="rank cityRank"><%= city_rank %></span></span>
+					<span>Site rank: <span class="rank siteRank"><%= site_rank %></span></span>
+				</span>
+			</div>
+		</script>
+{% endblock %}

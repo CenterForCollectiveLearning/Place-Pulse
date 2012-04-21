@@ -1,21 +1,4 @@
-{% extends "sub.html" %}
-
-{% block footer %}
-<script src="/static/js/create_study.js"></script>
-<script>
-var citiesStr = "{{cities}}";
-var cities = citiesStr.split(",");
-var identityheader = document.getElementById('cityidentity');
-identityheader.style.visibility='hidden';
-var submitCityOptions = document.getElementById('dropDownList');
-submitCityOptions.style.visibility='hidden';
-var saveCityButton = document.getElementById('saveCity');
-saveCityButton.style.visibility='hidden';
-populateDropDownMenu(cities);
-</script>
-<link href="/static/css/create_study.css" type="text/css" rel="stylesheet">
-{% endblock %}
-
+{% extends "base.html" %}
 
 {% block body %}
 <h2>Create a study</h2>
@@ -68,4 +51,21 @@ populateDropDownMenu(cities);
 		</select>
 		<input type = "submit" id = "saveCity" value = "Save"/>
 </div>
+{% endblock %}
+
+{% block footer % }
+  {{ super() }}
+<script src="/static/js/create_study.js"></script>
+<script>
+var citiesStr = "{{cities}}";
+var cities = citiesStr.split(",");
+var identityheader = document.getElementById('cityidentity');
+identityheader.style.visibility='hidden';
+var submitCityOptions = document.getElementById('dropDownList');
+submitCityOptions.style.visibility='hidden';
+var saveCityButton = document.getElementById('saveCity');
+saveCityButton.style.visibility='hidden';
+populateDropDownMenu(cities);
+</script>
+<link href="/static/css/create_study.css" type="text/css" rel="stylesheet">
 {% endblock %}

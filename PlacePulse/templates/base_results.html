@@ -2,7 +2,7 @@
 
 {% block nav %}
     {% set active_page = "results" %}
-    {% include 'nav.html' %}
+   {{ super() }}
 {% endblock %}
 
 {% block header %}
@@ -65,13 +65,13 @@
 	  	  position:fixed;
 		}
 	</style>
-	<link href="/static/css/bootstrap.css" rel="stylesheet">
-	<link href="/static/css/responsive.css" rel="stylesheet">
+{{ super() }}
 	<link href="/static/css/sub.css" rel="stylesheet">
 	
 {% endblock %}
 
-{% block footer %}	
+{% block footer %}
+{{ super() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="/static/js/lib/underscore-min.js"></script>
 	<script src="/static/js/bootstrap-dropdown.js"></script>

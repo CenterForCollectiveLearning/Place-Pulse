@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 
 {% block header %}
-<!-- Le styles -->
-<link href="/static/css/bootstrap.css" rel="stylesheet">
-<link href="/static/css/responsive.css" rel="stylesheet">
+{{ super() }}
 <link href="/static/css/main.css" rel="stylesheet">
 {% endblock %}
 
 {% block nav %}
     {% set active_page = "index" %}
-    {% include 'nav.html' %}
+    {{ super() }}
 {% endblock %}
 
 {% block body %}
@@ -17,14 +15,7 @@
 {% endblock %}
 
 {% block footer %}
-  <hr>
-
-  <footer>
-    <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
-  </footer>
-
-</div><!--/.fluid-container-->
-
+  {{ super() }}
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->

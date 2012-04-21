@@ -12,6 +12,9 @@
     <![endif]-->
 
 	{% block header %}
+	<!-- Le styles -->
+  <link href="/static/css/bootstrap.css" rel="stylesheet">
+  <link href="/static/css/responsive.css" rel="stylesheet">
     {% endblock %}
 
     <!-- Le fav and touch icons -->
@@ -23,11 +26,20 @@
 
   <body>
 	{% block nav %}
+	{% include 'nav.html' %}
 	{% endblock %}
 	<div class="container">
 	{% block body %}
 	{% endblock %}
 	{% block footer %}
+	<div style="margin-bottom:120px;"></div>
+	  <hr>
+
+    <footer>
+      <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
+    </footer>
+
+  </div><!--/.fluid-container-->
 	{% endblock %}
     <script>
 	  	var _gaq = [['_setAccount', 'UA-21313433-1'], ['_trackPageview']];

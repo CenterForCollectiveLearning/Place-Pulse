@@ -72,8 +72,8 @@ def finish_populate_study(study_id):
 @study.route('/study/curate/<study_id>/',methods=['GET'])
 def curate_study(study_id):
     study = Database.getStudy(study_id)
-    locations = Database.getLocations(study_id,4)
-    return auto_template('study_curate.html',polygon=study['polygon'],locations=locations)
+    locations = Database.getLocations(study_id,48)
+    return auto_template('study_curate.html',polygon=study['polygon'],locations=locations,study_id=study_id)
     
 @study.route('/study/curate/location/<id>',methods=['POST'])
 def curate_location():    
@@ -105,6 +105,11 @@ def delete_location(id):
     'success': str(locationDeleted)
     })
 
+@study.route('/study/start/<study_id>/',methods=['GET'])
+def start_start(study_id):
+    #--Set study to "run"
+    
+    return auto_template('study_start.html',study_id=study_id)
 #--------------------Vote
 @study.route("/study/vote/<study_id>/",methods=['POST'])
 def post_new_vote(study_id):
