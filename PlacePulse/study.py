@@ -150,7 +150,7 @@ def get_study_pairing(study_id):
             #get 25 locations with q scores
             obj = { 
                 'study_id': study_id,
-                'location_id' : { '$ne' : location1.get('_id') },
+                'location_id' : { '$ne' : QS1.get('location_id') },
                 'num_votes' : { '$lte' : 30 },
                 'q' : { '$exists' : True }
             }
