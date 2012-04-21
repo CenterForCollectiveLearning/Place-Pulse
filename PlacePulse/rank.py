@@ -102,20 +102,6 @@ def calculate_win_loss(images, votes_selected):
         final_rankings[key] = wr1
     return final_rankings
 
-def output_ranking_file(final_rankings, FILENAME, id_locations=None):
-    rankings = csv.writer(open(FILENAME, 'wb'), delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)       
-    if id_locations != None:
-        temp = "id","wr1","id_city","lat","lng","id_location"
-        rankings.writerow(temp)
-        for id_place, wr1 in final_rankings.iteritems():
-            temp = id_place,wr1,id_locations[id_place][2],id_locations[id_place][0],id_locations[id_place][1],id_locations[id_place][3]
-            rankings.writerow(temp)
-    else:
-        temp = "id","score"
-        for id_place, score in final_rankings.iteritems():
-            temp = id_place, score
-            rankings.writerow(temp)
-    
 def set_image_hash(votes_selected):
     images = {}
     for vote in votes_selected:
@@ -152,7 +138,7 @@ def rank_mongo(study_id=None):
     
     #Load Results to db
     for location_id, q in final_rankings.iteritems():
-        if not Database.updateLocationScore(study_id,location_id,q,images[location_id]):
+        if not Database.updateQS(study_id,location_id,q):
              print "Could not update score for %s" % location_id
     return
 
@@ -164,6 +150,20 @@ if __name__ == '__main__':
 
 
 # Unused functions: 
+# def output_ranking_file(final_rankings, FILENAME, id_locations=None):
+#     rankings = csv.writer(open(FILENAME, 'wb'), delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)       
+#     if id_locations != None:
+#         temp = "id","wr1","id_city","lat","lng","id_location"
+#         rankings.writerow(temp)
+#         for id_place, wr1 in final_rankings.iteritems():
+#             temp = id_place,wr1,id_locations[id_place][2],id_locations[id_place][0],id_locations[id_place][1],id_locations[id_place][3]
+#             rankings.writerow(temp)
+#     else:
+#         temp = "id","score"
+#         for id_place, score in final_rankings.iteritems():
+#             temp = id_place, score
+#             rankings.writerow(temp)
+# 
 # def load_places_from_csv(filename):
 #     #Load Places (id, lat, lon, id_city)
 #     id_locations = {}

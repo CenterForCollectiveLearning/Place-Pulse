@@ -5,7 +5,10 @@ from flask import redirect,render_template,request,url_for
 from util import *
 
 from datetime import datetime
-from random import sample
+from random import randint
+from random import random
+
+from pymongo import ASCENDING
 
 study = Module(__name__)
 
@@ -24,10 +27,10 @@ def create_study():
     newStudyID = Database.studies.insert({
         'study_name': request.form['study_question'],
         'study_question': request.form['study_question'],
-		'study_public': request.form['study_public'],
+        'study_public': request.form['study_public'],
         'data_resolution': request.form['data_resolution'],
         'location_distribution': request.form['location_distribution'],
-		'polygon': request.form['polygon']})
+        'polygon': request.form['polygon']})
     # Return the ID for the client to rendezvous at /study/populate/<id>
     return jsonifyResponse({
         'studyID': str(newStudyID)
@@ -47,40 +50,19 @@ def populate_study(study_id):
         'study_id': request.form['study_id'],
         'heading': 0,
         'pitch': 0,
-        'bucket' : Buckets.Unknown,
         'votes' : 0
     })
     return jsonifyResponse({
         'success': True
     })
 
+# TODO: Check if front end calls this function. Probably unnecessary
 @study.route('/study/finish_populate/<study_id>/',methods=['POST'])
 def finish_populate_study(study_id):
     if Database.getStudy(study_id) is None:
         return jsonifyResponse({
             'error': 'Study doesn\'t exist!'
         })
-    locationsInQueue = Database.locations.find({
-        'study_id': study_id,
-        'bucket': Buckets.Queue
-    })
-    locationsToGet = Buckets.QueueSize-locationsInQueue.count()
-    print locationsToGet," ARGGGGGGHHHH"
-    # TODO: See if Mongo lets you do this in one update call.
-    c=0
-    #Temporary modification to allow for variable sizes of studies
-    location = 'fill'
-    while(location!=None):
-        location = Database.locations.find_one({
-            'study_id': study_id,
-            'bucket': Buckets.Unknown
-        })
-	if(location==None):
-		break
-        location['bucket'] = Buckets.Queue
-        Database.locations.save(location)
-        c+=1
-    print(c)
     return jsonifyResponse({
         'success': True
     })
@@ -127,14 +109,8 @@ def delete_location(id):
 def post_new_vote(study_id):
     def incVotes(obj):
         obj['votes'] += 1
-        if obj['votes'] > 30:
-            obj.bucket = Buckets.Archive
-
-            newForQueue = Database.locations.find_one({ 'bucket': Buckets.Unknown })
-            newForQueue['bucket'] = Buckets.Queue
-            Database.locations.save(newForQueue)
         Database.locations.save(obj)
-
+        Database.incQSVoteCount(study_id, obj.get('_id'))
 
     leftObj = Database.getPlace(request.form['left'])
     rightObj = Database.getPlace(request.form['right'])
@@ -157,10 +133,50 @@ def post_new_vote(study_id):
 
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
-    locationsInQueueCursor = Database.locations.find({ 'bucket': Buckets.Queue, 
-                            'study_id': study_id }).limit(Buckets.QueueSize)
-    locationsInQueue = [location for location in locationsInQueueCursor]
-    locationsToDisplay = sample(locationsInQueue,2)
+    def randomLocation(exclude=None, sort=False):
+        # get locations depending on flags
+        obj = { 'study_id': study_id }
+        if exclude is not None: 
+            obj['_id'] = { '$ne' : exclude }
+        if sort:
+            location = Database.locations.find(obj).sort('votes', ASCENDING).skip(randint(0,5)).limit(1).next()
+        else:
+            count = Database.locations.find(obj).count()
+            location = Database.locations.find(obj).skip(randint(0,count)).limit(1).next()
+        
+        #check if over 30 and has Q score
+        QS = Database.getQS(study_id, location.get('_id'))
+        if QS is not None:
+            if QS.get('num_votes')  > 30 and not sort:
+                return randomLocation(exclude)
+            if QS.get('q', None) is None:
+                QS = None
+        return location, QS
+    
+    location1, QS1 = randomLocation(sort=True)
+    try:
+        if QS1 == None: 
+            location2, QS2 = randomLocation(exclude=location1.get('_id'))  
+        else: 
+            #get locations with fewest votes
+            QSCursor = Database.qs.find({ 
+                'study_id': study_id,
+                'location_id' : { '$ne' : location1.get('_id') },
+                'num_votes' : { '$lte' : 30 }
+                }).limit(25)
+            QSs = [QS for QS in QSCursor]
+            
+            #pick location with closest score
+            dist = lambda QS: abs(QS.get('q', random()) - QS1['q'])
+            QS2 = min(QSs, key=dist)
+            location2 = Database.getLocation(QS2.get('location_id'))
+    except:
+        return jsonifyResponse({ 'error': "Only 1 location in study!" })
+
+    locationsToDisplay = [location1, location2]
+    print "display left: %s" % location1.get('_id')
+    print "display right: %s" % location2.get('_id')
+
     return jsonifyResponse({
         'locs' : map(objifyPlace, locationsToDisplay)
     })
@@ -175,10 +191,10 @@ def server_view_study(study_id):
 
 @study.route('/location/view/<location_id>/',methods=['GET'])
 def get_location(location_id):
-	locationCursor = Database.getPlace(location_id)
-	lat = locationCursor['loc'][0]
-	lng = locationCursor['loc'][1]
-	return "<img src='http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false'/>"
+    locationCursor = Database.getPlace(location_id)
+    lat = locationCursor['loc'][0]
+    lng = locationCursor['loc'][1]
+    return "<img src='http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false'/>"
 
 #--------------------Results
 @study.route('/results/<studyName>/',methods = ['GET'])

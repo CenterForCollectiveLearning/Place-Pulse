@@ -101,18 +101,38 @@ class database(object):
             return True
         except:
             return None
-    
-    def updateLocationScore(self,study_id,location_id,q,num_votes):
-        try:
-        	self.qs.update( { 'study_id': study_id ,'location_id' : location_id } , { '$set' : { 'q' : q, 'num_votes': num_votes } }, True )
-        	return True
-        except:
-            return None
-    
-    
+        
     def deleteLocation(self,location_id):
         try:
             self.locations.remove( { '_id' : ObjectId(location_id) })
+            return True
+        except:
+            return None
+            
+            
+#--------------------QS
+    def getQS(self,study_id,location_id):
+        try:
+            return self.qs.find({ "study_id": study_id, "location_id": location_id }).next()
+        except:
+            return None
+
+    def updateQS(self,study_id,location_id,q):
+        try:
+            self.qs.update( { 
+                'study_id': study_id ,
+                'location_id' : location_id 
+            } , { '$set' : { 'q' : q } }, True )
+            return True
+        except:
+            return None
+
+    def incQSVoteCount(self,study_id,location_id):
+        try:
+            self.qs.update( { 
+                'study_id': study_id ,
+                'location_id' : location_id 
+            } , { '$inc' : { 'num_votes': 1 } } , True)
             return True
         except:
             return None
