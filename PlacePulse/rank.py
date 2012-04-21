@@ -1,10 +1,7 @@
 #Phil Salesses 2/2/2012
 #Michael Wong 3/22/2012
 import sys
-import csv, random, operator, math, numpy
-from scipy.stats import norm
-from scipy.optimize import fmin_powell
-from scipy.optimize import fmin_ncg
+import csv, random, operator, math
 from collections import defaultdict
 from db import Database
 
@@ -321,8 +318,11 @@ def rank_csv():
     #Output Results to File
     output_ranking_file(final_rankings, output_file, id_locations)
 
-def rank_mongo():
-    study = Database.getRandomStudy()
+def rank_mongo(study_id=None):
+    if study_id:
+        study = Database.getStudy(study_id)
+    else:
+        study = Database.getRandomStudy()
     study_id = study.get('_id')
     print "processing study: %s" % study_id
 
@@ -388,4 +388,7 @@ def test_basic():
     return m
 
 if __name__ == '__main__':
-    sys.exit(rank_mongo())
+    rankStudy = None
+    if len(sys.argv) == 2:
+        rankStudy = sys.argv[1]
+    sys.exit(rank_mongo(study_id=rankStudy))
