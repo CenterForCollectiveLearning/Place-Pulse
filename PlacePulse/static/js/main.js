@@ -58,4 +58,3 @@ function getSVURL(lat,lng) {
     // TODO: re-add this SV-specific data: &fov=90&heading=235&pitch=10
     return "http://maps.googleapis.com/maps/api/streetview?size=470x306&location=" + lat + "," + lng + "&sensor=false";
 }
-init();
