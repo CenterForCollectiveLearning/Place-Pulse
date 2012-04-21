@@ -139,11 +139,11 @@ def post_new_vote(study_id):
 
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
-    # get location 1
-    QS1 = Database.randomQS(study_id, fewestVotes=True)
-    
-    #get location 2
     try:
+        # get location 1
+        QS1 = Database.randomQS(study_id, fewestVotes=True)
+        
+        #get location 2
         if QS1.get('q', None) is None: # location 1 has no q score
             QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
         else:
@@ -161,12 +161,13 @@ def get_study_pairing(study_id):
             #pick location with closest score
             dist = lambda QS: abs(QS.get('q') - QS1['q'])
             QS2 = min(QSCursor, key=dist)
-    except:
-         return jsonifyResponse({ 'error': "Cannot get location 2." })
 
-    # convert to location objects
-    toLocation = lambda QS: Database.getLocation(QS.get('location_id'))
-    locationsToDisplay = map(toLocation, [QS1, QS2])
+        # convert to location objects
+        toLocation = lambda QS: Database.getLocation(QS.get('location_id'))
+        locationsToDisplay = map(toLocation, [QS1, QS2])
+    except:
+         return jsonifyResponse({ 'error': "Could not get locations." })
+
     print "left: %s" % QS1.get("location_id")
     print "right: %s" % QS2.get("location_id")
 
