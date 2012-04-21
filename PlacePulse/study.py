@@ -5,10 +5,7 @@ from flask import redirect,render_template,request,url_for
 from util import *
 
 from datetime import datetime
-from random import randint
 from random import random
-
-from pymongo import ASCENDING
 
 study = Module(__name__)
 
@@ -45,13 +42,18 @@ def serve_populate_study(study_id):
 
 @study.route('/study/populate/<study_id>/',methods=['POST'])
 def populate_study(study_id):
-    Database.locations.insert({
+    location_id = Database.locations.insert({
         'loc': [request.form['lat'],request.form['lng']],
         'study_id': request.form['study_id'],
         'heading': 0,
         'pitch': 0,
         'votes' : 0
     })
+    print location_id
+    Database.qs.update({
+        'location_id' : location_id, 
+        'study_id': request.form['study_id'],
+    }, { '$set': {'num_votes' : 0 } }, True)    
     return jsonifyResponse({
         'success': True
     })
@@ -133,52 +135,36 @@ def post_new_vote(study_id):
 
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
-    def randomLocation(exclude=None, sort=False):
-        # build obj to find in db
-        obj = { 'study_id': study_id }
-        if exclude is not None: 
-            obj['_id'] = { '$ne' : exclude }
-        if sort: 
-        	# get a random location with fewest votes
-            location = Database.locations.find(obj).sort('votes', ASCENDING).skip(randint(0,10)).limit(1).next()
-        else:
-        	# get a completely random location
-            count = Database.locations.find(obj).count()
-            location = Database.locations.find(obj).skip(randint(0,count)).limit(1).next()
-        #check if location has over 30 vote and has Q score
-        QS = Database.getQS(study_id, location.get('_id'))
-        if QS is not None:
-            if QS.get('num_votes')  > 30 and not sort:
-                return randomLocation(exclude, sort=True)
-            if QS.get('q', None) is None:
-                QS = None
-        return location, QS
-    
     # get location 1
-    location1, QS1 = randomLocation(sort=True)
+    QS1 = Database.randomQS(study_id, fewestVotes=True)
     
     #get location 2
     try:
-        if QS1 == None: # location 1 has no q score
-            location2, QS2 = randomLocation(exclude=location1.get('_id'))  
-        else: 
+        if QS1.get('q', None) is None: # location 1 has no q score
+            QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
+        else:
             #get 25 locations with q scores
-            QSCursor = Database.qs.find({ 
+            obj = { 
                 'study_id': study_id,
                 'location_id' : { '$ne' : location1.get('_id') },
                 'num_votes' : { '$lte' : 30 },
                 'q' : { '$exists' : True }
-                }).limit(25)            
+            }
+            count = Database.qs.find(obj).count()
+            rand = randint(0,min(0,count-25))
+            QSCursor = Database.qs.find(obj).skip(rand).limit(25)            
+            
             #pick location with closest score
             dist = lambda QS: abs(QS.get('q') - QS1['q'])
             QS2 = min(QSCursor, key=dist)
-            location2 = Database.getLocation(QS2.get('location_id'))
     except:
-        return jsonifyResponse({ 'error': "Only 1 location in study!" })
+         return jsonifyResponse({ 'error': "Cannot get location 2." })
 
-    locationsToDisplay = [location1, location2]
-    print "display left: %s" % location1.get('_id')
-    print "display right: %s" % location2.get('_id')
+    # convert to location objects
+    toLocation = lambda QS: Database.getLocation(QS.get('location_id'))
+    locationsToDisplay = map(toLocation, [QS1, QS2])
+    print "left: %s" % QS1.get("location_id")
+    print "right: %s" % QS2.get("location_id")
 
     return jsonifyResponse({
         'locs' : map(objifyPlace, locationsToDisplay)

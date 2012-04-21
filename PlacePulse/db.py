@@ -2,8 +2,11 @@ import os
 import pymongo
 import random
 from pymongo.objectid import ObjectId
+from pymongo import ASCENDING
 
 from random import choice
+from random import randint
+
 
 class database(object):
 #--------------------Results
@@ -91,7 +94,7 @@ class database(object):
     
     def getLocation(self,location_id):
         try:
-            return self.locations.find({'_id': location_id})
+            return self.locations.find_one(ObjectId(location_id))
         except:
             return None
             
@@ -136,6 +139,20 @@ class database(object):
             return True
         except:
             return None
+
+    def randomQS(self, study_id, exclude=None, fewestVotes=False):
+        o = { 'study_id': study_id }
+        if exclude is not None: o['location_id'] = { '$ne' : exclude }
+        if fewestVotes: 
+            f = 10
+            s = randint(0,f) 
+            QS = self.qs.find(o).sort('num_votes',ASCENDING).limit(f).skip(s).next()
+        else:
+            s = randint(0, self.qs.find(o).count())
+            QS = self.qs.find(o).skip(s).limit(1).next()
+        if QS.get('num_votes')  > 30 and not sort:
+            return self.randomQS(study_id, exclude=exclude, sort=True)
+        return QS
 
     @property
     def locations(self):
