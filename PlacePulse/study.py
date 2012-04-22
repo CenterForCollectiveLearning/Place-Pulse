@@ -6,6 +6,7 @@ from util import *
 
 from datetime import datetime
 from random import random
+from random import randint
 
 study = Module(__name__)
 
@@ -140,39 +141,33 @@ def post_new_vote(study_id):
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
     try:
-        # get location 1
-        QS1 = Database.randomQS(study_id, fewestVotes=True)
-        
-        print QS1
-        #get location 2
-        if QS1.get('q', None) is None: # location 1 has no q score
-            QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
-        else:
-            print "here"
-            #get 25 locations with q scores
-            obj = { 
-                'study_id': study_id,
-                'location_id' : { '$ne' : QS1.get('location_id') },
-                'num_votes' : { '$lte' : 30 },
-                'q' : { '$exists' : True }
-            }
-            count = Database.qs.find(obj).count()
-            s = randint(0,min(0,count-25))
-            QSCursor = Database.qs.find(obj).skip(s).limit(25)            
-            
-            #pick location with closest score
-            dist = lambda QS: abs(QS.get('q') - QS1['q'])
-            QS2 = min(QSCursor, key=dist)
-
-        # convert to location objects
-        toLocation = lambda QS: Database.getLocation(QS.get('location_id'))
-        locationsToDisplay = map(toLocation, [QS1, QS2])
+		# get location 1
+		QS1 = Database.randomQS(study_id, fewestVotes=True)
+		#get location 2
+		if QS1.get('q', None) is None: # location 1 has no q score
+			QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
+		else:
+			#get 25 locations with q scores
+			obj = { 
+				'study_id': study_id,
+				'location_id' : { '$ne' : QS1.get('location_id') },
+				'num_votes' : { '$lte' : 30 },
+				'q' : { '$exists' : True }
+			}
+			count = Database.qs.find(obj).count()
+			s = randint(0,max(0,count-25))
+			QSCursor = Database.qs.find(obj).skip(s).limit(25)            
+			
+			#pick location with closest score
+			dist = lambda QS: abs(QS.get('q') - QS1['q'])
+			QS2 = min(QSCursor, key=dist)
+	
+		# convert to location objects
+		toLocation = lambda QS: Database.getLocation(QS.get('location_id'))
+		locationsToDisplay = map(toLocation, [QS1, QS2])
     except:
          return jsonifyResponse({ 'error': "Could not get locations." })
-
-    print "left: %s" % QS1.get("location_id")
-    print "right: %s" % QS2.get("location_id")
-
+    
     return jsonifyResponse({
         'locs' : map(objifyPlace, locationsToDisplay)
     })
