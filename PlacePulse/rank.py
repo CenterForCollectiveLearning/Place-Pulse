@@ -39,50 +39,42 @@ def calculate_win_loss(images, votes_selected):
         WR_int = {}
         alpha = 1 #Tuning Parameter
         counter = 0    
-    
-        #Select half the data randomly
-        selected_images_temp = random.sample(images, int(len(images) * 50/100))
-        selected_images = {}
-        for selected in selected_images_temp:
-            selected_images[selected] = 1
-    
+        
         #Cycle through votes and set hashes
         for vote in votes_selected:
             #Is it one of the the selected images?
-            if selected_images.get(vote['id_left']) is not None:
-                if selected_images.get(vote['id_right']) is not None:
-                    counter += 1
-                    play[vote['id_left']] += 1
-                    play[vote['id_right']] += 1
-                    neighbors[vote['id_left']].add(vote['id_right'])
-                    neighbors[vote['id_right']].add(vote['id_left'])
-                    if vote['winner'] == vote['id_left']:
-                        WL[vote['id_left']][vote['id_right']] += 3
-                        LW[vote['id_right']][vote['id_left']] += 3
-                        W[vote['id_left']] += 1
-                    elif vote['winner'] == vote['id_right']:
-                        WL[vote['id_right']][vote['id_left']] += 3
-                        LW[vote['id_left']][vote['id_right']] += 3
-                        W[vote['id_right']] += 1
-                    elif vote['winner'] == '0':
-                        WL[vote['id_right']][vote['id_left']] += 1
-                        LW[vote['id_left']][vote['id_right']] += 1
-                        T[vote['id_left']] += 1
-                        T[vote['id_right']] += 1
+			counter += 1
+			play[vote['id_left']] += 1
+			play[vote['id_right']] += 1
+			neighbors[vote['id_left']].add(vote['id_right'])
+			neighbors[vote['id_right']].add(vote['id_left'])
+			if vote['winner'] == vote['id_left']:
+				WL[vote['id_left']][vote['id_right']] += 3
+				LW[vote['id_right']][vote['id_left']] += 3
+				W[vote['id_left']] += 1
+			elif vote['winner'] == vote['id_right']:
+				WL[vote['id_right']][vote['id_left']] += 3
+				LW[vote['id_left']][vote['id_right']] += 3
+				W[vote['id_right']] += 1
+			elif vote['winner'] == '0':
+				WL[vote['id_right']][vote['id_left']] += 1
+				LW[vote['id_left']][vote['id_right']] += 1
+				T[vote['id_left']] += 1
+				T[vote['id_right']] += 1
         #Calculate First order        
-        for key, value in WL.iteritems():
+        for key, value in play.iteritems():
             WR[key] = W[key] / play[key]
             LR[key] = (play[key] - W[key] - T[key]) / play[key]
         #Calculate Second order
-        for key, value in WL.iteritems():
+        for key, value in play.iteritems():
             WR1[key] = WR[key]
             for key1, value1 in WL[key].iteritems():
                 WR1[key] += alpha * WR[key1] / len(neighbors[key1])
             for key1, value1 in LW[key].iteritems():
                 WR1[key] -= alpha * LR[key1] / len(neighbors[key1])
         #Write to temp_scores
-        for key, value in WR1.iteritems():
-            temp_scores[key]['WR1'] = temp_scores[key]['WR1'] + value
+        for key, value in play.iteritems():
+            temp_scores[key]['WR1'] += value
             temp_scores[key]['votes'] += 1   
     final_rankings = defaultdict(lambda: defaultdict(float))
     for key, value in temp_scores.iteritems():
@@ -137,10 +129,11 @@ def rank_mongo(study_id=None):
     print final_rankings
     
     #Load Results to db
+    print len(final_rankings)
     for location_id, q in final_rankings.iteritems():
-        if not Database.updateQS(study_id,location_id,q):
+        if Database.updateQS(str(study_id),location_id,q) is None:
              print "Could not update score for %s" % location_id
-    return
+    return 1
 
 if __name__ == '__main__':
     rankStudy = None

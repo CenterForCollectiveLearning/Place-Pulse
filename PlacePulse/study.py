@@ -50,7 +50,7 @@ def populate_study(study_id):
         'votes' : 0
     })
     Database.qs.update({
-        'location_id' : location_id, 
+        'location_id' : str(location_id), 
         'study_id': request.form['study_id'],
     }, { '$set': {'num_votes' : 0 } }, True)    
     return jsonifyResponse({
@@ -116,7 +116,7 @@ def post_new_vote(study_id):
     def incVotes(obj):
         obj['votes'] += 1
         Database.locations.save(obj)
-        Database.incQSVoteCount(study_id, obj.get('_id'))
+        Database.incQSVoteCount(study_id, str(obj.get('_id')))
 
     leftObj = Database.getPlace(request.form['left'])
     rightObj = Database.getPlace(request.form['right'])
@@ -143,10 +143,12 @@ def get_study_pairing(study_id):
         # get location 1
         QS1 = Database.randomQS(study_id, fewestVotes=True)
         
+        print QS1
         #get location 2
         if QS1.get('q', None) is None: # location 1 has no q score
             QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
         else:
+            print "here"
             #get 25 locations with q scores
             obj = { 
                 'study_id': study_id,
