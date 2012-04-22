@@ -2,13 +2,14 @@ var map; //Google Map
 var randomPoint; //Random Lat/Long Point
 var sv = null;
 var isWithinCity;
-var studyArea = new Object();
-var studyPolygon = [];
+var placeArea = new Object();
+var placePolygon = [];
+var studyID = '';
 var polygon;
 var completed = 0;
 var virgin = 0;
 var pointsToAdd = 100;
-var studyID = ''
+var placeID = '';
 var totalPoints=0;
 var goodHits=0;
 var waitingForFinish = false;
@@ -27,60 +28,60 @@ var hitsInGrid=0;
 var countCalls=0;
 var countReturns=0;
 var progressBarMax=0;
-
-function startPopulatingStudy(_studyID, polygonStr, dataResolution, locDistribution) {
+function startPopulatingPlace(_placeID, polygonStr, dataResolution, locDistribution, _studyID) {
     studyID = _studyID;
-    pointsToAdd = 100;
-    progressBarMax=pointsToAdd;
+    placeID = _placeID;
+    
+    pointsToAdd = 100; //TODO: Michael X
+    progressBarMax=pointsToAdd; //TODO: Michael X
     extendGmaps();
     dataRes = parseInt(dataResolution);
     locDist = locDistribution;
-    studyPolygon = [];
+    placePolygon = [];
     var polyArray = polygonStr.split(',');
     // polygonStr is formatted like x1,y1,x2,y2, etc...
     for (var polyArrayIdx = 0; polyArrayIdx < polyArray.length; polyArrayIdx+=2) {
-        studyPolygon.push(new google.maps.LatLng(polyArray[polyArrayIdx+1],polyArray[polyArrayIdx],true));
+        placePolygon.push(new google.maps.LatLng(polyArray[polyArrayIdx+1],polyArray[polyArrayIdx],true));
     }
 
     // TODO: comment this out once populating is working again.
-    console.log(studyPolygon);
+    console.log(placePolygon);
     
     sv = new google.maps.StreetViewService(); //Google Street View Service
     
-	studyArea = {name: "studyArea", polygon: studyPolygon, TLLat: null, TLLng: null, BRLat: null, BRLng: null};
+	placeArea = {name: "placeArea", polygon: placePolygon, TLLat: null, TLLng: null, BRLat: null, BRLng: null};
 	//Calculate Bounding box for fetched city
     calcBoundingBox();
     pickPoints();
-
 }
 function calcBoundingBox() 
 {
 	var arrayLat = [];
 	var arrayLng = [];
-	for (var i=0; i<studyArea.polygon.length; i++)
+	for (var i=0; i<placeArea.polygon.length; i++)
 	{
-		arrayLat[i] = studyArea.polygon[i].lat();
-		arrayLng[i] = studyArea.polygon[i].lng();
+		arrayLat[i] = placeArea.polygon[i].lat();
+		arrayLng[i] = placeArea.polygon[i].lng();
 	}
-	studyArea.TLLat = Math.max.apply(Math, arrayLat);
-	studyArea.TLLng = Math.min.apply(Math, arrayLng);
-	studyArea.BRLat = Math.min.apply(Math, arrayLat);
-	studyArea.BRLng = Math.max.apply(Math, arrayLng);
+	placeArea.TLLat = Math.max.apply(Math, arrayLat);
+	placeArea.TLLng = Math.min.apply(Math, arrayLng);
+	placeArea.BRLat = Math.min.apply(Math, arrayLat);
+	placeArea.BRLng = Math.max.apply(Math, arrayLng);
 	if(locDist=='randomly') {
 		maxRows=0;
 		maxCols=0;
-		colDiff=studyArea.BRLng-studyArea.TLLng;
-		rowDiff=studyArea.TLLat-studyArea.BRLat;
+		colDiff=placeArea.BRLng-placeArea.TLLng;
+		rowDiff=placeArea.TLLat-placeArea.BRLat;
 	}
 	else {
 		var boundingBox =[]
-		boundingBox.push(new google.maps.LatLng(studyArea.TLLat,studyArea.TLLng));
-		boundingBox.push(new google.maps.LatLng(studyArea.TLLat,studyArea.BRLng));
-		boundingBox.push(new google.maps.LatLng(studyArea.BRLat,studyArea.BRLng));
-		boundingBox.push(new google.maps.LatLng(studyArea.BRLat,studyArea.TLLng));
+		boundingBox.push(new google.maps.LatLng(placeArea.TLLat,placeArea.TLLng));
+		boundingBox.push(new google.maps.LatLng(placeArea.TLLat,placeArea.BRLng));
+		boundingBox.push(new google.maps.LatLng(placeArea.BRLat,placeArea.BRLng));
+		boundingBox.push(new google.maps.LatLng(placeArea.BRLat,placeArea.TLLng));
 		var area = google.maps.geometry.spherical.computeArea(boundingBox);
-		var h = studyArea.TLLat-studyArea.BRLat;
-		var l = studyArea.BRLng-studyArea.TLLng;
+		var h = placeArea.TLLat-placeArea.BRLat;
+		var l = placeArea.BRLng-placeArea.TLLng;
 		var c = Math.pow(area/(h*l),.5);
 		maxRows = Math.round(c*h/dataRes/2.0);
 		maxCols = Math.round(c*l/dataRes/2.0);
@@ -89,13 +90,13 @@ function calcBoundingBox()
 	}
 
 	polygon = new google.maps.Polygon({
-		paths: studyArea.polygon,        
+		paths: placeArea.polygon,        
 		strokeWeight: 2,
         strokeOpacity: 1,
         strokeColor: '#4aea39',
         fillColor: '#4aea39'
         });
-        pointsToAdd = Math.round(google.maps.geometry.spherical.computeArea(studyArea.polygon)/Math.pow(dataRes*2,2));
+        pointsToAdd = Math.round(google.maps.geometry.spherical.computeArea(placeArea.polygon)/Math.pow(dataRes*2,2));
 }
 
 
@@ -128,12 +129,12 @@ function newPoint(r,c)
 function guessPoint(row,col) 
 {
 	if(locDist=='evenly') {
-		var lat = rowDiff*.5+studyArea.TLLat-rowDiff*(row+1.0);
-		var lng = colDiff*.5+studyArea.TLLng+colDiff*(col);
+		var lat = rowDiff*.5+placeArea.TLLat-rowDiff*(row+1.0);
+		var lng = colDiff*.5+placeArea.TLLng+colDiff*(col);
 	}
 	else {
-		var lat = Math.random()*rowDiff+studyArea.TLLat-rowDiff*(row+1.0);
-		var lng = Math.random()*colDiff+studyArea.TLLng+colDiff*(col);
+		var lat = Math.random()*rowDiff+placeArea.TLLat-rowDiff*(row+1.0);
+		var lng = Math.random()*colDiff+placeArea.TLLng+colDiff*(col);
 	}
 	return new google.maps.LatLng(lat, lng);
 
@@ -162,8 +163,8 @@ function plot()
 	};
 	map = new google.maps.Map($('#map').get()[0], mapOptions);
 	polygon.setMap(map);
-	var swpoint = new google.maps.LatLng(studyArea.BRLat, studyArea.TLLng);
-    var nepoint = new google.maps.LatLng(studyArea.TLLat, studyArea.BRLng);
+	var swpoint = new google.maps.LatLng(placeArea.BRLat, placeArea.TLLng);
+    var nepoint = new google.maps.LatLng(placeArea.TLLat, placeArea.BRLng);
     var bounds = new google.maps.LatLngBounds(swpoint, nepoint);
     map.fitBounds(bounds);
     green = new google.maps.MarkerImage(
@@ -211,20 +212,20 @@ function processSVData(data, status)
 
 	}
 	if(countReturns==countCalls) {
-		endStudyPopulation();
+		endplacePopulation();
 	}
 }
 
-function endStudyPopulation() {
+function endplacePopulation() {
 		    $.ajax({
 		        dataType: 'json',
-		        url: "/study/finish_populate/" + studyID + '/',
+		        url: "/place/finish_populate/" + placeID + '/',
 		        type: "POST",
 		        data: {
-		            'study_id': studyID
+		            'place_id': placeID
 		        },
 		        success: function(e) {
-		            window.location = "/study/curate/" + studyID;
+		            window.location = "/place/curate/" + placeID;
 		        }
 		    });
 }
@@ -250,7 +251,7 @@ function updateDB(lat,lng)
 					refreshMap(lat,lng);
 				}
 				else {
-					endStudyPopulation();
+					endplacePopulation();
 				}
 
 			}
@@ -265,7 +266,7 @@ function updateDB(lat,lng)
 }
 
 function findGridBox(lat,lng) {
-	return [Math.floor((studyArea.TLLat-lat)/rowDiff),Math.floor((lng-studyArea.TLLng)/colDiff)]
+	return [Math.floor((placeArea.TLLat-lat)/rowDiff),Math.floor((lng-placeArea.TLLng)/colDiff)]
 }
 
 function refreshMap(lat,lng)

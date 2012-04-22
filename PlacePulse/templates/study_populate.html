@@ -71,7 +71,7 @@ $(document).ready(function() {
 	loadScript();
 });
 function init() {
-	startPopulatingStudy("{{ study_id }}","{{ polygon }}","{{ dataRes }}","{{ locDist }}");
+	startPopulatingPlace("{{ place_id }}","{{ polygon }}","{{ dataRes }}","{{ locDist }}, {{ studyID }}");
 }
 </script>
 {% endblock %}

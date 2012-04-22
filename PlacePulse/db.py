@@ -24,7 +24,7 @@ class database(object):
             return self.studies.find_one(ObjectId(study_id))
         except:
             return None
-
+            
     def getRandomStudy(self):
         try:
             count = self.studies.count()
@@ -75,7 +75,7 @@ class database(object):
 #--------------------Places
     def getPlace(self,place_id):
         try:
-            return self.locations.find_one(ObjectId(place_id))
+            return self.places.find_one(ObjectId(place_id))
         except:
             return None
 
@@ -86,9 +86,9 @@ class database(object):
             return None
 
 #--------------------Locations
-    def getLocations(self,study_id,limit=24):
+    def getLocations(self,place_id,limit=24):
         try:
-            return self.locations.find({'study_id': study_id}).limit(limit)
+            return self.locations.find({'place_id': place_id}).limit(limit)
         except:
             return None
     
@@ -159,11 +159,15 @@ class database(object):
             return QS
         except:
             return None
-
+    
     @property
     def locations(self):
         return self.db.locations
 
+    @property
+    def places(self):
+        return self.db.places
+        
     @property
     def results(self):
         return self.db.results

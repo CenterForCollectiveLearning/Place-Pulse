@@ -41,7 +41,8 @@ def facebook_authorized(resp):
         return 'Could not call Facebook.'
     session['userObj'] = {
         'source': 'facebook',
-        'name':  me.data['name']
+        'name':  me.data['name'],
+        'email': me.data['email']
     }
     return redirect(request.args.get('next') or '/')
 

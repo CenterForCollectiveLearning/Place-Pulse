@@ -391,7 +391,7 @@ function updateDB() {
             },
             type: 'POST',
             success: function(data) {
-                window.location.replace(window.location.protocol + '//' + window.location.host + "/study/populate/" + data.studyID);
+                window.location.replace(window.location.protocol + '//' + window.location.host + "/place/populate/" + data.placeID);
             }
         });
 }
