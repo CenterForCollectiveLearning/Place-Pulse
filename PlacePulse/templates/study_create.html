@@ -21,7 +21,7 @@
         <ul class="nav nav-list">
           <li class="nav-header">Steps to Creating a Study</li>
           <li id="info" class="active"><a href='#'><i class="icon-book icon-white"></i> Study Information</a></li>
-          <li id="define"><a href='#'><i class="icon-plane"></i> Define Places</a></li>
+          <li id="define"><a href='#'><i class="icon-plane"></i> Select Places</a></li>
           <li id="populate"><a href='#'><i class="icon-map-marker"></i> Populate Locations</a></li>
           <li id="curate"><a href='#'><i class="icon-picture"></i> Curate Images</a></li>
           <li id="start"><a href='#'><i class="icon-ok"></i> Start Collecting Votes</a></li>
@@ -74,44 +74,68 @@
                 </div>
               </fieldset>
             </div>
-            <div class="form-horizontal" id="mapInterface">
-                <div class="well">
-                    <div id="map"></div>
-                      <div id="mapInterfaceButtons">
-                        <div id="selectionarea" class="alert alert-error">
-                          <strong>Selection Too Large</strong> Please reduce the area of your selection to under 500 square miles.
-                        </div>
-                      <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
-                    </div>
-                </div>
-              <fieldset>
-                <legend>Define Area</legend>
-                <div class="control-group">
-                  <label class="control-label" for="location_distribution">Location distribution</label>
-                  <div class="controls">
-                    <select name="location_distribution" id="location_distribution">
-                      <option value="randomly">Randomly</option>
-                      <option value="evenly">Evenly</option>
-                      <option value="gridrandom">Random within a grid</option>
-                    </select>
-                    <p class="help-block">When selecting locations within your polygon, this is the method we will use.</p>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label" for="data_resolution">Data Resolution</label>
-                  <div class="controls">
-                    <select name="data_resolution" id="data_resolution">
+            <div class="form-horizontal" id="selectPlaces">
+                <div class="tabbable">
+                  <ul class="nav nav-tabs">
+                    <h2 style="margin-bottom:30px;">Where do you want to source your images?</h2>
+                    <li class="active"><a href="#1" data-toggle="tab">Google Street View</a></li>
+                    <li><a href="#2" data-toggle="tab">Upload Your Own</a></li>
+                    <li><a href="#3" data-toggle="tab">From Existing Study</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="1">
+                      <div class="form-horizontal" id="mapInterface">
+                          <div class="well">
+                              <div id="selectioninstructions" class="alert alert-info">
+                                <strong>Select Image Search Area</strong> by clicking three places on the map to create a polygon.
+                          </div>
+                              <div id="map"></div>
+                                <div id="mapInterfaceButtons">
+                                  <div id="selectionarea" class="alert alert-error">
+                                    <strong>Selection Too Large</strong> Please reduce the area of your selection to under 500 square miles.
+                                  </div>
+                                <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
+                              </div>
+                          </div>
+                        <fieldset>
+                          <legend>Define Area</legend>
+                          <div class="control-group">
+                            <label class="control-label" for="location_distribution">Location distribution</label>
+                            <div class="controls">
+                              <select name="location_distribution" id="location_distribution">
+                                <option value="randomly">Randomly</option>
+                                <option value="evenly">Evenly</option>
+                                <option value="gridrandom">Random within a grid</option>
+                              </select>
+                              <p class="help-block">When selecting locations within your polygon, this is the method we will use.</p>
+                            </div>
+                          </div>
+                          <div class="control-group">
+                            <label class="control-label" for="data_resolution">Data Resolution</label>
+                            <div class="controls">
+                              <select name="data_resolution" id="data_resolution">
 
-                    </select>
-                    <p class="help-block">This will help us determine the density of locations within your polygon.</p>
+                              </select>
+                              <p class="help-block">This will help us determine the density of locations within your polygon.</p>
+                            </div>
+                          </div>
+                          <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="submitPolygon">Continue</button>
+                            <button type="reset" class="btn">Clear</button>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="2">
+                      <h3>Feature Coming Soon...</h3>
+                    </div>
+                    <div class="tab-pane" id="3">
+                      <h3>Feature Coming Soon...</h3>
+                    </div>
                   </div>
                 </div>
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-primary" id="submitPolygon">Continue</button>
-                  <button type="reset" class="btn">Clear</button>
-                </div>
-              </fieldset>
             </div>
+            
     </div><!--/span-->
   </div><!--/row-->
 {% endblock %}
@@ -123,5 +147,6 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
 <script src="/static/js/bootstrap-typeahead.js"></script>
+<script src="/static/js/bootstrap-tab.js"></script>
 <script src="/static/js/study_create.js"> </script>
 {% endblock %}

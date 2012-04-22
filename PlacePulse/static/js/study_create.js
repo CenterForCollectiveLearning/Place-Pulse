@@ -15,7 +15,7 @@ $(document).ready(function() {
     setupUI();
     
     // Hide entire map interface
-    $('#mapInterface').hide();
+    $('#selectPlaces').hide();
     $('#selectionarea').hide();
 
     // Load the GMaps API, callback on load to initialize()
@@ -107,32 +107,40 @@ function setupUI() {
         }
         
         if (validateStudyForm()) {
+            $('#selectPlaces').show();
             $('#mapInterface').show();
             $('#createStudyForm').hide();
             $('#info-alert').html('<strong>Step 2 of 5:</strong><br />Now, select an area you want to study by drawing polygon on the map. To start, click any three places on the map.');
             $('#info').replaceWith('<li id="info"><a href="/admin/studies/"><i class="icon-book"></i> Study Information</a></li>');
-            $('#define').replaceWith('<li id="define" class="active"><a href="/admin/studies/"><i class="icon-book icon-white"></i> Define Area</a></li>');
+            $('#define').replaceWith('<li id="define" class="active"><a href="/admin/studies/"><i class="icon-book icon-white"></i> Select Places</a></li>');
             //Replace Selected menu
             startMap();
         }
     });
     
     $('#submitPolygon').click(function() {
-    if(area<500.0) {
-        // Create a comma-separated list of numbers representing the polygon.
-        // List is flattened, so (x1,y1),(x2,y2) becomes x1,y1,x2,y2 etc...
-        var polyPath = poly.getPath().getArray();
-        var polyArray = [];
-        for (var polygonIdx = 0; polygonIdx < polyPath.length; polygonIdx++) {
-            //replaced .Qa .Pa
-            polyArray.push(polyPath[polygonIdx].lng());
-            polyArray.push(polyPath[polygonIdx].lat());
+        if(area>0) {
+            //Check area for a selection
+            
+            if(area<500.0) {
+                // Create a comma-separated list of numbers representing the polygon.
+                // List is flattened, so (x1,y1),(x2,y2) becomes x1,y1,x2,y2 etc...
+                var polyPath = poly.getPath().getArray();
+                var polyArray = [];
+                for (var polygonIdx = 0; polygonIdx < polyPath.length; polygonIdx++) {
+                    //replaced .Qa .Pa
+                    polyArray.push(polyPath[polygonIdx].lng());
+                    polyArray.push(polyPath[polygonIdx].lat());
+                }
+                updateDB();
+            }
+            else {
+                alert("Please limit your polygon to less than 500 square miles in area.");
+            }
         }
-        updateDB();
-    }
-    else {
-        alert("Please limit your polygon to less than 500 square miles in area.");
-    }
+        else {
+            alert("Please make a selection.");
+        }
     });
     addValues();
 }
