@@ -25,7 +25,9 @@ def create_study():
     newPlaceID = Database.places.insert({
     'data_resolution': request.form['data_resolution'],
     'location_distribution': request.form['location_distribution'],
-    'polygon': request.form['polygon']
+    'polygon': request.form['polygon'],
+    'place_name': request.form['place_name'],
+    'owner': session['userObj']['email'],
     })
     
     # Insert the new study into Mongo
@@ -33,7 +35,8 @@ def create_study():
         'study_name': request.form['study_name'],
         'study_question': request.form['study_question'],
         'study_public': request.form['study_public'],
-        'places_id': [newPlaceID]
+        'places_id': [newPlaceID],
+        'owner': session['userObj']['email'],
         })
     session['currentStudy'] = newStudyID
     # Return the ID for the client to rendezvous at /study/populate/<id>
@@ -55,7 +58,7 @@ def populate_place(place_id):
        'loc': [request.form['lat'],request.form['lng']],
        'type':'gsv',
        'place_id': [place_id],
-       'owner': session['userObj']['email'],
+       'owner': session['userObj']['email'], #TODO: REAL LOGIN SECURITY
        'heading': 0,
        'pitch': 0,
        'votes':0

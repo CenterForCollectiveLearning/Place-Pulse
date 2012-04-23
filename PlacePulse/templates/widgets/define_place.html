@@ -14,6 +14,13 @@
           <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
         </div>
     </div>
+    <div class="control-group" id="place_name_cg">
+      <label class="control-label" for="place_name">Place Name</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" id="place_name" placeholder="i.e. New York City, USA" {% if place %} value="{{ place.place_name }}" {% endif %}>
+        <span id="place_name_error" class="help-inline hidden">Please use at least one word.</span>
+      </div>
+    </div>
     <div class="control-group">
       <label class="control-label" for="location_distribution">Generate Locations</label>
       <div class="controls">
