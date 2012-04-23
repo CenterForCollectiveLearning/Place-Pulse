@@ -5,10 +5,10 @@
 	{{ super() }}	
 	
 	<style>
-/*		#results_map {
-			width:1024px;
-			height:400px;
-		}*/
+		#results_map {
+		  width: 300px;
+		  height: 300px;
+		}
 		.mapSelected {
 			border: 5px solid yellow;
 		}
@@ -28,27 +28,25 @@
 	</style>
 	
 	<script>
-		const CITY_NAME = '{{ city_name_id }}';
+		const PLACE_NAME_SLUG = '{{ place_name_slug }}';
+		const STUDY_ID = '{{ study._id }}';
 	</script>
 
 {% endblock %}
 
 {% block body %}
-
+	{{ super() }}
 	<div class="row">
-		<!-- <div class="span12">
-			<div id="results_map"></div>
-		</div> -->
 		<div class="span4">
 			<div class="sidebar-nav">
 		  		<div id="results_map_container">
 					<header class="jumbotron subhead">
-					    <h1>{{ city_name_id }}</h1>
-					    <p class="lead question"></p>
+					    <h1>{{ place_name_slug }}</h1>
+					    <h2 class="lead question">Which place looks more {{ study.study_question }}?</h2>
 					</header>
 					
-		  			<div>Click on an image to see its location on the map.</div>
 		  			<div id="results_map"></div>
+		  			<div>Click on an image to see its location on the map.</div>
 		  		</div>
 			</div>
 		</div>
@@ -60,8 +58,7 @@
 	<script type="text/template" id="appearRankedImageTemplate">
 	<div class="rankedImage rankedImageUnappeared">
 			<span class="rankedImageStats">
-				<span>City rank: <span class="rank cityRank"><%= city_rank %></span></span>
-				<span>Site rank: <span class="rank siteRank"><%= site_rank %></span></span>
+				<span>City rank: <span class="rank studyRank"><%= study_rank %></span></span>
 			</span>
 	</div>
 	</script>

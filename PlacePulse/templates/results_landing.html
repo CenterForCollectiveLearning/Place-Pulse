@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block header %}
+
+	{{ super() }}
+	
+	<style>
+		#results_map {
+		  width: 300px;
+		  height: 300px;
+		}
+	</style>
+	<link href="/static/css/sub.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block body %}
+<header class="jumbotron subhead">
+    <h1 class="h1extra">Our Results</h1>
+</header>
+
+<div class="row">
+	<div class="span4">
+		<h2>Places</h2>	
+	</div>
+	
+	<div class="span8">
+		<h2>Questions</h2>
+		<ul>
+			{% for study in studies %}
+				<li>
+					<a href="/study/results/{{ study._id }}">
+						Which place looks more <strong>{{ study.study_question }}</strong>?
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+		<div class="rankItems"></div>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block footer %}
+	{{ super() }}
+	<script src="/static/js/results.js"></script>
+{% endblock %}

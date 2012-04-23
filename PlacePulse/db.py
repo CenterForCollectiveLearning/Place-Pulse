@@ -10,10 +10,14 @@ from random import randint
 
 class database(object):
 #--------------------Results
-    def getResultsForStudy(self,studyName):
+    def getResultsForStudy(self,studyID):
+        # FIXME: Normalize use of ObjectId/str for _id's.
         try:
             return self.results.find_one({
-                'question_shortid': studyName
+                "$or":[
+                    {'study_id': studyID},
+                    {'study_id': ObjectId(studyID)}
+                ]
             })
         except:
             return None

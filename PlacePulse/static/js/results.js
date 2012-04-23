@@ -15,11 +15,11 @@ $(document).ready(function() {
       document.body.appendChild(script);
     }
 	loadScript();
-	// If we're rendering the city view, we need to wait for initGmaps first
-	if (typeof CITY_NAME == 'undefined') {
+	// If we're rendering the city or study view, we need to wait for initGmaps first
+	if (typeof STUDY_ID != 'undefined') {
 		$.ajax({
 			'type': 'GET',
-			'url': '/top_results_data/' + STUDY_NAME + '/',
+			'url': '/study/results_data/' + STUDY_ID + '/',
 			'dataType': 'json',
 			'success': renderStudyResults
 		});
@@ -92,20 +92,31 @@ function initGmaps() {
 	      map: map
 	    });
 	prepGmapsIcons();
-	if (typeof CITY_NAME != 'undefined')
-		fetchCityResults();
+	if (typeof PLACE_NAME_SLUG != 'undefined')
+		fetchPlaceResults();
+	// else if (typeof STUDY_ID != 'undefined')
+	// 	fetchStudyResults();
 }
 
-function fetchCityResults() {
+// function fetchStudyResults() {
+// 	$.ajax({
+// 		'type': 'GET',
+// 		'url': '/study_results_data/' + STUDY_ID,
+// 		'dataType': 'json',
+// 		'success': renderStudyResults
+// 	});	
+// }
+
+function fetchPlaceResults() {
 	$.ajax({
 		'type': 'GET',
-		'url': '/city_results_data/' + STUDY_NAME + '/' + CITY_NAME + '/',
+		'url': '/study/results_data/' + STUDY_ID + '/' + PLACE_NAME_SLUG + '/',
 		'dataType': 'json',
-		'success': renderCityResults
+		'success': renderPlaceResults
 	});	
 }
 
-function renderCityResults(resultsData) {
+function renderPlaceResults(resultsData) {
 	var markerParams = {
       draggable: false,
       raiseOnDrag: false,
@@ -116,24 +127,26 @@ function renderCityResults(resultsData) {
       map: map
     };
 	
+	console.log(resultsData);
+	
 	var upperLeft = [9999,9999];
 	var lowerRight = [-9999,-9999];
 	
 	var imageTemplate = _.template($('#appearRankedImageTemplate').html());
 	
-	$('.question').text(resultsData['question']);
-	for (var imgIdx in resultsData.ranking[0].places) {
-		var place = resultsData.ranking[0].places[imgIdx];
-		var newImg = $(imageTemplate(place));
+	for (var imgIdx in resultsData.ranking[0].rankings) {
+		var location = resultsData.ranking[0].rankings[imgIdx];
+		var newImg = $(imageTemplate(location));
 		newImg.addClass('rankedImageUnappeared');
-		newImg.get()[0].placeData = place;
+		newImg.get()[0].locationData = location;
 		$('.resultsImgs').append(newImg);
 		
 		var newMarkerParams = markerParams;
-		var rank = parseFloat(imgIdx)/resultsData.ranking[0].places.length;
+		var rank = parseFloat(imgIdx)/resultsData.ranking[0].rankings.length;
 		newMarkerParams['icon'] = gmaps_icons[parseInt(rank*gmaps_icons.length)];
-		newMarkerParams['position'] = new google.maps.LatLng(place.coords[0], place.coords[1]);
+		newMarkerParams['position'] = new google.maps.LatLng(location.loc[0], location.loc[1]);
 		var marker = new google.maps.Marker(newMarkerParams);
+		newImg.get()[0].marker = marker;
 		
 		function attachMarkerEvent(marker_, img_) {
 			google.maps.event.addListener(marker_, 'click', function() {
@@ -150,44 +163,47 @@ function renderCityResults(resultsData) {
 		attachMarkerEvent(marker,newImg);
 		
 		// Keep updating bounding rect coords
-		upperLeft[0] = Math.min(upperLeft[0],place.coords[0]);
-		upperLeft[1] = Math.min(upperLeft[1],place.coords[1]);
-		lowerRight[0] = Math.max(lowerRight[0],place.coords[0]);
-		lowerRight[1] = Math.max(lowerRight[1],place.coords[1]);		
+		upperLeft[0] = Math.min(upperLeft[0],location.loc[0]);
+		upperLeft[1] = Math.min(upperLeft[1],location.loc[1]);
+		lowerRight[0] = Math.max(lowerRight[0],location.loc[0]);
+		lowerRight[1] = Math.max(lowerRight[1],location.loc[1]);		
 	}
+	$('.rankedImage').click(function() {
+		map.setCenter(new google.maps.LatLng(this.locationData.loc[0],this.locationData.loc[1]));
+		map.setZoom(15);
+		this.marker.setAnimation(google.maps.Animation.DROP);
+	});
 	$('.rankedImageUnappeared').appear(function() {
 		console.log(this);
 		$(this).removeClass('rankedImageUnappeared');
-		$(this).css('background-image','url(' + getSVURL(this.placeData.coords[0],this.placeData.coords[1],230,137) + ')');
+		$(this).css('background-image','url(' + getSVURL(this.locationData.loc[0],this.locationData.loc[1],230,137) + ')');
 		$(this).show();
-		
 	});
 	// Keep all points in bounding rect
 	map.fitBounds(new google.maps.LatLngBounds(new google.maps.LatLng(upperLeft[0],upperLeft[1]),new google.maps.LatLng(lowerRight[0],lowerRight[1])));
 }
 
 function renderStudyResults(resultsData) {
-	$('.questionName').html(resultsData.question);
-	
 	var resultTemplate = _.template($('#rankItemTemplate').html());
 	var imageTemplate = _.template($('#rankedImageTemplate').html());
 	
-	for (var city in resultsData.ranking) {
-		var cityItem = $(resultTemplate(resultsData.ranking[city]));
-		$('.rankItems').append(cityItem);
+	for (var place in resultsData.ranking) {
+		var placeItem = $(resultTemplate(resultsData.ranking[place]));
+		placeItem.addClass('rankedItems');
+		$('.rankItems').append(placeItem);
 		
-		var cityRanking = resultsData.ranking[city];
+		var placeRanking = resultsData.ranking[place];
 
 		function renderImgList(appendTo,coordsList) {
 			for (var item in coordsList) {
-				var imgCoords = coordsList[item].coords;
+				var imgCoords = coordsList[item].loc;
 				var newImg = $(imageTemplate(coordsList[item]));
 				$(appendTo).append(newImg);
 				newImg.get()[0].mapCoords = imgCoords;
 			}
 		}
-		renderImgList(cityItem.find('.topRanked'),cityRanking.top);
-		renderImgList(cityItem.find('.bottomRanked'),cityRanking.bottom);
+		renderImgList(placeItem.find('.topRanked'),placeRanking.top);
+		renderImgList(placeItem.find('.bottomRanked'),placeRanking.bottom);
 	}
 	
 	$('.rankItems').on('click','.rankedImage',null,function() {

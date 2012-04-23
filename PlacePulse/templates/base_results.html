@@ -1,15 +1,11 @@
 {% extends "base.html" %}
 
 {% block nav %}
-    {% set active_page = "results" %}
-   {{ super() }}
+	{% set active_page = "results" %}
+	{{ super() }}
 {% endblock %}
 
 {% block header %}
-	<script>
-	const STUDY_NAME = "{{ study_name }}";
-	</script>
-
 	<style>
 		.clear {
 			clear:both;
@@ -47,18 +43,12 @@
 		.rankedImageStats {
 			visibility:hidden;
 			color:white;
-	/*		float:left;*/
 		}
 		.rankedImage:hover .rankedImageStats {
 			visibility:visible;
 			opacity:0.7;
 			background-color:black;
 			position:absolute;
-		}
-		
-		#results_map {
-		  width: 300px;
-		  height: 300px;
 		}
 		#results_map_container {
 	  	  /*FIXME: position:fixed may not work in IE7&8, need testing.*/

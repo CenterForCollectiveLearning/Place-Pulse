@@ -1,0 +1,71 @@
+{% extends "base_results.html" %}
+
+{% block header %}
+
+	{{ super() }}
+	<style>
+	#results_map {
+		min-width:300px;
+		width:90%;
+		height:300px;
+	}
+	.rankedItems {
+		color:#dddddd;
+	}
+	</style>
+	<script>
+	const STUDY_ID = "{{ study._id }}";
+	</script>
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+<header class="jumbotron subhead">
+	<h1 class="mainquestion">
+		Which place looks more {{ study.study_question }}?
+	</h1>
+</header>
+
+<div class="row">
+	<div class="span4">
+		<div class="sidebar-nav">
+	  		<div id="results_map_container">
+	  			<div id="results_map"></div>
+	  			<div>Click on an image to see its location on the map.</div>
+	  		</div>
+		</div>
+	</div>
+	
+	<div class="span8">
+		<div class="rankItems"></div>
+	</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+	{{ super() }}
+	<script src="/static/js/lib/jquery.appear-1.1.1.min.js"></script>
+	<script src="/static/js/results.js"></script>
+	
+	<script type="text/template" id="rankItemTemplate">
+		<div>
+			<h2><a href="/study/results/{{ study._id }}/<%= name_slug || "default" %>"><%= name || "Default place"%></a></h2>
+			<div class="topRanked rankings">
+				<h4>Top:</h4>
+			</div>
+			<div class="clear"/>
+			<div class="bottomRanked rankings">
+				<h4>Bottom:</h4>
+			</div>
+			<div class="clear"/>
+		</div>
+	</script>
+		
+	<script type="text/template" id="rankedImageTemplate">
+		<div class="rankedImage" style="background-image: url(<% print(getSVURL(loc[0],loc[1],230,173)); %>)">
+			<span class="rankedImageStats">
+				<span>Rank: <span class="rank cityRank"><%= study_rank %></span></span>
+			</span>
+		</div>
+	</script>
+{% endblock %}

@@ -50,6 +50,7 @@ def objifyPlace(place):
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')
 def slugify(text, delim=u'-'):
     """Generates an slightly worse ASCII-only slug."""
+    if type(text) not in (str,unicode): return ""
     result = []
     for word in _punct_re.split(text.lower()):
         word = normalize('NFKD', unicode(word)).encode('ascii', 'ignore')

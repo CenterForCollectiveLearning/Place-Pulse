@@ -63,6 +63,7 @@ def populate_place(place_id):
    Database.qs.update({
        'location_id' : str(location_id), 
        'study_id': str(session['currentStudy']),
+       'place_id': place_id
    }, { '$set': {'num_votes' : 0 } }, True)    
    return jsonifyResponse({
        'success': True
@@ -210,74 +211,3 @@ def get_location(location_id):
     lat = locationCursor['loc'][0]
     lng = locationCursor['loc'][1]
     return "<img src='http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false'/>"
-
-#--------------------Results
-@study.route('/results/<studyName>/',methods = ['GET'])
-def showSpecificBigStudyResults(studyName):
-    return showBigStudyResults(studyName)
-
-@study.route('/results/',methods = ['GET'])
-def showBigStudyResults(studyName='unique'):
-    # 'unique' is the default study
-    studyQuestions = [
-        ("Which place looks more unique?","unique"),
-        ("Which place looks safer?","safer"),
-        ("Which place looks more upper class?","upper_class"),
-        ("Which place looks more lively?","lively"),
-        ("Which place looks more modern?","modern"),
-        ("Which place looks more central?","central"),
-        ("Which place looks more groomed?","groomed")
-    ]
-    return auto_template('results.html', study_name=studyName, study_questions=studyQuestions)
-    
-@study.route('/results_data/<studyName>/',methods = ['GET'])
-def getResultsData(studyName):
-    return jsonifyResponse(Database.getResultsForStudy(studyName))
-
-@study.route('/city_results_data/<studyName>/<cityName>/',methods = ['GET'])
-def getCityResultsData(studyName,cityName):
-    studyResults = Database.getResultsForStudy(studyName)
-    cityResults = [i for i in studyResults['ranking'] if i['city_name_id'] == cityName]
-    retObj = {
-            'question': studyResults['question'],
-            'question_shortid': studyResults['question_shortid'],
-            'ranking': cityResults
-    }
-    return jsonifyResponse(retObj)
-
-@study.route('/top_results_data/<studyName>/',methods = ['GET'])
-def getTopResultsData(studyName):
-    studyResults = Database.getResultsForStudy(studyName)
-    # To save space, show only the top and bottom 3 for each city
-    for city in studyResults['ranking']:
-        city['top'] = city['places'][0:3]
-        city['bottom'] = city['places'][-3:]
-        del city['places']
-    return jsonifyResponse(studyResults)
-    
-@study.route('/rankings/<studyName>/<cityNameId>/',methods = ['GET'])
-def getCityResults(cityNameId,studyName):
-    return auto_template('city_results.html',city_name_id=cityNameId, study_name=studyName)
-    
-# @study.route('/rankings_data/<cityNameId>/',methods = ['GET'])    
-# def getCityResultsData(cityNameId):
-#     mainStudyResults = [i for i in Database.results.find({'study_type': 'main_study'})]
-#     cityResults = []
-#     for results in mainStudyResults:
-#         resultsForStudy = [i for i in results['ranking'] if i['city_name_id'] == cityNameId]
-#         cityResults.append({
-#             'question': results['question'],
-#             'question_shortid': results['question_shortid'],
-#             'ranking': resultsForStudy
-#         })
-#     return jsonifyResponse(cityResults)
-
-# @study.route('/results/<study_id>/',methods = ['GET'])
-# def showData(study_id):
-#     L=""
-#     for x in Database.votes.find({'study_id':study_id}):
-#         leftStuff = re.sub("[^,0123456789.-]",'',str(Database.getLocation(x['left'])['loc']))
-#         rightStuff = re.sub("[^,0123456789.-]",'',str(Database.getLocation(x['right'])['loc']))
-#         L+=str(leftStuff)+","+str(rightStuff)+","+str(x['choice'])+","
-#     L=L[:-1]
-#     return auto_template('results.html',study_id=study_id, L=L)
