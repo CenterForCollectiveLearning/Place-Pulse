@@ -35,22 +35,11 @@
       </div><!--/.well -->
    </div>
    <div class="span9" align="left">
-     <table class="table table-bordered">
-             <thead>
-               <tr>
-                 <th>Edit Information</th>
-                 <th>Public Link to Your Study</th>
-               </tr>
-             </thead>
-             <tbody>
-               {%for study in studies:%}
-               <tr>
-                 <td><a href='/admin/study/{{study._id}}'>Which place looks more {{study.study_question}}?</a></td>
-                 <td><a href='/study/view/{{study._id}}'>View study</a></td>               
-              </tr>
-               {%endfor%}
-             </tbody>
-           </table> 
+     <div id="updateSuccess" class="alert alert-success" style="display:none;">
+       <a class="close" data-dismiss="alert">×</a>
+       <strong>Success!</strong> Your changes have been saved and are now live.
+     </div>
+     {% include 'widgets/study_information.html' %}
   </div>
 </div><!--/row-->
 {% endblock %}
@@ -59,14 +48,22 @@
 {{ super() }}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-<script src="/static/js/lib/jquery.zclip.min.js"></script> 
-
 <script>
-$(document).ready(function() {
-  $('a#copy-').zclip({
-          path:'/static/js/lib/ZeroClipboard.swf',
-          copy:$('').text()
-      });
+$("#finishStudyForm").click(function() {
+  $.ajax({
+    url:'/admin/study/update/{{study_id}}/',
+    // Expect JSON to be returned. This is also enforced on the server via mimetype.
+    dataType: 'json',
+    data: {
+        study_name: $('#study_name').val(),
+        study_question: $('#study_question').val(),
+        study_public: $('input:radio[name=study_public]:checked').val()
+    },
+    type: 'POST',
+    success: function(data) {
+        $('#updateSuccess').show();
+    }
+  });
 });
 </script>
 {% endblock %}
