@@ -21,62 +21,72 @@ def serve_create_study():
     
 @study.route('/study/create/',methods=['POST'])
 def create_study():    
+    #Insert new Place
+    newPlaceID = Database.places.insert({
+    'data_resolution': request.form['data_resolution'],
+    'location_distribution': request.form['location_distribution'],
+    'polygon': request.form['polygon']
+    })
+    
     # Insert the new study into Mongo
     newStudyID = Database.studies.insert({
-        'study_name': request.form['study_question'],
+        'study_name': request.form['study_name'],
         'study_question': request.form['study_question'],
         'study_public': request.form['study_public'],
-        'data_resolution': request.form['data_resolution'],
-        'location_distribution': request.form['location_distribution'],
-        'polygon': request.form['polygon']})
+        'places_id': [newPlaceID]
+        })
+    session['currentStudy'] = newStudyID
     # Return the ID for the client to rendezvous at /study/populate/<id>
     return jsonifyResponse({
-        'studyID': str(newStudyID)
+        'studyID': str(newStudyID),
+        'placeID': str(newPlaceID)
     })
 
 #--------------------Populate
-@study.route('/study/populate/<study_id>/',methods=['GET'])
-def serve_populate_study(study_id):
-    study = Database.getStudy(study_id)
-    return render_template('study_populate.html',polygon=study['polygon'],study_id=study_id,
-                           locDist = study['location_distribution'], dataRes = study['data_resolution'])
+@study.route('/place/populate/<place_id>/',methods=['GET'])
+def serve_populate_place(place_id):
+    place = Database.getPlace(place_id)
+    return render_template('study_populate.html',polygon=place['polygon'],place_id=place_id,
+                           locDist = place['location_distribution'], dataRes = place['data_resolution'], studyID=session['currentStudy'])
+                           
+@study.route('/place/populate/<place_id>/',methods=['POST'])
+def populate_place(place_id):
+   location_id = Database.locations.insert({
+       'loc': [request.form['lat'],request.form['lng']],
+       'type':'gsv',
+       'place_id': [place_id],
+       'owner': session['userObj']['email'],
+       'heading': 0,
+       'pitch': 0,
+       'votes':0
+   })
+   Database.qs.update({
+       'location_id' : str(location_id), 
+       'study_id': str(session['currentStudy']),
+   }, { '$set': {'num_votes' : 0 } }, True)    
+   return jsonifyResponse({
+       'success': True
+   })
 
-@study.route('/study/populate/<study_id>/',methods=['POST'])
-def populate_study(study_id):
-    location_id = Database.locations.insert({
-        'loc': [request.form['lat'],request.form['lng']],
-        'study_id': request.form['study_id'],
-        'heading': 0,
-        'pitch': 0,
-        'votes' : 0
-    })
-    Database.qs.update({
-        'location_id' : str(location_id), 
-        'study_id': request.form['study_id'],
-    }, { '$set': {'num_votes' : 0 } }, True)    
-    return jsonifyResponse({
-        'success': True
-    })
-
-# TODO: Check if front end calls this function. Probably unnecessary
-@study.route('/study/finish_populate/<study_id>/',methods=['POST'])
-def finish_populate_study(study_id):
-    if Database.getStudy(study_id) is None:
+@study.route('/place/finish_populate/<place_id>/',methods=['POST'])
+def finish_populate_place(place_id):
+    if Database.getPlace(place_id) is None:
         return jsonifyResponse({
-            'error': 'Study doesn\'t exist!'
+            'error': 'Place doesn\'t exist!'
         })
     return jsonifyResponse({
         'success': True
     })
     
 #--------------------Curate
-@study.route('/study/curate/<study_id>/',methods=['GET'])
-def curate_study(study_id):
-    study = Database.getStudy(study_id)
-    locations = Database.getLocations(study_id,48)
-    return auto_template('study_curate.html',polygon=study['polygon'],locations=locations,study_id=study_id)
+@study.route('/place/curate/<place_id>/',methods=['GET'])
+def curate_study(place_id):
+    study_id = session['currentStudy']
+    place = Database.getPlace(place_id)
+    locations = Database.getLocations(place_id,48)
+    return auto_template('study_curate.html',polygon=place['polygon'],locations=locations,place_id=place_id, study_id=study_id)
     
-@study.route('/study/curate/location/<id>',methods=['POST'])
+@study.route('/place/curate/location/<id>',methods=['POST'])
 def curate_location():    
     # Insert the new study into Mongo
     location = Database.getLocation(id)
@@ -88,7 +98,7 @@ def curate_location():
         'pitch': str(location.pitch)
     })
 
-@study.route('/study/curate/location/update/<id>',methods=['POST'])
+@study.route('/place/curate/location/update/<id>',methods=['POST'])
 def update_location(id):
     lat = request.form['lat']
     lng = request.form['lng']
@@ -99,7 +109,7 @@ def update_location(id):
     'success': str(locationUpdated)
     })
     
-@study.route('/study/curate/location/delete/<id>',methods=['POST'])
+@study.route('/place/curate/location/delete/<id>',methods=['POST'])
 def delete_location(id):
     locationDeleted = Database.deleteLocation(id)
     return jsonifyResponse({
@@ -119,8 +129,8 @@ def post_new_vote(study_id):
         Database.locations.save(obj)
         Database.incQSVoteCount(study_id, str(obj.get('_id')))
 
-    leftObj = Database.getPlace(request.form['left'])
-    rightObj = Database.getPlace(request.form['right'])
+    leftObj = Database.getLocation(request.form['left'])
+    rightObj = Database.getLocation(request.form['right'])
     if leftObj is None or rightObj is None:
         return jsonifyResponse({
             'error': "Locations don't exist!"
@@ -182,7 +192,7 @@ def server_view_study(study_id):
 
 @study.route('/location/view/<location_id>/',methods=['GET'])
 def get_location(location_id):
-    locationCursor = Database.getPlace(location_id)
+    locationCursor = Database.getLocation(location_id)
     lat = locationCursor['loc'][0]
     lng = locationCursor['loc'][1]
     return "<img src='http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false'/>"
@@ -252,8 +262,8 @@ def getCityResults(cityNameId,studyName):
 # def showData(study_id):
 #     L=""
 #     for x in Database.votes.find({'study_id':study_id}):
-#         leftStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['left'])['loc']))
-#         rightStuff = re.sub("[^,0123456789.-]",'',str(Database.getPlace(x['right'])['loc']))
+#         leftStuff = re.sub("[^,0123456789.-]",'',str(Database.getLocation(x['left'])['loc']))
+#         rightStuff = re.sub("[^,0123456789.-]",'',str(Database.getLocation(x['right'])['loc']))
 #         L+=str(leftStuff)+","+str(rightStuff)+","+str(x['choice'])+","
 #     L=L[:-1]
 #     return auto_template('results.html',study_id=study_id, L=L)

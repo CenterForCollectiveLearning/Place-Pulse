@@ -1,8 +1,8 @@
 var map; //Google Map
 var randomPoint; //Random Lat/Long Point
 var isWithinCity;
-var studyArea = new Object();
-var studyPolygon = [];
+var placeArea = new Object();
+var placePolygon = [];
 var polygon;
 var gLat;
 var gLng;
@@ -13,25 +13,25 @@ var green;
 var shadow;
 var shape;
 
-function initialize(_studyID, polygonStr) {
-    studyID = _studyID;
+function initialize(_placeID, polygonStr) {
+    placeID = _placeID;
     extendGmaps();
     
-    studyPolygon = [];
+    placePolygon = [];
     var polyArray = polygonStr.split(',');
     // polygonStr is formatted like x1,y1,x2,y2, etc...
     for (var polyArrayIdx = 0; polyArrayIdx < polyArray.length; polyArrayIdx+=2) {
-        studyPolygon.push(new google.maps.LatLng(polyArray[polyArrayIdx+1],polyArray[polyArrayIdx],true));
+        placePolygon.push(new google.maps.LatLng(polyArray[polyArrayIdx+1],polyArray[polyArrayIdx],true));
     }
 
     // TODO: comment this out once populating is working again.
-    //console.log(studyPolygon);
+    //console.log(placePolygon);
     
     //sv = new google.maps.StreetViewService(); //Google Street View Service
-	studyArea = {name: "studyArea", polygon: studyPolygon, TLLat: null, TLLng: null, BRLat: null, BRLng: null};
+	placeArea = {name: "placeArea", polygon: placePolygon, TLLat: null, TLLng: null, BRLat: null, BRLng: null};
 	//Calculate Bounding box for fetched city
 	polygon = new google.maps.Polygon({
-		paths: studyArea.polygon,        
+		paths: placeArea.polygon,        
 		strokeWeight: 2,
         strokeOpacity: 1,
         strokeColor: '#4aea39',
@@ -62,15 +62,15 @@ function calcBoundingBox()
 {
 	var arrayLat = [];
 	var arrayLng = [];
-	for (var i=0; i<studyArea.polygon.length; i++)
+	for (var i=0; i<placeArea.polygon.length; i++)
 	{
-		arrayLat[i] = studyArea.polygon[i].lat();
-		arrayLng[i] = studyArea.polygon[i].lng();
+		arrayLat[i] = placeArea.polygon[i].lat();
+		arrayLng[i] = placeArea.polygon[i].lng();
 	}
-	studyArea.TLLat = Math.max.apply(Math, arrayLat);
-	studyArea.TLLng = Math.min.apply(Math, arrayLng);
-	studyArea.BRLat = Math.min.apply(Math, arrayLat);
-	studyArea.BRLng = Math.max.apply(Math, arrayLng);
+	placeArea.TLLat = Math.max.apply(Math, arrayLat);
+	placeArea.TLLng = Math.min.apply(Math, arrayLng);
+	placeArea.BRLat = Math.min.apply(Math, arrayLat);
+	placeArea.BRLng = Math.max.apply(Math, arrayLng);
 }
 function plot()
 {
@@ -82,8 +82,8 @@ function plot()
 	};
 	map = new google.maps.Map($('#map4').get()[0], mapOptions);
 	polygon.setMap(map);
-	var swpoint = new google.maps.LatLng(studyArea.BRLat, studyArea.TLLng);
-    var nepoint = new google.maps.LatLng(studyArea.TLLat, studyArea.BRLng);
+	var swpoint = new google.maps.LatLng(placeArea.BRLat, placeArea.TLLng);
+    var nepoint = new google.maps.LatLng(placeArea.TLLat, placeArea.BRLng);
     var bounds = new google.maps.LatLngBounds(swpoint, nepoint);
     map.fitBounds(bounds);
 }
@@ -148,7 +148,7 @@ function extendGmaps() {
 function save_changes(id,lat,lng,heading,pitch)
 {
     $.ajax({
-            url:'/study/curate/location/update/' + id,
+            url:'/place/curate/location/update/' + id,
             // Expect JSON to be returned. This is also enforced on the server via mimetype.
             dataType: 'json',
             data: {
@@ -171,7 +171,7 @@ function save_changes(id,lat,lng,heading,pitch)
 function delete_image(id)
 {
     $.ajax({
-            url:'/study/curate/location/delete/' + id,
+            url:'/place/curate/location/delete/' + id,
             // Expect JSON to be returned. This is also enforced on the server via mimetype.
             dataType: 'json',
             data: {

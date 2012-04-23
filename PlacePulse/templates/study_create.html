@@ -33,47 +33,7 @@
     	</div>
     </div><!--/span-->
     <div class="span9">
-          	<div class="form-horizontal" id="createStudyForm">
-              <fieldset>
-                <legend>Study Information</legend>
-                <div class="control-group" id="study_name_cg">
-                  <label class="control-label" for="study_name">Study Name</label>
-                  <div class="controls">
-                    <input type="text" class="input-xlarge" id="study_name" placeholder="i.e. Boston Tourism Study">
-                    <span id="study_name_error" class="help-inline hidden">Please use at least one word.</span>
-                  </div>
-                </div>
-                <div class="control-group" id="study_question_cg">
-                  <label class="control-label" for="study_question">Question to Ask Users</label>
-                  <div class="controls">
-                    <div class="input-prepend">
-                      <span class="add-on">Which place looks more </span>
-                      <input class="span2" id="study_question" size="16" type="text" placeholder="i.e. unique" data-provide="typeahead" data-items="{{numQs}}" data-source="{{studyQs}}">
-                      ?
-                      <span id="study_question_error" class="help-inline hidden">Please use at most three words.</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="control-group" id="study_public_cg">
-                  <label class="control-label" for="study_public">Open to the public?</label>
-                  <div class="controls">
-                    <label class="radio inline">
-                      <input name="study_public" type="radio" id="study_public" value="yes" checked>
-                      Yes
-                    </label>
-                    <label class="radio inline">
-                      <input name="study_public" type="radio" id="study_public" value="no">
-                      No
-                    </label>
-                    <p class="help-block">If "No" is selected, you will have to provide your own study participants by sending them a link.</p>
-                  </div>
-                </div>
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-primary" id="finishStudyForm">Continue</button>
-                  <button type="reset" class="btn">Clear</button>
-                </div>
-              </fieldset>
-            </div>
+          	{% include 'widgets/study_information.html' %}
             <div class="form-horizontal" id="selectPlaces">
                 <div class="tabbable">
                   <ul class="nav nav-tabs">
@@ -84,47 +44,7 @@
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane active" id="1">
-                      <div class="form-horizontal" id="mapInterface">
-                          <div class="well">
-                              <div id="selectioninstructions" class="alert alert-info">
-                                <strong>Select Image Search Area</strong> by clicking three places on the map to create a polygon.
-                          </div>
-                              <div id="map"></div>
-                                <div id="mapInterfaceButtons">
-                                  <div id="selectionarea" class="alert alert-error">
-                                    <strong>Selection Too Large</strong> Please reduce the area of your selection to under 500 square miles.
-                                  </div>
-                                <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
-                              </div>
-                          </div>
-                        <fieldset>
-                          <legend>Define Area</legend>
-                          <div class="control-group">
-                            <label class="control-label" for="location_distribution">Location distribution</label>
-                            <div class="controls">
-                              <select name="location_distribution" id="location_distribution">
-                                <option value="randomly">Randomly</option>
-                                <option value="evenly">Evenly</option>
-                                <option value="gridrandom">Random within a grid</option>
-                              </select>
-                              <p class="help-block">When selecting locations within your polygon, this is the method we will use.</p>
-                            </div>
-                          </div>
-                          <div class="control-group">
-                            <label class="control-label" for="data_resolution">Data Resolution</label>
-                            <div class="controls">
-                              <select name="data_resolution" id="data_resolution">
-
-                              </select>
-                              <p class="help-block">This will help us determine the density of locations within your polygon.</p>
-                            </div>
-                          </div>
-                          <div class="form-actions">
-                            <button type="submit" class="btn btn-primary" id="submitPolygon">Continue</button>
-                            <button type="reset" class="btn">Clear</button>
-                          </div>
-                        </fieldset>
-                      </div>
+                      {% include 'widgets/define_place.html' %}
                     </div>
                     <div class="tab-pane" id="2">
                       <h3>Feature Coming Soon...</h3>
