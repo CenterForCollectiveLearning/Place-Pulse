@@ -1,6 +1,19 @@
 <div class="form-horizontal" id="mapInterface">
   <fieldset>
     <legend>Define Area</legend>
+    <br />
+    <div class="well">
+        <div id="selectioninstructions" class="alert alert-info">
+          <strong>Select Image Search Area</strong> by clicking three places on the map to create a polygon.
+        </div>
+        <div id="map"></div>
+          <div id="mapInterfaceButtons">
+            <div id="selectionarea" class="alert alert-error">
+              <strong>Selection Too Large</strong> Please reduce the area of your selection to under 500 square miles.
+            </div>
+          <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
+        </div>
+    </div>
     <div class="control-group">
       <label class="control-label" for="location_distribution">Generate Locations</label>
       <div class="controls">
@@ -20,18 +33,6 @@
         </select>
         <p class="help-block">This will help us determine the density of locations within your polygon.</p>
       </div>
-    </div>
-    <div class="well">
-        <div id="selectioninstructions" class="alert alert-info">
-          <strong>Select Image Search Area</strong> by clicking three places on the map to create a polygon.
-        </div>
-        <div id="map"></div>
-          <div id="mapInterfaceButtons">
-            <div id="selectionarea" class="alert alert-error">
-              <strong>Selection Too Large</strong> Please reduce the area of your selection to under 500 square miles.
-            </div>
-          <a class="btn btn-danger" id="clearCurrentSelection">Clear current selection</a>
-        </div>
     </div>
     <div class="form-actions">
       <button type="submit" class="btn btn-primary" id="submitPolygon">Continue</button>
