@@ -13,10 +13,15 @@ cur = conn.cursor()
 cities = dict()
 locations = dict()
 studyidsD={}
+locationsD={}
 placeids = []
 studyids=[]
+study_mongo_ids=[]
+locationids=[]
 cityidset=set()
 studyidset=set()
+votes=[]
+study_locs=[]
 
 out_studies = open('studies_dump.json','w')
 out_votes = open('votes_dump.json','w')
@@ -71,6 +76,7 @@ def rip_studies():
 					'study_name':study_row[0][1],
 					'places_id':placeids})
 	studyids.append(study_row[0][0])
+	study_mongo_ids.append(studyid)
 	#print(study_row[0][0])
 	studyidsD[study_row[0][0]]=studyid
 	'''
@@ -144,13 +150,14 @@ def rip_locations_and_places():
 		cities[place_row[1]] = placeid
     		placeids.append(placeid)
 		
-	if(place_row[1] in ['1','2','3','4','5']):
-		Database.locations.insert({'loc':[float(place_row[2]),float(place_row[3])],
-					'heading':place_row[7],
-					'pitch':place_row[8],
-					'type':'gsv',
-					'places_id':[cities[place_row[1]]]})
+	locationID=Database.locations.insert({'loc':[float(place_row[2]),float(place_row[3])],
+				'heading':place_row[7],
+				'pitch':place_row[8],
+				'type':'gsv',
+				'places_id':[cities[place_row[1]]]})
 	
+	locationsD[int(place_row[0])]=locationID
+	locationids.append(locationID)
         # if mutant, add file_location
         if place_row[9]:
             place['mutant'] = True
@@ -215,15 +222,20 @@ def rip_votes():
     })
 	'''
 	if(vote_row[1]!=0):
-		Database.votes.insert({'study_id':studyidsD[vote_row[1]],
-				'left': int(vote_row[2]),
-				'right': int(vote_row[4]),
+		studyID=studyidsD[vote_row[1]]
+		leftID = locationsD[int(vote_row[2])]
+		rightID = locationsD[int(vote_row[4])]
+		Database.votes.insert({'study_id':studyID,
+				'left': leftID,
+				'right': rightID,
 				'left_city':cities[vote_row[3]] if vote_row[3] else None,
 				'right_city':cities[vote_row[5]] if vote_row[3] else None,
 				'choice':int(vote_row[6]),
 				'timestamp': {
 					'date': int(mktime(vote_row[9].timetuple()))*1000
 				}})
+		study_loc_dict[(studyID,leftID)]+=1
+		study_loc_dict[(studyID,rightID)]+=1
         #out_votes.write(json.dumps(vote))
         #out_votes.write('\n')
     for_result(save_vote,res)
@@ -233,4 +245,12 @@ rip_cities()
 #switched order of locations and studies because unknown cities are added in during the locations_and_places()
 rip_locations_and_places()
 rip_studies()
+study_locs=[(studyID,locID) for studyID in study_mongo_ids for locID in locationids]
+study_loc_dict={}
+for x in study_locs:
+	study_loc_dict[x]=0
 rip_votes()
+for x in study_loc_dict:
+	Database.qs.insert({'study_id':x[0],
+			'location_id':x[1],
+			'num_votes':study_loc_dict[x]})
