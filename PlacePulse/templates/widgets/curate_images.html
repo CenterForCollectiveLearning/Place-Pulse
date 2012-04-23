@@ -1,0 +1,24 @@
+<div id="edit_street_view" class="modal hide fade">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal" >&times;</a>
+    <h3>Edit Image</h3>
+  </div>
+  <div class="modal-body" align="center">
+    <div id="edit_pano" style="z-index:1;"></div>
+    <p>To edit, rotate to your desired heading by clicking and dragging.</p>
+  </div>
+  <div class="modal-footer">
+    <a id="save_changes" class="btn btn-primary cursor" onclick="save_changes(gId,gLat,gLng,gHeading,gPitch);">Save Changes</a>
+    <a id="delete_image" class="btn cursor" onclick="delete_image(gId);">Delete Image</a>
+    <a class="btn cursor" data-dismiss="modal" id="close_modal">Close</a>
+  </div>
+</div>
+<ul class="thumbnails">
+{%for location in locations:%}
+<li class="span2" id="li{{location._id}}">
+  <a id="{{location._id}}" class="thumbnail cursor" data-toggle="modal" onMouseover="center_map({{location.loc[0]}},{{location.loc[1]}})" onclick="editsv('{{location._id}}',{{location.loc[0]}},{{location.loc[1]}},{{location.heading}},{{location.pitch}})">
+    <img id="img{{location._id}}" src="http://maps.googleapis.com/maps/api/streetview?size=160x120&location={{location.loc[0]}},%20{{location.loc[1]}}&fov=90&heading={{location.heading}}&pitch={{location.pitch}}&sensor=false" />
+  </a>
+</li>
+{%endfor%}
+</ul>

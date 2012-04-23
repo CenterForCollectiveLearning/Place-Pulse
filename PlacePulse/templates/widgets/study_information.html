@@ -1,0 +1,41 @@
+<div class="form-horizontal" id="createStudyForm">
+  <fieldset>
+    <legend>Study Information</legend>
+    <div class="control-group" id="study_name_cg">
+      <label class="control-label" for="study_name">Study Name</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" id="study_name" placeholder="i.e. Boston Tourism Study">
+        <span id="study_name_error" class="help-inline hidden">Please use at least one word.</span>
+      </div>
+    </div>
+    <div class="control-group" id="study_question_cg">
+      <label class="control-label" for="study_question">Question to Ask Users</label>
+      <div class="controls">
+        <div class="input-prepend">
+          <span class="add-on">Which place looks more </span>
+          <input class="span2" id="study_question" size="16" type="text" placeholder="i.e. unique" data-provide="typeahead" data-items="{{numQs}}" data-source="{{studyQs}}">
+          ?
+          <span id="study_question_error" class="help-inline hidden">Please use at most three words.</span>
+        </div>
+      </div>
+    </div>
+    <div class="control-group" id="study_public_cg">
+      <label class="control-label" for="study_public">Open to the public?</label>
+      <div class="controls">
+        <label class="radio inline">
+          <input name="study_public" type="radio" id="study_public" value="yes" checked>
+          Yes
+        </label>
+        <label class="radio inline">
+          <input name="study_public" type="radio" id="study_public" value="no">
+          No
+        </label>
+        <p class="help-block">If "No" is selected, you will have to provide your own study participants by sending them a link.</p>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" id="finishStudyForm">Continue</button>
+      <button type="reset" class="btn">Clear</button>
+    </div>
+  </fieldset>
+</div>
