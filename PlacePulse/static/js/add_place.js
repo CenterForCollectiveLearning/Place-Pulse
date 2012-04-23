@@ -10,113 +10,15 @@ var shadow;
 var shape;
 var maxPointsPerStudy=350;
 
-$(document).ready(function() {
-
+function initialize() {
+    // Gmaps callback happened.
+    mapReady = true;
     setupUI();
-    
-    // Hide entire map interface
-    $('#selectPlaces').hide();
-    $('#selectionarea').hide();
-
-    // Load the GMaps API, callback on load to initialize()
-    function loadScript() {
-      var script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize&libraries=geometry";
-      document.body.appendChild(script);
-    }
-    loadScript();
-});
-
-/***************************/
-//@Author: Adrian "yEnS" Mato Gondelle & Ivan Guardado Castro
-//@website: www.yensdesign.com
-//@email: yensamg@gmail.com
-//@license: Feel free to use it, but keep this credits please!                    
-/***************************/
-
-    //global vars
-    var study_name = $("#study_name");
-    var study_name_cg = $('#study_name_cg');
-    var study_name_error = $('#study_name_error');
-
-    var study_question = $("#study_question");
-    var study_question_cg = $('#study_question_cg');
-    var study_question_error = $('#study_question_error');
-    
-    //On blur
-    study_name.blur(validate_study_name);
-    study_question.blur(validate_study_question);
-
-    
-    //validation functions
-    function validate_study_name(){
-        //testing regular expression
-        var a = $("#study_name").val();
-        var filter = /^(?:\b\w+\b[\s\r\n]*){1,10}$/;
-        //if it's valid email
-        if(filter.test(a)){
-            study_name_cg.removeClass("error");
-            study_name_error.addClass("hidden");
-            study_name_cg.addClass("success");
-            return true;
-        }
-        //if it's NOT valid
-        else{
-            study_name_cg.addClass("error");
-            study_name_cg.removeClass("success");
-            study_name_error.removeClass("hidden");
-            return false;
-        }
-    }
-    function validate_study_question(){
-        //if it's NOT valid
-            var a = $("#study_question").val();
-            var filter = /^(?:\b\w+\b[\s\r\n]*){1,3}$/;
-            //if it's valid email
-            if(filter.test(a)){
-                study_question_cg.removeClass("error");
-                study_question_error.addClass("hidden");
-                study_question_cg.addClass("success");
-                return true;
-            }
-            //if it's NOT valid
-            else{
-                study_question_cg.addClass("error");
-                study_question_cg.removeClass("success");
-                study_question_error.removeClass("hidden");
-                return false;
-            }
-        }
-
-        function validateStudyForm() {
-            if(validate_study_name() & validate_study_question())
-                return true
-            else
-                return false;
-        }
+}
 
 function setupUI() {
     $('#clearCurrentSelection').click(clearOverlays);
-    
-    $('#finishStudyForm').click(function() {
-        if (!mapReady) {
-            alert("ERROR: Couldn't initialize Google Maps!");
-            return;
-        }
-        
-        if (validateStudyForm()) {
-            $('#selectPlaces').show();
-            $('#mapInterface').show();
-            $('#createStudyForm').hide();
-            $('#info-alert').html('<strong>Step 2 of 5:</strong><br />Now, select an area you want to study by drawing polygon on the map. To start, click any three places on the map.');
-            $('#info').replaceWith('<li id="info"><a href="/admin/studies/"><i class="icon-book"></i> Study Information</a></li>');
-            $('#define').replaceWith('<li id="define" class="active"><a href="/admin/studies/"><i class="icon-book icon-white"></i> Select Places</a></li>');
-            //Replace Selected menu
-            startMap();
-        }
-    });
-    
+    startMap();    
     $('#submitPolygon').click(function() {
         if(area>0) {
             //Check area for a selection
@@ -147,11 +49,6 @@ function setupUI() {
 /*
     Map polygon chooser.
 */
-
-function initialize() {
-    // Gmaps callback happened.
-    mapReady = true;
-}
 
 function startMap() {
     // Initialize map interface
@@ -370,28 +267,26 @@ function saveCity() {
 }
 
 function updateDB() {
-        var polyPath = poly.getPath().getArray();
-        var polyArray = [];
-        for (var polygonIdx = 0; polygonIdx < polyPath.length; polygonIdx++) {
-            polyArray.push(polyPath[polygonIdx].lng());
-            polyArray.push(polyPath[polygonIdx].lat());
-        }
+    var polyPath = poly.getPath().getArray();
+    var polyArray = [];
+    for (var polygonIdx = 0; polygonIdx < polyPath.length; polygonIdx++) {
+        polyArray.push(polyPath[polygonIdx].lng());
+        polyArray.push(polyPath[polygonIdx].lat());
+    }
     $.ajax({
-            url:'/study/create/',
+            url:'/admin/place/add/',
             // Expect JSON to be returned. This is also enforced on the server via mimetype.
             dataType: 'json',
             data: {
                 polygon: polyArray.toString(),
-                study_name: $('#study_name').val(),
-                study_question: $('#study_question').val(),
-                study_public: $('input:radio[name=study_public]:checked').val(),
                 place_name: $('#place_name').val(),
                 data_resolution: $('#data_resolution').val(),
                 location_distribution: $('#location_distribution').val()
             },
             type: 'POST',
             success: function(data) {
-                window.location.replace(window.location.protocol + '//' + window.location.host + "/place/populate/" + data.placeID);
+                alert("worked");
+                //window.location.replace(window.location.protocol + '//' + window.location.host + "/admin/places/");
             }
         });
 }

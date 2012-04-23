@@ -39,9 +39,9 @@ class database(object):
     def returnObjectId(self,study_id):
         return ObjectId(study_id)
 
-    def getStudies(self):
+    def getStudies(self,owner):
         try:
-            return self.studies.find()
+            return self.studies.find({'owner':owner})
         except:
             return None
 
@@ -63,19 +63,13 @@ class database(object):
         except:
             return None
 
-#--------------------Votes
-    def getVotes(self,study_id):
+#--------------------Places
+    def getPlaces(self,owner):
         try:
-            return self.votes.find({'study_id': study_id})
+            return self.places.find({'owner':owner})
         except:
             return None
 
-    def getVotesCount(self):
-        try:
-            return self.votes.find().count()
-        except:
-            return None
-#--------------------Places
     def getPlace(self,place_id):
         try:
             return self.places.find_one(ObjectId(place_id))
@@ -115,7 +109,19 @@ class database(object):
         except:
             return None
             
-            
+#--------------------Votes
+    def getVotes(self,study_id):
+        try:
+            return self.votes.find({'study_id': study_id})
+        except:
+            return None
+
+    def getVotesCount(self):
+        try:
+            return self.votes.find().count()
+        except:
+            return None      
+                  
 #--------------------QS
     def getQS(self,study_id,location_id):
         try:
