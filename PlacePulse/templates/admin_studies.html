@@ -1,21 +1,24 @@
 {% extends "base.html" %}
 
 {% block header %}
-<!-- Le styles -->
-<link href="/static/css/bootstrap.css" rel="stylesheet">
-<link href="/static/css/responsive.css" rel="stylesheet">
-<link href="/static/css/main.css" rel="stylesheet">
+{{ super() }}
+<link href="/static/css/sub.css" rel="stylesheet">
 {% endblock %}
 
 {% block nav %}
-    {% set active_page = "controlpanel" %}
-    {% include 'nav.html' %}
+    {% set active_page = "about" %}
+    {{ super() }}
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span3">
+
+<!-- Masthead
+================================================== -->
+<header class="jumbotron subhead">
+    <h1 class="h1extra">Control Panel</h1>
+</header>
+<div class="row" align="center">
+   <div class="span3" align="left">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
           <li class="nav-header">Control Panel</li>
@@ -29,56 +32,36 @@
           <li><a href='/admin/users/view_all'><i class="icon-user"></i> Profile</a></li>
           <li><a href='/admin/users/view_specific'><i class="icon-cog"></i> Settings</a></li>
           <li><a href='/admin/users/view_specific'><i class="icon-question-sign"></i> Help</a></li>
-        <hr>
-          <li class="nav-header"><span class="label">Admin</span> Control Panel</li>
-          <li><a href='/admin/settings/studies/'><i class="icon-book"></i> Studies</a></li>
-          <li><a href='/admin/settings/places/'><i class="icon-plane"></i> Places</a></li>
-          <li><a href='/admin/settings/locations/'><i class="icon-map-marker"></i> Locations</a></li>
-          <li><a href='/admin/settings/images/'><i class="icon-picture"></i> Images</a></li>
-          <li><a href='/admin/settings/votes/'><i class="icon-ok"></i> Votes</a></li>
-          <li><a href='/admin/settings/results/'><i class="icon-signal"></i> Results</a></li>
-          <li><a href='/admin/settings/users/'><i class="icon-user"></i> Users</a></li>
         </ul>
       </div><!--/.well -->
-    </div><!--/span-->
-    <div class="span9">
-      <div class="row-fluid">
-        <div class="span12">
-          <h1>Studies</h1>
-              <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Question</th>
-                          <th>City</th>
-                          <th>Manage</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {%for study in studies:%}
-                        <tr>
-                          <td><a href='/study/{{study._id}}'>{{study._id}}</a></td>
-                          <td>Which place looks more {{study.study_question}}?</td>
-                          <td><a href='/admin/places/{{study._id}}'>{{study.city}}</a></td>
-                          <td><a href='/admin/votes/{{study._id}}' title="Manage Votes"><i class="icon-book"></i></a> <a href='/admin/places/{{study._id}}' title="Manage Places"><i class="icon-plane"></i></a> <a href='/admin/locations/{{study._id}}' title="Manage Locations"><i class="icon-map-marker"></i></a> <a href='/admin/images/{{study._id}}' title="Manage Images"><i class="icon-picture"></i></a> <a href='/admin/votes/{{study._id}}' title="Manage Votes"><i class="icon-ok"></i></a> <a href='/admin/results/{{study._id}}' title="Manage Results"><i class="icon-signal"></i></a></td>
-                        </tr>
-                        {%endfor%}
-                      </tbody>
-                    </table>
-        </div><!--/span-->
-      </div><!--/row-->
-    </div><!--/span-->
-  </div><!--/row-->
+   </div>
+   <div class="span9" align="left">
+     <table class="table table-bordered">
+             <thead>
+               <tr>
+                 <th>ID</th>
+                 <th>Question</th>
+                 <th>City</th>
+                 <th>Manage</th>
+               </tr>
+             </thead>
+             <tbody>
+               {%for study in studies:%}
+               <tr>
+                 <td><a href='/study/{{study._id}}'>{{study._id}}</a></td>
+                 <td>Which place looks more {{study.study_question}}?</td>
+                 <td><a href='/admin/places/{{study._id}}'>{{study.city}}</a></td>
+                 <td><a href='/admin/votes/{{study._id}}' title="Manage Votes"><i class="icon-book"></i></a> <a href='/admin/places/{{study._id}}' title="Manage Places"><i class="icon-plane"></i></a> <a href='/admin/locations/{{study._id}}' title="Manage Locations"><i class="icon-map-marker"></i></a> <a href='/admin/images/{{study._id}}' title="Manage Images"><i class="icon-picture"></i></a> <a href='/admin/votes/{{study._id}}' title="Manage Votes"><i class="icon-ok"></i></a> <a href='/admin/results/{{study._id}}' title="Manage Results"><i class="icon-signal"></i></a></td>
+               </tr>
+               {%endfor%}
+             </tbody>
+           </table> 
+  </div>
+</div><!--/row-->
 {% endblock %}
 
 {% block footer %}
-  <hr>
-
-  <footer>
-    <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
-  </footer>
-
-</div><!--/.fluid-container-->
+{{ super() }}
 
 <!-- Le javascript
 ================================================== -->
@@ -97,6 +80,16 @@
 <script src="/static/js/bootstrap-carousel.js"></script>
 <script src="/static/js/bootstrap-typeahead.js"></script>
 <script>
+$('#phil').popover({'placement':'top','title':'Phil Salesses','content':'Phil is a graduate researcher at the MIT Media Lab who has worked with web technologies, geographic information systems and various forms of remote sensing data.'});
+$('#paul').popover({'placement':'top','title':'Paul Sawaya','content':'Paul is an undergraduate researcher at Hampshire College and has worked for industry titans such as Apple, Bloomberg and up-and-coming Justin.tv.'});
+$('#michaelw').popover({'placement':'top','title':'Michael Wong','content':'Michael is an undergraduate researcher at Harvard.'});
+$('#michaelx').popover({'placement':'top','title':'Michael Xu','content':'Michael is an undergraduate researcher at MIT.'});
+$('#tony').popover({'placement':'top','title':'Anthony DeVincenzi','content':'Anthony is a creative director, designer and graduate researcher at the Media Lab.'});
+$('#kiran').popover({'placement':'top','title':'Kiran Bhattaram','content':'Kiran is an undergraduate researcher at MIT.'});
+$('#amanda').popover({'placement':'top','title':'Amanda Davis','content':'Amanda works as a researcher at the Design and Usability Center.'});
+$('#mauro').popover({'placement':'top','title':'Mauro Martino','content':'Mauro is an Assistant Professor at the Northeastern University Center for Complex Network Research, working to visualize and explore complex network data.'});
+$('#katja').popover({'placement':'top','title':'Katja Schechtner','content':'Katja leads Europe\'s largest research group that focuses on Urban Transportation and Mobility. '});
+$('#cesar').popover({'placement':'top','title':'César Hidalgo','content':'César is an assistant professor and the Asahi Broadcast Corporation Career Development Professor at the MIT Media Lab and a faculty associate at Harvard’s University Center for International Development.'});
 $(document).ready(function() {
     // On page load, load the GMaps API. Once that's loaded, callback to init()
     function loadScript() {
