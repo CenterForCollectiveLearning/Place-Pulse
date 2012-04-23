@@ -6,6 +6,7 @@ from flask import Module
 from flask import redirect,request,session,url_for
 from flaskext.oauth import OAuth
 
+from db import Database
 from util import *
 
 login = Module(__name__)
@@ -20,6 +21,16 @@ facebook = oauth.remote_app('facebook',
     consumer_secret=os.environ['FACEBOOK_APP_SECRET'],
     request_token_params={'scope': 'email,user_likes,friends_likes,user_location'}
 )
+
+def associateEmailWithVoterID(email,voterID):
+    # Associate all of the user's previous votes when signed out with their e-mail.
+    Database.votes.update({
+        'voter_uniqueid': voterID
+    },{
+        "$addToSet": {
+            'voter_email': email
+        }
+    },multi=True)
 
 @login.route('/login/facebook/')
 def handle_facebook():
@@ -44,6 +55,7 @@ def facebook_authorized(resp):
         'name':  me.data['name'],
         'email': me.data['email']
     }
+    if session.get('voterID'): associateEmailWithVoterID(me.data['email'],session.get('voterID'))
     return redirect(request.args.get('next') or '/')
 
 @login.route("/login/browserid/",methods=['POST'])
@@ -53,26 +65,25 @@ def handle_browserid():
         "audience" : urllib2.Request(request.url).get_host()
     }
     nextURL = request.args.get('next') or '/'
-    try:
-        req = urllib2.Request('https://browserid.org/verify',urllib.urlencode(data))        
-        json_result = urllib2.urlopen(req).read()
-        
-        # Parse the JSON to extract the e-mail
-        result = json.loads(json_result)
-        session['userObj'] = {
-            'source': 'browserid',
-            'email':  result.get('email')
-        }
-        return jsonifyResponse({
-            'success': True,
-            'next': nextURL
-        })
-    except:
+    req = urllib2.Request('https://browserid.org/verify',urllib.urlencode(data))
+    json_result = urllib2.urlopen(req).read()
+    # Parse the JSON to extract the e-mail
+    result = json.loads(json_result)
+    if result.get('status') == 'failure':
         return jsonifyResponse({
             'success': False,
             'error': True,
             'error_description': 'BrowserID assertion check failed!'
         })
+    session['userObj'] = {
+        'source': 'browserid',
+        'email':  result.get('email')
+    }
+    if session.get('voterID'): associateEmailWithVoterID(result.get('email'),session.get('voterID'))
+    return jsonifyResponse({
+        'success': True,
+        'next': nextURL
+    })
         
 @facebook.tokengetter
 def get_facebook_oauth_token():

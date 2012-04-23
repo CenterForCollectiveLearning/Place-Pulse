@@ -1,12 +1,13 @@
 from flask import Module
 
-from flask import redirect,render_template,request,url_for
+from flask import redirect,render_template,request,session,url_for
 
 from util import *
 
 from datetime import datetime
-from random import random
-from random import randint
+from random import random,randint
+from uuid import uuid4
+
 
 study = Module(__name__)
 
@@ -132,7 +133,6 @@ def post_new_vote(study_id):
         obj['votes'] += 1
         Database.locations.save(obj)
         Database.incQSVoteCount(study_id, str(obj.get('_id')))
-
     leftObj = Database.getLocation(request.form['left'])
     rightObj = Database.getLocation(request.form['right'])
     if leftObj is None or rightObj is None:
@@ -140,14 +140,21 @@ def post_new_vote(study_id):
             'error': "Locations don't exist!"
         })
     map(incVotes, [leftObj,rightObj])
-    Database.votes.insert({
+    newVoteObj = {
         'study_id' : request.form['study_id'],
         'left' : request.form['left'],
         'right' : request.form['right'],
         'choice' : request.form['choice'],
         'timestamp': datetime.now()
-    })
-    print "saving choice: %s" % request.form['choice']
+    }
+    if session.get('userObj'):
+        newVoteObj['voter_email'] = session['userObj']['email']
+    else:
+        if not session.get('voterID'):
+            # Generate a random ID to associate votes with this user
+            session['voterID'] = str(uuid4().hex)
+        newVoteObj['voter_uniqueid'] = session['voterID']    
+    Database.votes.insert(newVoteObj)
     return jsonifyResponse({
         'success': True
     })
