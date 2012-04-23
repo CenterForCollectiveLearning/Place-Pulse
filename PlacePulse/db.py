@@ -149,10 +149,10 @@ class database(object):
             if exclude is not None: o['location_id'] = { '$ne' : exclude }
             if fewestVotes: 
                 f = 10
-                s = randint(0,f) 
+                s = randint(0,min(f,self.qs.find(o).count()-1)) 
                 QS = self.qs.find(o).sort('num_votes',ASCENDING).limit(f).skip(s).next()
             else:
-                s = randint(0, self.qs.find(o).count())
+                s = randint(0, self.qs.find(o).count()-1)
                 QS = self.qs.find(o).skip(s).limit(1).next()
             if QS.get('num_votes')  > 30 and not sort:
                 return self.randomQS(study_id, exclude=exclude, sort=True)

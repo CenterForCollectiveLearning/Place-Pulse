@@ -150,33 +150,47 @@ def post_new_vote(study_id):
 
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
-    try:
-		# get location 1
-		QS1 = Database.randomQS(study_id, fewestVotes=True)
-		#get location 2
-		if QS1.get('q', None) is None: # location 1 has no q score
-			QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
-		else:
-			#get 25 locations with q scores
-			obj = { 
-				'study_id': study_id,
-				'location_id' : { '$ne' : QS1.get('location_id') },
-				'num_votes' : { '$lte' : 30 },
-				'q' : { '$exists' : True }
-			}
-			count = Database.qs.find(obj).count()
-			s = randint(0,max(0,count-25))
-			QSCursor = Database.qs.find(obj).skip(s).limit(25)            
-			
-			#pick location with closest score
-			dist = lambda QS: abs(QS.get('q') - QS1['q'])
-			QS2 = min(QSCursor, key=dist)
-	
-		# convert to location objects
-		toLocation = lambda QS: Database.getLocation(QS.get('location_id'))
-		locationsToDisplay = map(toLocation, [QS1, QS2])
-    except:
-         return jsonifyResponse({ 'error': "Could not get locations." })
+    # get location 1
+    QS1 = Database.randomQS(study_id, fewestVotes=True)
+    if QS1 is None:
+        return jsonifyResponse({
+            'error': "Could not get location 1 from QS collection."
+        })
+    #get location 2
+    if not QS1.has_key('q'): # location 1 has no q score
+        QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
+    else:
+        #get 25 locations with q scores
+        obj = { 
+            'study_id': study_id,
+            'location_id' : { '$ne' : QS1.get('location_id') },
+            'num_votes' : { '$lte' : 30 },
+            'q' : { '$exists' : True }
+        }
+        f = 25
+        count = Database.qs.find(obj).count()-1
+        s = randint(0,max(0,count-f))
+        QSCursor = Database.qs.find(obj).skip(s).limit(f)            
+        
+        #pick location with closest score
+        dist = lambda QS: abs(QS.get('q') - QS1['q'])
+        try: 
+            QS2 = min(QSCursor, key=dist)
+        except ValueError: # db query yields zero results
+            QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
+    if QS2 is None:
+        return jsonifyResponse({
+            'error': "Could not get location 2 from QS collection."
+        })
+    
+    # convert to location objects
+    location1 = Database.getLocation(QS1.get('location_id'))
+    location2 = Database.getLocation(QS2.get('location_id'))
+    locationsToDisplay = [location1, location2]
+    if location1 is None or location2 is None:
+        return jsonifyResponse({
+            'error': "Locations could not be retrieved from location collection!"
+        })
     
     return jsonifyResponse({
         'locs' : map(objifyPlace, locationsToDisplay)
