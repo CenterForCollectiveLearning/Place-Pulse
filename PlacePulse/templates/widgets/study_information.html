@@ -4,7 +4,7 @@
     <div class="control-group" id="study_name_cg">
       <label class="control-label" for="study_name">Study Name</label>
       <div class="controls">
-        <input type="text" class="input-xlarge" id="study_name" placeholder="i.e. Boston Tourism Study">
+        <input type="text" class="input-xlarge" id="study_name" placeholder="i.e. Boston Tourism Study" {% if study %} value="{{ study.study_name }}" {% endif %}>
         <span id="study_name_error" class="help-inline hidden">Please use at least one word.</span>
       </div>
     </div>
@@ -13,7 +13,7 @@
       <div class="controls">
         <div class="input-prepend">
           <span class="add-on">Which place looks more </span>
-          <input class="span2" id="study_question" size="16" type="text" placeholder="i.e. unique" data-provide="typeahead" data-items="{{numQs}}" data-source="{{studyQs}}">
+          <input class="span2" id="study_question" size="16" type="text" placeholder="i.e. unique" data-provide="typeahead" data-items="{{numQs}}" data-source="{{studyQs}}" {% if study %} value="{{ study.study_question }}" {% endif %}>
           ?
           <span id="study_question_error" class="help-inline hidden">Please use at most three words.</span>
         </div>
@@ -23,19 +23,19 @@
       <label class="control-label" for="study_public">Open to the public?</label>
       <div class="controls">
         <label class="radio inline">
-          <input name="study_public" type="radio" id="study_public" value="yes" checked>
+          <input name="study_public" type="radio" id="study_public" value="yes" {% if study %} {% if study.study_public == 'yes' %} checked {% endif %}{% else %}checked{% endif %}>
           Yes
         </label>
         <label class="radio inline">
-          <input name="study_public" type="radio" id="study_public" value="no">
+          <input name="study_public" type="radio" id="study_public" value="no" {% if study %} {% if study.study_public == 'no' %} checked {% endif %}{% endif %}>
           No
         </label>
         <p class="help-block">If "No" is selected, you will have to provide your own study participants by sending them a link.</p>
       </div>
     </div>
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary" id="finishStudyForm">Continue</button>
-      <button type="reset" class="btn">Clear</button>
+      <button type="submit" class="btn btn-primary" id="finishStudyForm">{% if study %}Save{% else %}Continue{% endif %}</button>
+      {% if not study %}<button type="reset" class="btn">Clear</button>{% endif %}
     </div>
   </fieldset>
 </div>

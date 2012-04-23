@@ -7,7 +7,6 @@ from pymongo import ASCENDING
 from random import choice
 from random import randint
 
-
 class database(object):
 #--------------------Results
     def getResultsForStudy(self,studyName):

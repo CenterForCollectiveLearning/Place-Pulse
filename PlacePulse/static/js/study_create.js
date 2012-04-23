@@ -25,7 +25,6 @@ $(document).ready(function() {
       script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize&libraries=geometry";
       document.body.appendChild(script);
     }
-    
     loadScript();
 });
 
