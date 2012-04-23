@@ -188,6 +188,10 @@ class database(object):
     @property
     def votes(self):
         return self.db.votes
+        
+    @property
+    def voterids(self):
+        return self.db.voterids
 
     @property
     def qs(self):

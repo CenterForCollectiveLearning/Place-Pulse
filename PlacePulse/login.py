@@ -24,13 +24,13 @@ facebook = oauth.remote_app('facebook',
 
 def associateEmailWithVoterID(email,voterID):
     # Associate all of the user's previous votes when signed out with their e-mail.
-    Database.votes.update({
+    Database.voterids.update({
         'voter_uniqueid': voterID
     },{
         "$addToSet": {
             'voter_email': email
         }
-    },multi=True)
+    },upsert=True)
 
 @login.route('/login/facebook/')
 def handle_facebook():
