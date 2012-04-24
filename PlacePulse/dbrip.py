@@ -6,7 +6,7 @@ import MySQLdb
 
 from db import Database
 # Substitute user/pass info in connect() as necessary
-conn = MySQLdb.connect(db='PlacePulse',user='root',passwd='12345678')
+conn = MySQLdb.connect(db='PlacePulse',user='root')
 cur = conn.cursor()
 
 # DB data
@@ -54,11 +54,11 @@ def rip_cities():
     def city_to_place(city_row):
         # city tuple is (id, city name, country)
         #cities[city_row[0][0]] = "%s, %s" % (city_row[0][1],city_row[0][2])
-	placeid = Database.places.insert({'name':city_row[0][1],
-			'data_resolution':1000,
-			'location_distribution':'randomly'})
-	cities[city_row[0][0]] = placeid
-    	placeids.append(placeid)
+        placeid = str(Database.places.insert({'name':city_row[0][1],
+                'data_resolution':1000,
+                'location_distribution':'randomly'}))
+        cities[city_row[0][0]] = placeid
+        placeids.append(placeid)
     for_result(city_to_place,res)
 
 
@@ -70,22 +70,22 @@ def rip_studies():
         # questions row is (id,question,id_study)
         # we're throwing id_study away, and replacing it with a mongo _id
         # which is SHA1('study_' + id)
-	studyid = Database.studies.insert({
-					'study_question': study_row[0][1],
-					'study_public': True,
-					'study_name':study_row[0][1],
-					'places_id':placeids})
-	studyids.append(study_row[0][0])
-	study_mongo_ids.append(studyid)
-	#print(study_row[0][0])
-	studyidsD[study_row[0][0]]=studyid
-	'''
+        studyid = str(Database.studies.insert({
+                        'study_question': study_row[0][1],
+                        'study_public': True,
+                        'study_name':study_row[0][1],
+                        'places_id':placeids}))
+        studyids.append(study_row[0][0])
+        study_mongo_ids.append(studyid)
+        #print(study_row[0][0])
+        studyidsD[study_row[0][0]]=studyid
+    '''
         out_studies.write(json.dumps({
             '_id': SHA1('study_' + str(study_row[0][0])),
             'question': study_row[0][1]
         }))
         out_studies.write('\n')
-	'''
+    '''
     
     for_result(save_study,res)
     out_studies.close()
@@ -130,34 +130,34 @@ def rip_locations_and_places():
             'pitch': place_row[8],
             'num_votes': place_row[11]
         }
-	#reference 
-	'''
-    Database.locations.insert({
-        'loc': [request.form['lat'],request.form['lng']],
-        'study_id': request.form['study_id'],
-        'heading': 0,
-        'pitch': 0,
-        'bucket' : Buckets.Unknown,
-        'votes' : 0
-    })
-	'''
-	#print(place_row[1])
-	if(place_row[1] not in cityidset):
-		cityidset.add(place_row[1])
-		placeid = Database.places.insert({'name':place_row[1],
-			'data_resolution':1000,
-			'location_distribution':'randomly'})
-		cities[place_row[1]] = placeid
-    		placeids.append(placeid)
-		
-	locationID=Database.locations.insert({'loc':[float(place_row[2]),float(place_row[3])],
-				'heading':place_row[7],
-				'pitch':place_row[8],
-				'type':'gsv',
-				'places_id':[cities[place_row[1]]]})
-	
-	locationsD[int(place_row[0])]=locationID
-	locationids.append(locationID)
+        #reference 
+        '''
+        Database.locations.insert({
+            'loc': [request.form['lat'],request.form['lng']],
+            'study_id': request.form['study_id'],
+            'heading': 0,
+            'pitch': 0,
+            'bucket' : Buckets.Unknown,
+            'votes' : 0
+        })
+        '''
+        #print(place_row[1])
+        if(place_row[1] not in cityidset):
+            cityidset.add(place_row[1])
+            placeid = str(Database.places.insert({'name':place_row[1],
+                'data_resolution':1000,
+                'location_distribution':'randomly'}))
+            cities[place_row[1]] = placeid
+            placeids.append(placeid)
+
+        locationID=str(Database.locations.insert({'loc':[float(place_row[2]),float(place_row[3])],
+                    'heading':place_row[7],
+                    'pitch':place_row[8],
+                    'type':'gsv',
+                    'places_id':[cities[place_row[1]]]}))
+    
+        locationsD[int(place_row[0])]=str(locationID)
+        locationids.append(locationID)
         # if mutant, add file_location
         if place_row[9]:
             place['mutant'] = True
@@ -179,7 +179,6 @@ def rip_locations_and_places():
                 'lng': float(place_row[3]),
                 'places': [place]
             }
-
     for_result(save_place,res)
     
 '''
@@ -212,32 +211,36 @@ def rip_votes():
                 '$date': int(mktime(vote_row[9].timetuple()))*1000
             }
         }
-	'''
-    Database.votes.insert({
-        'study_id' : request.form['study_id'],
-        'left' : request.form['left'],
-        'right' : request.form['right'],
-        'choice' : request.form['choice'],
-        'timestamp': datetime.now()
-    })
-	'''
-	if(vote_row[1]!=0):
-		studyID=studyidsD[vote_row[1]]
-		leftID = locationsD[int(vote_row[2])]
-		rightID = locationsD[int(vote_row[4])]
-		Database.votes.insert({'study_id':studyID,
-				'left': leftID,
-				'right': rightID,
-				'left_city':cities[vote_row[3]] if vote_row[3] else None,
-				'right_city':cities[vote_row[5]] if vote_row[3] else None,
-				'choice':int(vote_row[6]),
-				'timestamp': {
-					'date': int(mktime(vote_row[9].timetuple()))*1000
-				}})
-		study_loc_dict[(studyID,leftID)]+=1
-		study_loc_dict[(studyID,rightID)]+=1
-        #out_votes.write(json.dumps(vote))
-        #out_votes.write('\n')
+        '''
+        Database.votes.insert({
+            'study_id' : request.form['study_id'],
+            'left' : request.form['left'],
+            'right' : request.form['right'],
+            'choice' : request.form['choice'],
+            'timestamp': datetime.now()
+        })
+        '''
+        if(vote_row[1]!=0):
+            studyID=studyidsD[vote_row[1]]
+            leftID = locationsD[int(vote_row[2])]
+            rightID = locationsD[int(vote_row[4])]
+            if int(vote_row[6]) == leftID:
+                choice = "left"
+            elif int(vote_row[6]) == rightID:
+                choice = "right"
+            else:
+                choice = "equal"
+            Database.votes.insert({'study_id':studyID,
+                    'left': leftID,
+                    'right': rightID,
+                    'left_city':cities[vote_row[3]] if vote_row[3] else None,
+                    'right_city':cities[vote_row[5]] if vote_row[3] else None,
+                    'choice':choice,
+                    'timestamp': {
+                        'date': int(mktime(vote_row[9].timetuple()))*1000
+                    }})
+            study_loc_dict[(studyID,leftID)]+=1
+            study_loc_dict[(studyID,rightID)]+=1
     for_result(save_vote,res)
     out_votes.close()
 
@@ -248,9 +251,9 @@ rip_studies()
 study_locs=[(studyID,locID) for studyID in study_mongo_ids for locID in locationids]
 study_loc_dict={}
 for x in study_locs:
-	study_loc_dict[x]=0
+    study_loc_dict[x]=0
 rip_votes()
 for x in study_loc_dict:
-	Database.qs.insert({'study_id':x[0],
-			'location_id':x[1],
-			'num_votes':study_loc_dict[x]})
+    Database.qs.insert({'study_id':x[0],
+            'location_id':x[1],
+            'num_votes':study_loc_dict[x]})

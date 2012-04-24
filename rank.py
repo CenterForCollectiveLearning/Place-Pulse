@@ -7,6 +7,7 @@ from PlacePulse.db import Database
 from PlacePulse.util import slugify
 
 def generate_results_page(study_id,final_rankings):
+    print "generate_results_page"
     studyObj = Database.getStudy(study_id)
     results = {
         "study_id": study_id,
@@ -22,7 +23,8 @@ def generate_results_page(study_id,final_rankings):
         # Get the place_ids shared (set intersection) between the study and this location.
         # I'm assuming there'll only be one in common, since a location should appear
         # in a study only once.
-        place_id = list(study_places&set(locationObj['place_id']))[0]
+        # place_id = list(study_places&set(locationObj['place_id']))[0]
+        place_id = list(study_places&set(locationObj['places_id']))[0]
         score = final_rankings[rankedLocationID]
         places[place_id].append({
             "location_id": rankedLocationID,
@@ -156,7 +158,7 @@ def rank_mongo(study_id=None):
 
     votes_selected = load_from_db(study_id)
     
-    if votes_selected == 0:
+    if len(votes_selected) == 0:
         print "no votes eligible, exiting"
         return
     
@@ -169,9 +171,9 @@ def rank_mongo(study_id=None):
     
     #Rank all images
     final_rankings = calculate_win_loss(images, votes_selected)
-    print ""
-    print "*** FINAL RANKINGS ***"
-    print final_rankings
+    # print ""
+    # print "*** FINAL RANKINGS ***"
+    # print final_rankings
     
     #Load Results to db
     print len(final_rankings)

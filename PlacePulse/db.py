@@ -112,7 +112,13 @@ class database(object):
 #--------------------Votes
     def getVotes(self,study_id):
         try:
-            return self.votes.find({'study_id': study_id})
+            # FIXME: Normalize use of ObjectId/str for _id's.
+            return self.votes.find({
+                "$or":[
+                    {'study_id': study_id},
+                    {'study_id': ObjectId(study_id)}
+                ]
+            })
         except:
             return None
 
