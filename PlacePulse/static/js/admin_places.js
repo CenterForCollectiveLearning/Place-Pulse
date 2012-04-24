@@ -168,24 +168,12 @@ function save_changes(id,lat,lng,heading,pitch)
             }
         });
 }
-function delete_image(id)
+function deletePlace(id)
 {
-    $.ajax({
-            url:'/place/curate/location/delete/' + id,
-            // Expect JSON to be returned. This is also enforced on the server via mimetype.
-            dataType: 'json',
-            data: {
-                id: id
-            },
-            type: 'POST',
-            success: function(data) {
-                if (data.success === "True")
-                {
-                    $("#close_modal").trigger('click');
-                    $('#li'+ id).remove()
-                }
-            }
-        });
+    $('#deletePlaceModal').modal('toggle');
+    $('#confirmDelete').click(function() {
+      confirmDeletePlace(id);
+    });
 }
 function editsv(id, lat, lng, heading, pitch) {
     $('#edit_street_view').modal();

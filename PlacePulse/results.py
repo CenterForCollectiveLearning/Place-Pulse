@@ -46,7 +46,8 @@ def getUserStudyResultsData(study_id):
 @results.route('/study/results/<study_id>/<place_name_slug>/',methods = ['GET'])
 def showPlaceResultsForStudy(study_id,place_name_slug):
     studyObj = Database.getStudy(study_id)
-    return auto_template('place_results.html',study=studyObj,place_name_slug=place_name_slug)
+    results = Database.getResultsForStudy(study_id).get('results')
+    return auto_template('place_results.html',study=studyObj,results=results)
 
 @results.route('/study/results_data/<study_id>/<place_name_slug>/',methods = ['GET'])
 def getPlaceResultsForStudyData(study_id,place_name_slug):
