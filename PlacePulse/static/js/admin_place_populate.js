@@ -224,7 +224,7 @@ function endplacePopulation() {
 		            'place_id': placeID
 		        },
 		        success: function(e) {
-		            window.location = "/place/curate/" + placeID;
+		            window.location = "/admin/locations/curate/" + placeID + "/";
 		        }
 		    });
 }

@@ -21,9 +21,9 @@
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
           <li class="nav-header">Control Panel</li>
-          <li class="active"><a href='/admin/studies/'><i class="icon-book icon-white"></i> Studies</a></li>
+          <li><a href='/admin/studies/'><i class="icon-book"></i> Studies</a></li>
           <li><a href='/admin/places/'><i class="icon-plane"></i> Places</a></li>
-          <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Locations</a></li>
+          <li class="active"><a href='/admin/locations/'><i class="icon-map-marker icon-white"></i> Locations</a></li>
           <li><a href='/admin/images/'><i class="icon-picture"></i> Images</a></li>
           <li><a href='/admin/votes/'><i class="icon-ok"></i> Votes</a></li>
           <li><a href='/admin/results/'><i class="icon-signal"></i> Results</a></li>
@@ -34,8 +34,13 @@
         </ul>
       </div><!--/.well -->
    </div>
-   <div class="span9" align="left">
-     <div id="studyDeleted" class="alert alert-success" align="left" style="display:none;">
+   <div class="span4" align="left">
+     <div class="well" align="center">
+       <div id="map4" style="width: 100%; height:240px;"></div>
+     </div>
+  </div>
+   <div class="span5" align="left">
+     <div id="locationDeleted" class="alert alert-success" align="left" style="display:none;">
         <a class="close" data-dismiss="alert">×</a>
         <h4 class="alert-heading">Success!</h4>
         Your study has been deleted.
@@ -43,39 +48,30 @@
      <table class="table table-bordered">
              <thead>
                <tr>
-                 <th>Studies</th>
-                 <th>Public</th>
-                 <th>Permalink</th>
+                 <th>Locations</th>
                  <th>Actions</th>
                </tr>
              </thead>
              <tbody>
-               {%for study in studies:%}
-               <tr id="row{{study._id}}">
-                 <td><a href='/admin/study/{{study._id}}'>{{study.study_name}}</a></td>
-                  <td>{{study.study_public|capitalize}}</td>    
-                 <td><a href='/study/view/{{study._id}}'>Visit Study</a></td>    
-                 <td><a class="btn" style="padding:0px 4px 0px;" href="/admin/study/{{study._id}}" title="Edit Study"><i class="icon-edit" style="margin-top:3px;"></i></a> <a class="btn" style="padding:0px 4px 0px;" onclick="deleteStudy('{{study._id}}')" title="Delete Study"><i class="icon-trash" style="margin-top:3px;"></i></a></td>             
+               {%for location in locations:%}
+               <tr id="row{{location._id}}">
+                 <td><a href="#" onMouseover="center_map({{location.loc[0]}},{{location.loc[1]}})">({{location.loc[0]}},{{location.loc[1]}})</a></td> 
+                 <td><a class="btn" style="padding:0px 4px 0px;" onclick="deleteLocation('{{location._id}}')" title="Delete Location"><i class="icon-trash" style="margin-top:3px;"></i></a></td>             
               </tr>
                {%endfor%}
              </tbody>
            </table> 
-           <div class="well" align="left">
-              <form id="add_study" action="/study/create/" style="margin:0;">
-                <button class="btn btn-danger" onclick="window.location.replace("http://pulse.media.mit.edu/study/create/");">Add Study</button>
-              </form>
-            </div>
-            <div class="modal hide fade" id="deleteStudyModal">
+            <div class="modal hide fade" id="deleteLocationModal">
               <div class="modal-header">
                 <a class="close" data-dismiss="modal">×</a>
                 <h3>Confirm Delete</h3>
               </div>
               <div class="modal-body">
-                <p>Are you sure you want to delete this study?</p>
+                <p>Are you sure you want to delete this location?</p>
               </div>
               <div class="modal-footer">
                 <a href="#" class="btn" data-dismiss="modal">Cancel</a>
-                <a id="confirmDelete" class="btn btn-primary">Delete Study</a>
+                <a id="confirmDelete" class="btn btn-primary">Delete Location</a>
               </div>
             </div>
   </div>
@@ -84,30 +80,44 @@
 
 {% block footer %}
 {{ super() }}
+<script src="/static/js/admin_locations.js"></script>
 <script>
-function deleteStudy(studyID)
+$(document).ready(function() {
+	// On page load, load the GMaps API. Once that's loaded, callback to init()
+    function loadScript() {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init";
+      document.body.appendChild(script);
+    }
+	loadScript();
+});
+function init() {
+	initialize();
+}
+function deleteLocation(locationID)
 {
-  $('#deleteStudyModal').modal('toggle');
+  $('#deleteLocationModal').modal('show');
   $('#confirmDelete').click(function() {
-    confirmDeleteStudy(studyID);
+    confirmDeleteLocation(locationID);
   });
 }
-function confirmDeleteStudy(studyID)
+function confirmDeleteLocation(locationID)
 {
-  $('#deleteStudyModal').modal('toggle');
+  $('#deleteLocationModal').modal('hide');
   $.ajax({
-          url:'/admin/study/delete/' + studyID,
+          url:'/admin/locations/delete/' + locationID,
           // Expect JSON to be returned. This is also enforced on the server via mimetype.
           dataType: 'json',
           data: {
-              id: studyID
+              id: locationID
           },
           type: 'POST',
           success: function(data) {
               if (data.success === "True")
               {
-                  $("#row" + studyID).remove();
-                  $('#studyDeleted').show();
+                  $("#row" + locationID).remove();
+                  $('#locationDeleted').show();
               }
           }
       });

@@ -18,19 +18,24 @@
     <h1 class="h1extra">Create a Study</h1>
 </header>
   <div class="row">
-    <div class="span3">
-      <div class="well sidebar-nav">
-        <ul class="nav nav-list">
-          <li class="nav-header">Steps to Creating a Study</li>
-          <li id="info"><a href='#'><i class="icon-book"></i> Study Information</a></li>
-          <li id="define"><a href='#'><i class="icon-plane"></i> Define Places</a></li>
-          <li id="populate" class="active"><a href='#'><i class="icon-map-marker icon-white"></i> Populate Locations</a></li>
-          <li id="curate"><a href='#'><i class="icon-picture"></i> Curate Images</a></li>
-          <li id="start"><a href='#'><i class="icon-ok"></i> Start Collecting Votes</a></li>
-        </ul>
-      </div><!--/.well -->
+    <div class="span3" align="left">
+        <div class="well sidebar-nav">
+          <ul class="nav nav-list">
+            <li class="nav-header">Control Panel</li>
+            <li><a href='/admin/studies/'><i class="icon-book"></i> Studies</a></li>
+            <li class="active"><a href='/admin/places/'><i class="icon-plane icon-white"></i> Places</a></li>
+            <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Locations</a></li>
+            <li><a href='/admin/images/'><i class="icon-picture"></i> Images</a></li>
+            <li><a href='/admin/votes/'><i class="icon-ok"></i> Votes</a></li>
+            <li><a href='/admin/results/'><i class="icon-signal"></i> Results</a></li>
+            <li class="nav-header">Your Account</li>
+            <li><a href='/admin/users/view_all'><i class="icon-user"></i> Profile</a></li>
+            <li><a href='/admin/users/view_specific'><i class="icon-cog"></i> Settings</a></li>
+            <li><a href='/admin/users/view_specific'><i class="icon-question-sign"></i> Help</a></li>
+          </ul>
+        </div><!--/.well -->
       <div class="alert alert-info" id="info-alert">
-    	<strong>Step 3 of 5:</strong>
+    	<strong>Finding Locations</strong>
     	<br />We are now searching for Google Street View locations that are within the place you defined. Please don't leave this page until search has completed.
     	</div>
     	<div class="progress progress-danger progress-striped active">
@@ -58,7 +63,7 @@
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-<script src="/static/js/study_populate.js"></script>
+<script src="/static/js/admin_place_populate.js"></script>
 <script>
 $(document).ready(function() {
 	// On page load, load the GMaps API. Once that's loaded, callback to init()

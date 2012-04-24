@@ -9,6 +9,7 @@ var green;
 var shadow;
 var shape;
 var maxPointsPerStudy=350;
+var returnData;
 
 function initialize() {
     // Gmaps callback happened.
@@ -17,7 +18,6 @@ function initialize() {
 }
 
 function setupUI() {
-    $('#clearCurrentSelection').click(clearOverlays);
     startMap();    
     $('#submitPolygon').click(function() {
         if(area>0) {
@@ -285,8 +285,8 @@ function updateDB() {
             },
             type: 'POST',
             success: function(data) {
-                alert("worked");
-                //window.location.replace(window.location.protocol + '//' + window.location.host + "/admin/places/");
+                //alert(data.placeID)
+                window.location.replace(window.location.protocol + '//' + window.location.host + "/admin/place/populate/" + data.placeID);
             }
         });
 }

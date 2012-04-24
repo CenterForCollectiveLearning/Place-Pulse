@@ -36,6 +36,13 @@ class database(object):
         except:
             return None
 
+    def deleteStudy(self,study_id,owner):
+        try:
+            self.studies.remove( { '_id' : ObjectId(study_id), 'owner': owner })
+            return True
+        except:
+            return None
+
     def returnObjectId(self,study_id):
         return ObjectId(study_id)
 
@@ -75,6 +82,14 @@ class database(object):
             return self.places.find_one(ObjectId(place_id))
         except:
             return None
+            
+    def deletePlace_Locations(self,place_id):
+        try:
+            self.places.remove( { '_id' : ObjectId(place_id) })
+            self.locations.remove( { 'place_id' : str(place_id) })
+            return True
+        except:
+            return None
 
     def getNewCities(self,limit):
         try:
@@ -86,6 +101,12 @@ class database(object):
     def getLocations(self,place_id,limit=24):
         try:
             return self.locations.find({'place_id': place_id}).limit(limit)
+        except:
+            return None
+    
+    def getLocationsByOwner(self,owner):
+        try:
+            return self.locations.find({'owner': owner})
         except:
             return None
     
