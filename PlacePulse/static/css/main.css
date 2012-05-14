@@ -162,3 +162,9 @@ body {
 .streetViewChoice {
   cursor: pointer;
 }
+.voteProgress {
+	width:40%;
+}
+.voteProgress .progress {
+	text-align:left;
+}

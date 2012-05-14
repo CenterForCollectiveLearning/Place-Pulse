@@ -3,6 +3,7 @@ var locs;
 var buffer_left;
 var buffer_right;
 var uiLocked = true;
+var numVotes = 0;
 
 function onStreetViewChoice(choice) {
     if (uiLocked) return;
@@ -19,6 +20,8 @@ function onStreetViewChoice(choice) {
         success: function(data) {
             getImagesFromBuffer();
             loadImagesToBuffer();
+			numVotes += 1;
+			$('.progress .bar').css('width',(numVotes/20*100).toString() + '%');
         }
     });
 }
@@ -36,6 +39,7 @@ function loadImagesToBuffer() {
         type: 'GET',
         success: function(data) {
             locs_buffer = data.locs;
+			console.log(data);
             $('#pano_left_buffer img.place').attr('src',getSVURL(locs_buffer[0].loc[0],locs_buffer[0].loc[1]));
             $('#pano_right_buffer img.place').attr('src',getSVURL(locs_buffer[1].loc[0],locs_buffer[1].loc[1]));
             uiLocked = false;
