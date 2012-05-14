@@ -72,57 +72,56 @@ def load_from_db(study_id):
 
 def calculate_win_loss(images, votes_selected):    
     temp_scores = defaultdict(lambda: defaultdict(float))
-    for j in range(1,101):
-        #Variables
-        play = defaultdict(float) #Number of times an image is voted on
-        neighbors = defaultdict(set) #Number of neighbors each ID has in graph
-        WL = defaultdict(lambda: defaultdict(float)) #Win/Loss
-        LW = defaultdict(lambda: defaultdict(float)) #Loss/Win
-        W = defaultdict(float) #Wins
-        T = defaultdict(float) #Ties
-        WR = defaultdict(float) #Win Ratio
-        LR = defaultdict(float) #Loss Ratio
-        WR1 = defaultdict(float) #Win Ratio + Indirect Wins of Neighbor
-        WR_int = {}
-        alpha = 1 #Tuning Parameter
-        counter = 0    
+    #Variables
+    play = defaultdict(float) #Number of times an image is voted on
+    neighbors = defaultdict(set) #Number of neighbors each ID has in graph
+    WL = defaultdict(lambda: defaultdict(float)) #Win/Loss
+    LW = defaultdict(lambda: defaultdict(float)) #Loss/Win
+    W = defaultdict(float) #Wins
+    T = defaultdict(float) #Ties
+    WR = defaultdict(float) #Win Ratio
+    LR = defaultdict(float) #Loss Ratio
+    WR1 = defaultdict(float) #Win Ratio + Indirect Wins of Neighbor
+    WR_int = {}
+    alpha = 1 #Tuning Parameter
+    counter = 0    
         
-        #Cycle through votes and set hashes
-        for vote in votes_selected:
-            #Is it one of the the selected images?
-			counter += 1
-			play[vote['id_left']] += 1
-			play[vote['id_right']] += 1
-			neighbors[vote['id_left']].add(vote['id_right'])
-			neighbors[vote['id_right']].add(vote['id_left'])
-			if vote['winner'] == vote['id_left']:
-				WL[vote['id_left']][vote['id_right']] += 3
-				LW[vote['id_right']][vote['id_left']] += 3
-				W[vote['id_left']] += 1
-			elif vote['winner'] == vote['id_right']:
-				WL[vote['id_right']][vote['id_left']] += 3
-				LW[vote['id_left']][vote['id_right']] += 3
-				W[vote['id_right']] += 1
-			elif vote['winner'] == '0':
-				WL[vote['id_right']][vote['id_left']] += 1
-				LW[vote['id_left']][vote['id_right']] += 1
-				T[vote['id_left']] += 1
-				T[vote['id_right']] += 1
-        #Calculate First order        
-        for key, value in play.iteritems():
-            WR[key] = W[key] / play[key]
-            LR[key] = (play[key] - W[key] - T[key]) / play[key]
-        #Calculate Second order
-        for key, value in play.iteritems():
-            WR1[key] = WR[key]
-            for key1, value1 in WL[key].iteritems():
-                WR1[key] += alpha * WR[key1] / len(neighbors[key1])
-            for key1, value1 in LW[key].iteritems():
-                WR1[key] -= alpha * LR[key1] / len(neighbors[key1])
-        #Write to temp_scores
-        for key, value in play.iteritems():
-            temp_scores[key]['WR1'] += value
-            temp_scores[key]['votes'] += 1   
+    #Cycle through votes and set hashes
+    for vote in votes_selected:
+        #Is it one of the the selected images?
+		counter += 1
+		play[vote['id_left']] += 1
+		play[vote['id_right']] += 1
+		neighbors[vote['id_left']].add(vote['id_right'])
+		neighbors[vote['id_right']].add(vote['id_left'])
+		if vote['winner'] == vote['id_left']:
+			WL[vote['id_left']][vote['id_right']] += 3
+			LW[vote['id_right']][vote['id_left']] += 3
+			W[vote['id_left']] += 1
+		elif vote['winner'] == vote['id_right']:
+			WL[vote['id_right']][vote['id_left']] += 3
+			LW[vote['id_left']][vote['id_right']] += 3
+			W[vote['id_right']] += 1
+		elif vote['winner'] == '0':
+			WL[vote['id_right']][vote['id_left']] += 1
+			LW[vote['id_left']][vote['id_right']] += 1
+			T[vote['id_left']] += 1
+			T[vote['id_right']] += 1
+    #Calculate First order        
+    for key, value in play.iteritems():
+        WR[key] = W[key] / play[key]
+        LR[key] = (play[key] - W[key] - T[key]) / play[key]
+    #Calculate Second order
+    for key, value in play.iteritems():
+        WR1[key] = WR[key]
+        for key1, value1 in WL[key].iteritems():
+            WR1[key] += alpha * WR[key1] / len(neighbors[key1])
+        for key1, value1 in LW[key].iteritems():
+            WR1[key] -= alpha * LR[key1] / len(neighbors[key1])
+    #Write to temp_scores
+    for key, value in play.iteritems():
+        temp_scores[key]['WR1'] += value
+        temp_scores[key]['votes'] += 1   
     final_rankings = defaultdict(lambda: defaultdict(float))
     for key, value in temp_scores.iteritems():
         #Need to calculate STD Deviation

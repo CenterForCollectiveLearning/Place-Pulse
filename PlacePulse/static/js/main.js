@@ -39,7 +39,6 @@ function loadImagesToBuffer() {
         type: 'GET',
         success: function(data) {
             locs_buffer = data.locs;
-			console.log(data);
             $('#pano_left_buffer img.place').attr('src',getSVURL(locs_buffer[0].loc[0],locs_buffer[0].loc[1]));
             $('#pano_right_buffer img.place').attr('src',getSVURL(locs_buffer[1].loc[0],locs_buffer[1].loc[1]));
             uiLocked = false;

@@ -1,8 +1,5 @@
-{% set navigation_bar = [
-    ('/about/', 'about', 'About'),
-    ('/study/create/', 'create', 'Create Study'),
-    ('/results/', 'results', 'Browse Results'),
-] -%}
+{% set unlocked_results = unlocked_results|default(False) -%}
+{% set unlocked_create_study = unlocked_create_study|default(False) -%}
 {% set active_page = active_page|default('index') -%}
 <div class="navbar">
   <div class="navbar-inner">
@@ -15,9 +12,22 @@
       <a class="brand" href="/"><img src="/static/img/place_pulse_logo_20.png" alt="" /></a>
       <div class="nav-collapse">
         <ul class="nav">
-            {% for href, id, caption in navigation_bar %}
-            <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
-            {% endfor %}
+	        <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/about/">About</a></li>
+	        <li{% if 'create' == active_page %} class="active"{% endif %}>
+				{% if unlocked_create_study %}
+					<a href="/study/create/">Create Study</a>
+				{% else %}
+					<a href="#" class="navLockedLink" title="Create a study" data-content="Vote more to unlock the ability to create a study!" data-placement="bottom"><i class="icon-lock icon-white"></i> Create Study</a>
+				{% endif %}
+			</li>
+			<li{% if 'results' == active_page %} class="active"{% endif %}>
+				{% if unlocked_results %}
+			        <a href="/results/">Browse Results</a>
+				{% else %}
+					<a href="#" class="navLockedLink" title="Browse results" data-content="Vote more to unlock the results page!" data-placement="bottom"><i class="icon-lock icon-white"></i> Browse Results</a>
+				{% endif %}
+			</li>
+				
         </ul>
         <ul class="nav pull-right">
           {% if userObj %}

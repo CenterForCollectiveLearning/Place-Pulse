@@ -130,8 +130,16 @@ def start_start(study_id):
 @study.route("/study/vote/<study_id>/",methods=['POST'])
 def post_new_vote(study_id):
     def incVotes(obj):
-        obj['votes'] += 1
-        Database.locations.save(obj)
+        # Keep obj updates for consistency
+        if obj.get('votes'):
+            obj['votes'] += 1
+        Database.locations.update({
+            '_id': obj['_id']
+        }, {
+            '$inc': {
+                'votes': 1
+            }
+        })
         Database.incQSVoteCount(study_id, str(obj.get('_id')))
     leftObj = Database.getLocation(request.form['left'])
     rightObj = Database.getLocation(request.form['right'])

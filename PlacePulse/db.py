@@ -1,11 +1,15 @@
 import os
 import pymongo
 import random
+import sys
 from pymongo.objectid import ObjectId
 from pymongo import ASCENDING
 
 from random import choice
 from random import randint
+
+# FIXME: We can't get away with silencing all errors in these methods.
+# They've made too many bugs hard to find. Let's add a real error logging system.
 
 class database(object):
 #--------------------Results
@@ -179,7 +183,7 @@ class database(object):
         except:
             return None
 
-    def randomQS(self, study_id, exclude=None, fewestVotes=False):
+    def randomQS(self, study_id, exclude=None, sort=None, fewestVotes=False):
         try:
             o = { 'study_id': study_id }
             if exclude is not None: o['location_id'] = { '$ne' : exclude }
@@ -190,7 +194,7 @@ class database(object):
             else:
                 s = randint(0, self.qs.find(o).count()-1)
                 QS = self.qs.find(o).skip(s).limit(1).next()
-            if QS.get('num_votes')  > 30 and not sort:
+            if QS.get('num_votes')  > 30 and sort is None:
                 return self.randomQS(study_id, exclude=exclude, sort=True)
             return QS
         except:

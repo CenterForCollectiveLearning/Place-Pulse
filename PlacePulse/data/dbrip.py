@@ -84,7 +84,8 @@ def rip_locations_and_places():
     
     def save_place(place_row):
         # places row is (id, id_city, lat, lng, _, _, _, heading, pitch, mutant, id_location, total_votes)
-        #print(place_row[1])
+        # print(place_row)
+        place_row = place_row[0]
         if(place_row[1] not in cityidset):
             cityidset.add(place_row[1])
             placeid = str(Database.places.insert({'name':place_row[1],
@@ -112,6 +113,7 @@ def rip_votes():
     def save_vote(vote_row):
         from time import mktime           
         # vote_row is (id,id_question,id_left,id_left_city,id_right,id_right_city,winner,uuid_pulse,ip_address,timestamp)
+        vote_row = vote_row[0]
         if(vote_row[1]!=0):
             studyID=studyidsD[vote_row[1]]
             leftID = locationsD[int(vote_row[2])]

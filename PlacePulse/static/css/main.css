@@ -131,6 +131,10 @@ body {
   -moz-border-radius: 0 0 4px 4px;
   border-radius: 0 0 4px 4px;
 }
+.navLockedLink {
+	opacity:0.7;
+	color:white;
+}
 .buffer {
   display: none;
 }
