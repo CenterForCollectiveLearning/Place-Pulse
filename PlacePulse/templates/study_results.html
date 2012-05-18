@@ -5,8 +5,7 @@
 	{{ super() }}
 	<style>
 	#results_map {
-		min-width:300px;
-		width:90%;
+		width:100%;
 		height:300px;
 	}
 	.rankedItems {
@@ -21,18 +20,15 @@
 {% block body %}
 {{ super() }}
 <header class="jumbotron subhead">
-	<h1 class="mainquestion">
-		Which place looks more {{ study.study_question }}?
+	<h1 class="h1extra">
+		Results
 	</h1>
 </header>
 
 <div class="row">
 	<div class="span4">
-		<div class="sidebar-nav">
-	  		<div id="results_map_container">
-	  			<div id="results_map"></div>
-	  			<div>Click on an image to see its location on the map.</div>
-	  		</div>
+		<div class="well">
+      <div id="results_map"></div>
 		</div>
 	</div>
 	
