@@ -24,6 +24,7 @@ $(document).ready(function() {
 			'success': renderStudyResults
 		});
 	}
+	$('.lockedLink').popover();
 });
 
 function prepGmapsIcons() {

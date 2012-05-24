@@ -2,6 +2,7 @@ import os
 import pymongo
 import random
 import sys
+from uuid import uuid4
 from pymongo.objectid import ObjectId
 from pymongo import ASCENDING
 
@@ -29,6 +30,13 @@ class database(object):
     def getStudy(self,study_id):
         try:
             return self.studies.find_one(ObjectId(study_id))
+        except:
+            return None
+    
+    # Study objects can get very large (see places_id), so this func just returns the title
+    def getStudyQuestion(self,study_id):
+        try:
+            return self.studies.find_one(ObjectId(study_id),{"study_question":1})['study_question']
         except:
             return None
             
@@ -133,7 +141,32 @@ class database(object):
             return True
         except:
             return None
+
+#--------------------Users
+
+    def getUserById(self,userID):
+        return self.users.find_one({
+            '_id': userID if isinstance(userID,ObjectId) else ObjectId(userID)
+        })
+
+    def getUserByEmail(self,email):
+        return self.users.find_one({
+            'email': email
+        })
             
+    def createUserObj(self,voterID=None,email=None,extra_data=None):
+        if voterID is None:
+            voterID = str(uuid4().hex)
+        if email is not None:
+            userObj['email'] = email
+        userObj = {
+            "voter_uniqueid": voterID
+        }
+        if extra_data is not None:
+            userObj.update(extra_data)
+        newID = self.users.insert(userObj)
+        userObj['_id'] = newID
+        return userObj
 #--------------------Votes
     def getVotes(self,study_id):
         try:
@@ -215,6 +248,10 @@ class database(object):
     @property
     def studies(self):
         return self.db.studies
+
+    @property
+    def users(self):
+        return self.db.pp_users
 
     @property
     def votes(self):

@@ -1,6 +1,7 @@
 import os
 
 from PlacePulse import app
+from gamify import Gamification
 
 from flask import render_template,request,session,url_for
 from pymongo.objectid import ObjectId
@@ -18,7 +19,8 @@ def auto_template(template_name, **kwargs):
     userObj = getLoggedInUser()
     extraObj = {
         'userObj': userObj,
-        'logoutUrl': url_for('login.logout',next=request.path)
+        'logoutUrl': url_for('login.logout',next=request.path),
+        'Gamification': Gamification
     }
     kwargs.update(extraObj)
     return render_template(template_name, **kwargs)
@@ -45,6 +47,13 @@ def objifyPlace(place):
         'id' : str(place['_id']),
         'loc' : place['loc']
     }
+    
+def strFromObjectID(obj):
+    if isinstance(obj,ObjectId):
+        return str(obj)
+    elif obj.get('_id'):
+        obj['_id'] = str(obj['_id'])
+        return obj
 
 # Public domain snippet from http://flask.pocoo.org/snippets/5/
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.]+')

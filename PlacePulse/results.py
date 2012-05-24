@@ -20,8 +20,8 @@ def showBigStudyResults():
     })]
     if len(featuredStudies) == 0:
         # No featured studies, just grab 5 regular ones and hope for the best.
-       featuredStudies = [i for i in Database.studies.find({}).limit(5)] 
-    return auto_template('results_landing.html',studies=[i for i in featuredStudies])
+       featuredStudies = [i for i in Database.studies.find({}).limit(50)] 
+    return auto_template('results_landing.html',studies=[strFromObjectID(i) for i in featuredStudies])
 
 @results.route('/study/results/<study_id>/',methods = ['GET'])
 def showUserStudyResults(study_id):

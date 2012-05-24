@@ -22,6 +22,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script>
 var study_id = "{{ study_id }}";
+var GAMIFICATION_STATUS = {{ Gamification.getUnlockStatus(userObj)|tojson|safe }};
 $(document).ready(function() {
   
   // On page load, load the GMaps API. Once that's loaded, callback to init()

@@ -8,20 +8,38 @@ var numVotes = 0;
 function onStreetViewChoice(choice) {
     if (uiLocked) return;
     uiLocked = true;
-    $.ajax({
-        type: 'POST',
-        url: '/study/vote/' + study_id + '/',
-        data: {
+	var dataObj = {
             study_id: study_id,
             left: locs[0].id,
             right: locs[1].id,
             choice: choice
-        },
+        };
+	GAMIFICATION_STATUS.numVotes += 1;
+	if (typeof(GAMIFICATION_STATUS) != 'undefined') {
+		// If we just unlocked a new study, request an update for the GAMIFICATION_STATUS obj from the server
+		// and display the success box.
+		if (GAMIFICATION_STATUS.numVotes == GAMIFICATION_STATUS.nextStudy.votesToUnlock) {
+			dataObj['gamification_status'] = true;
+			updateNextStudy(GAMIFICATION_STATUS,'#voteSuccessLink');
+			$('#voteSuccess').show();
+		}
+		else {
+			updateVoteCount(GAMIFICATION_STATUS);
+			$('#voteSuccess').hide();
+		}
+	}
+    $.ajax({
+        type: 'POST',
+        url: '/study/vote/' + study_id + '/',
+        data: dataObj,
         success: function(data) {
             getImagesFromBuffer();
             loadImagesToBuffer();
-			numVotes += 1;
-			$('.progress .bar').css('width',(numVotes/20*100).toString() + '%');
+			if (data['gamificationStatus']) {
+				GAMIFICATION_STATUS = data['gamificationStatus'];
+				updateNextStudy(GAMIFICATION_STATUS);
+				updateVoteCount(GAMIFICATION_STATUS);
+			}
         }
     });
 }
@@ -56,7 +74,32 @@ function init() {
             loadImagesToBuffer();
         }
     });
+	// Progress for gamification stuff
+	if (typeof(GAMIFICATION_STATUS) == 'undefined'){
+		$('#voteProgress').hide();
+	} else {
+		updateVoteCount(GAMIFICATION_STATUS);
+		updateNextStudy(GAMIFICATION_STATUS);
+	}
 }
+
+function updateVoteCount(gamificationStatus) {
+	var numVotes = gamificationStatus.numVotes - gamificationStatus.lastUnlockedAt;
+	var votesToUnlock = gamificationStatus.nextStudy.votesToUnlock - gamificationStatus.lastUnlockedAt;
+	$('#votesRemaining').html(votesToUnlock - numVotes);
+	$('.progress .bar').css('width',(numVotes/votesToUnlock*100).toString() + '%');
+}
+
+function updateNextStudy(gamificationStatus,updateDiv) {
+	if (!updateDiv)
+		updateDiv = "#nextStudyToUnlock";
+	var studyLink = $('<a href=""></a>');
+	studyLink.attr('_target','_blank');
+	studyLink.attr('href','/study/results/' + gamificationStatus.nextStudy.studyID);
+	studyLink.text(gamificationStatus.nextStudy.studyQuestion);
+	$(updateDiv).html(studyLink);
+}
+
 function getSVURL(lat,lng) {
     // TODO: re-add this SV-specific data: &fov=90&heading=235&pitch=10
     return "http://maps.googleapis.com/maps/api/streetview?size=470x306&location=" + lat + "," + lng + "&sensor=false";

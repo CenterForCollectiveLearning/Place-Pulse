@@ -2,6 +2,7 @@ from flask import Module
 
 from flask import redirect,render_template,request,session,url_for
 
+from gamify import Gamification
 from util import *
 
 from datetime import datetime
@@ -24,11 +25,11 @@ def serve_create_study():
 def create_study():    
     #Insert new Place
     newPlaceID = Database.places.insert({
-    'data_resolution': request.form['data_resolution'],
-    'location_distribution': request.form['location_distribution'],
-    'polygon': request.form['polygon'],
-    'place_name': request.form['place_name'],
-    'owner': session['userObj']['email'],
+        'data_resolution': request.form['data_resolution'],
+        'location_distribution': request.form['location_distribution'],
+        'polygon': request.form['polygon'],
+        'place_name': request.form['place_name'],
+        'owner': session['userObj']['email'],
     })
     
     # Insert the new study into Mongo
@@ -155,17 +156,50 @@ def post_new_vote(study_id):
         'choice' : request.form['choice'],
         'timestamp': datetime.now()
     }
-    if session.get('userObj'):
+    # If there is no userObj, create one now
+    if not session.get('userObj'):
+        # Generate a random ID to associate votes with this user if one does not already exist
+        voterID = session.get('voterID') if session.get('voterID') else str(uuid4().hex)
+        session['userObj'] = Database.createUserObj(voterID)
+        newVoteObj['voter_uniqueid'] = voterID
+    if session['userObj'].get('email'):
         newVoteObj['voter_email'] = session['userObj']['email']
-    else:
-        if not session.get('voterID'):
-            # Generate a random ID to associate votes with this user
-            session['voterID'] = str(uuid4().hex)
-        newVoteObj['voter_uniqueid'] = session['voterID']    
+    # Insert vote into DB
     Database.votes.insert(newVoteObj)
-    return jsonifyResponse({
-        'success': True
+    # Increment votes in DB
+    Database.users.update({
+        '_id': session['userObj']['_id']
+    },
+    {
+        '$inc': {
+            'num_votes': 1
+        }
     })
+    # And in cookied object
+    session['userObj']['num_votes'] = session['userObj']['num_votes']+1 if session['userObj'].get('num_votes') else 1
+    # Did the user unlock anything?
+    unlockedStudies = Gamification.unlockNew(session['userObj'])
+    if len(unlockedStudies) > 0:
+        Database.users.update({
+            '_id': session['userObj']['_id']
+        }, {
+            '$pushAll': {
+                'unlocked_studies': unlockedStudies
+            },
+            '$set': {
+                'last_unlocked_at': session['userObj']['num_votes']
+            }
+        })
+        # Get user obj from database and update cookied object
+        session['userObj'] = Database.getUserById(session['userObj']['_id'])
+    session.modified = True
+    response = {
+        'success': True
+    }
+    # Finally, if the user requested an update to their gamification status, send it
+    if request.form.get('gamification_status'):
+        response['gamificationStatus'] = Gamification.getUnlockStatus(session['userObj'])
+    return jsonifyResponse(response)
 
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):

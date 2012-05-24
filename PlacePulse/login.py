@@ -24,6 +24,8 @@ facebook = oauth.remote_app('facebook',
 
 def associateEmailWithVoterID(email,voterID):
     # Associate all of the user's previous votes when signed out with their e-mail.
+    # voterids just maps many emails to a single uniqueid. Not used for user accounts, it's just data we're keeping
+    # because we may want it later.
     Database.voterids.update({
         'voter_uniqueid': voterID
     },{
@@ -31,6 +33,46 @@ def associateEmailWithVoterID(email,voterID):
             'voter_email': email
         }
     },upsert=True)
+    # If the owner of this email doesn't have an account yet, associate their uniqueID with one
+    Database.users.update({
+        'voter_uniqueid': voterID,
+        '$exists': {
+            'email': False
+        }
+    },{
+        "$set": {
+            'email': email
+        }
+    })
+
+def cookieUser(email,extra_data=None):
+    if extra_data is None:
+        extra_data = dict()
+    userObjData =  {
+        'email':  email
+    }
+    userObjData.update(extra_data)
+    if session['userObj']:
+        userObjData.update(session['userObj'])
+        session['userObj'] = userObjData
+    else:
+        session['userObj'] = Database.createUserObj(email=email,extra_data=extra_data)
+
+def upsertUser(email,extra_data=None):
+    if extra_data is None:
+        extra_data = dict()
+    setData = {
+        'email': email
+    }
+    setData.update(extra_data)
+    Database.users.update({
+        'email': email,
+    }, {
+        '$set': setData,
+        '$inc': {
+            'num_logins': 1
+        }
+    }, upsert=True)
 
 @login.route('/login/facebook/')
 def handle_facebook():
@@ -50,12 +92,14 @@ def facebook_authorized(resp):
     me = facebook.get('/me')
     if me.data.get('error'):
         return 'Could not call Facebook.'
-    session['userObj'] = {
-        'source': 'facebook',
+    userObjData = {
         'name':  me.data['name'],
-        'email': me.data['email']
+        'email': me.data['email'],
+        'source': 'facebook'
     }
+    cookieUser(me.data['email'],userObjData)
     if session.get('voterID'): associateEmailWithVoterID(me.data['email'],session.get('voterID'))
+    upsertUser(me.data['email'],extra_data={'facebook_id': me.data['id']})
     return redirect(request.args.get('next') or '/')
 
 @login.route("/login/browserid/",methods=['POST'])
@@ -75,11 +119,12 @@ def handle_browserid():
             'error': True,
             'error_description': 'BrowserID assertion check failed!'
         })
-    session['userObj'] = {
+    userObjData = {
         'source': 'browserid',
-        'email':  result.get('email')
     }
+    cookieUser(result.get('email'),userObjData)
     if session.get('voterID'): associateEmailWithVoterID(result.get('email'),session.get('voterID'))
+    upsertUser(result.get('email'))
     return jsonifyResponse({
         'success': True,
         'next': nextURL

@@ -30,7 +30,7 @@
 				
         </ul>
         <ul class="nav pull-right">
-          {% if userObj %}
+          {% if userObj and userObj.email %}
             <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>
             <li class="divider-vertical"></li>
             <li><a href="/logout">Sign out</a></li>

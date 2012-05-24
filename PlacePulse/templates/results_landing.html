@@ -31,9 +31,16 @@
 		<ul>
 			{% for study in studies %}
 				<li>
-					<a href="/study/results/{{ study._id }}">
-						Which place looks more <strong>{{ study.study_question }}</strong>?
-					</a>
+					{% if study._id in userObj.get('unlocked_studies',[]) %}
+						<a href="/study/results/{{ study._id }}">
+							Which place looks more <strong>{{ study.study_question }}</strong>?
+						</a>
+					{% else %}
+						<i class="icon-lock icon-black"></i>
+						<a href="#" class="lockedLink" title="Results locked" data-content="Vote more to unlock the results for this study!">
+							Which place looks more <strong>{{ study.study_question }}</strong>?
+						</a>				
+					{% endif %}
 				</li>
 			{% endfor %}
 		</ul>
@@ -45,5 +52,6 @@
 
 {% block footer %}
 	{{ super() }}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="/static/js/results.js"></script>
 {% endblock %}

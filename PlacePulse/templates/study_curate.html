@@ -8,7 +8,7 @@
 
 {% block nav %}
     {% set active_page = "create" %}
-    {{ super() }}
+    {% include 'nav.html' %}
 {% endblock %}
 
 {% block body %}
