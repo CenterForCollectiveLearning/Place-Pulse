@@ -4,7 +4,7 @@ from PlacePulse import app
 from gamify import Gamification
 
 from flask import render_template,request,session,url_for
-from pymongo.objectid import ObjectId
+from bson.objectid import ObjectId
 
 import json
 import re

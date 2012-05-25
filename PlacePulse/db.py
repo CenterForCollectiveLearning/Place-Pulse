@@ -3,7 +3,7 @@ import pymongo
 import random
 import sys
 from uuid import uuid4
-from pymongo.objectid import ObjectId
+from bson.objectid import ObjectId
 from pymongo import ASCENDING
 
 from random import choice
