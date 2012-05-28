@@ -22,29 +22,6 @@ facebook = oauth.remote_app('facebook',
     request_token_params={'scope': 'email,user_likes,friends_likes,user_location'}
 )
 
-def associateEmailWithVoterID(email,voterID):
-    # Associate all of the user's previous votes when signed out with their e-mail.
-    # voterids just maps many emails to a single uniqueid. Not used for user accounts, it's just data we're keeping
-    # because we may want it later.
-    Database.voterids.update({
-        'voter_uniqueid': voterID
-    },{
-        "$addToSet": {
-            'voter_email': email
-        }
-    },upsert=True)
-    # If the owner of this email doesn't have an account yet, associate their uniqueID with one
-    Database.users.update({
-        'voter_uniqueid': voterID,
-        '$exists': {
-            'email': False
-        }
-    },{
-        "$set": {
-            'email': email
-        }
-    })
-
 def cookieUser(email,extra_data=None):
     if extra_data is None:
         extra_data = dict()
@@ -52,27 +29,38 @@ def cookieUser(email,extra_data=None):
         'email':  email
     }
     userObjData.update(extra_data)
-    if session['userObj']:
-        userObjData.update(session['userObj'])
-        session['userObj'] = userObjData
+    def saveAndSet(_userObj):
+        Database.users.save(_userObj)
+        session['userObj'] = _userObj
+    # TODO: Find out why session['userObj'] sometimes persists after logout
+    # if session.get('userObj'):
+    #     print "session.get('userObj'):"
+    #     userObjData.update(session['userObj'])
+    #     saveAndSet(userObjData)
+    #     #Database.createUserObj(email=email,voterID=session['userObj'].get('voter_uniqueid'),extra_data=extra_data)
+    # else:
+    # Look for existing userObjs for this e-mail or a user's voterID
+    emailUserObj = Database.getUserByEmail(email)
+    voterIDUserObj = Database.getUserByVoterID(session['voterID']) if session.get('voterID') else None
+    
+    if voterIDUserObj:
+        if emailUserObj:
+            if emailUserObj.get('voter_uniqueid'):
+                session['userObj'] = emailUserObj
+            else:
+                emailUserObj['voter_uniqueid'] = session['voterID']
+                saveAndSet(emailUserObj)
+        else:
+            voterIDUserObj['email'] = email
+            saveAndSet(voterIDUserObj)
+    elif emailUserObj:
+        if not(emailUserObj.get('voter_uniqueid')) and session.get('voterID'):
+           emailUserObj['voter_uniqueid'] = session.get('voterID')
+           saveAndSet(emailUserObj)
+        else:
+            session['userObj'] = emailUserObj
     else:
-        session['userObj'] = Database.createUserObj(email=email,extra_data=extra_data)
-
-def upsertUser(email,extra_data=None):
-    if extra_data is None:
-        extra_data = dict()
-    setData = {
-        'email': email
-    }
-    setData.update(extra_data)
-    Database.users.update({
-        'email': email,
-    }, {
-        '$set': setData,
-        '$inc': {
-            'num_logins': 1
-        }
-    }, upsert=True)
+        session['userObj'] = Database.createUserObj(voterID=session.get('voterID'),email=email,extra_data=extra_data)           
 
 @login.route('/login/facebook/')
 def handle_facebook():
@@ -95,11 +83,11 @@ def facebook_authorized(resp):
     userObjData = {
         'name':  me.data['name'],
         'email': me.data['email'],
-        'source': 'facebook'
+        'source': 'facebook',
+        'facebook_id': me.data['id']
     }
     cookieUser(me.data['email'],userObjData)
-    if session.get('voterID'): associateEmailWithVoterID(me.data['email'],session.get('voterID'))
-    upsertUser(me.data['email'],extra_data={'facebook_id': me.data['id']})
+    # if session.get('voterID'): associateEmailWithVoterID(me.data['email'],session.get('voterID'))
     return redirect(request.args.get('next') or '/')
 
 @login.route("/login/browserid/",methods=['POST'])
@@ -123,8 +111,8 @@ def handle_browserid():
         'source': 'browserid',
     }
     cookieUser(result.get('email'),userObjData)
-    if session.get('voterID'): associateEmailWithVoterID(result.get('email'),session.get('voterID'))
-    upsertUser(result.get('email'))
+    # if session.get('voterID'): associateEmailWithVoterID(result.get('email'),session.get('voterID'))
+    # upsertUser(result.get('email'))
     return jsonifyResponse({
         'success': True,
         'next': nextURL
@@ -144,6 +132,9 @@ def signin():
 
 @login.route("/logout/")
 def logout():
-    if getLoggedInUser():
+    if session.get('userObj'):
         del session['userObj']
+    if session.get('voterID'):
+        del session['voterID']
+    session.modified = True
     return redirect(request.args.get('next') or '/')

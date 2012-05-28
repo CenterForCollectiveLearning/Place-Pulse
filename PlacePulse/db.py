@@ -153,15 +153,20 @@ class database(object):
         return self.users.find_one({
             'email': email
         })
+        
+    def getUserByVoterID(self,voterID):
+        return self.users.find_one({
+            'voter_uniqueid': voterID
+        })
             
     def createUserObj(self,voterID=None,email=None,extra_data=None):
         if voterID is None:
             voterID = str(uuid4().hex)
-        if email is not None:
-            userObj['email'] = email
         userObj = {
             "voter_uniqueid": voterID
         }
+        if email is not None:
+            userObj['email'] = email
         if extra_data is not None:
             userObj.update(extra_data)
         newID = self.users.insert(userObj)

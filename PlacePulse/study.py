@@ -159,11 +159,12 @@ def post_new_vote(study_id):
     # If there is no userObj, create one now
     if not session.get('userObj'):
         # Generate a random ID to associate votes with this user if one does not already exist
-        voterID = session.get('voterID') if session.get('voterID') else str(uuid4().hex)
-        session['userObj'] = Database.createUserObj(voterID)
-        newVoteObj['voter_uniqueid'] = voterID
+        session['voterID'] = session['voterID'] if session.get('voterID') else str(uuid4().hex)
+        session['userObj'] = Database.createUserObj(session['voterID'])
     if session['userObj'].get('email'):
         newVoteObj['voter_email'] = session['userObj']['email']
+    if session.get('voterID'):
+        newVoteObj['voter_uniqueid'] = session['voterID']
     # Insert vote into DB
     Database.votes.insert(newVoteObj)
     # Increment votes in DB

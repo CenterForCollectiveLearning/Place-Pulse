@@ -16,9 +16,8 @@ class Buckets:
 
 # Calls render_template with default template variables included
 def auto_template(template_name, **kwargs):
-    userObj = getLoggedInUser()
     extraObj = {
-        'userObj': userObj,
+        'userObj': session['userObj'] if session.get('userObj') else dict(),
         'logoutUrl': url_for('login.logout',next=request.path),
         'Gamification': Gamification
     }
@@ -31,7 +30,9 @@ def getFBLoginLink():
     return FB_LOGIN_LINK
 
 def getLoggedInUser():
-    return session.get('userObj')
+    # Every user gets a cookie when they vote, but only logged in users have an email.
+    if session.get('userObj') and session['userObj'].get('email'):
+        return session.get('userObj')
 
 def jsonifyResponse(obj):
     def default_handler(_obj):
