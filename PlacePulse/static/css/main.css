@@ -35,6 +35,10 @@ body {
   font-family: 'TradeGothicNextW01-Heav 693241';
   color: #ea4839;
 }
+.navLockedLink {
+	opacity:0.7;
+	color:white;
+}
 /* Specific jumbotrons
 ------------------------- */
 /* supporting docs pages */
