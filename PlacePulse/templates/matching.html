@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block header %}
+{{ super() }}
+<link href="/static/css/sub.css" rel="stylesheet">
+<style>
+.draggableImage img {
+	cursor:move;
+}
+
+#matchTo .draggableImage {
+	position:absolute;
+	left:0;
+	top:0;
+	opacity:0.8;
+}
+
+#matchFrom {
+	width:100%;
+	background-color:#eeeeff;
+	padding:15px;
+	width:600px;
+	height:400px;
+}
+
+#matchTo {
+	width:100%;
+	background-color:#eeffee;
+	text-align:center;
+	padding:10px;
+	margin-left:30px;
+}
+
+#matchTo .dragPlace {
+	width:235px;
+	height:153px;
+	border:2px dashed #cccccc;
+	position:relative;
+}
+
+#matchTo .placeName {
+	font-size:24pt;
+	color:#222222;
+}
+.dropZoneHover {
+	border:2px dashed #00ff00 !important;
+}
+
+.submitButton {
+	visibility:hidden;
+}
+</style>
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = "matching" %}
+    {% include 'nav.html' %}
+{% endblock %}
+
+{% block body %}
+<header class="jumbotron subhead">
+    <h1 class="h1extra">Matching Game</h1>
+</header>
+
+<div class="row" align="center">
+	<div class="span12" id="winStatus">
+	</div>
+	<div class="span6" align="left">
+	   <ul id="matchFrom" class="thumbnails"></ul>
+	</div>
+	<div class="span6" align="left">
+	   <ul id="matchTo" class="thumbnails"></ul>
+	</div>
+	<div class="span12 buttonHolder" align="left">
+	   <a class="btn-large btn-primary submitButton">Submit</a>  <a class="btn-large btn-info resetButton">Reset</a>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/static/js/lib/jquery-ui-1.8.20.custom.min.js"></script>
+<script src="/static/js/matching.js"></script>
+{% endblock %}

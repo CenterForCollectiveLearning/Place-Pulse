@@ -21,11 +21,13 @@ To pull a random place, simply load the study obj, look at the places, and choos
 from root import root
 from admin import admin
 from login import login
+from matching import matching
 from results import results
 from study import study
 app.register_module(root)
 app.register_module(admin)
 app.register_module(login)
+app.register_module(matching)
 app.register_module(results)
 app.register_module(study)
 

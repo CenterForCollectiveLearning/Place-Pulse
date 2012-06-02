@@ -13,6 +13,7 @@
       <div class="nav-collapse">
         <ul class="nav">
 	        <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/about/">About</a></li>
+	        <li{% if 'matching' == active_page %} class="active"{% endif %}><a href="/matching/">Matching</a></li>
 	        <li{% if 'create' == active_page %} class="active"{% endif %}>
 				{% if unlocked_create_study %}
 					<a href="/study/create/">Create Study</a>
