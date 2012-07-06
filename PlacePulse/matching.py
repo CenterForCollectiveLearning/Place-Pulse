@@ -1,3 +1,5 @@
+from db import Database
+
 from flask import Module
 
 from flask import redirect,render_template,request,session,url_for
@@ -7,6 +9,24 @@ from util import *
 matching = Module(__name__)
 
 def getNewPrompt():
+    # FIXME:
+    # Mongo won't allow us to query for studies with greater than N places, so we'll just do a scan of all the studies here
+    # and hope there aren't too many in the database!
+    from random import choice, sample
+    study = choice([i for i in Database.studies.find() if i.get('places_id') and len(i['places_id']) >= 4])
+    placeIDs = [placeID for placeID in study['places_id'] if Database.locations.find({"places_id": placeID}).count() > 0]   
+    # From the randomly chosen study, choose four places randomly
+    places = [Database.getPlace(placeID) for placeID in sample(placeIDs,4)]
+    locs = [Database.getRandomLocationByPlace(place['_id']) for place in places]
+    # print "1: " + str([p['_id'] for p in places])
+    # print "2: " + str(placeIDs)
+    # return jsonifyResponse(places)
+    return {
+        "locs": [dict([('id',loc['_id']),('coords',loc['loc'])]) for loc in locs],
+        "place_names": places
+    }    
+
+def getDefaultPrompt():
     return {
         "locs": [
             {
@@ -28,16 +48,16 @@ def getNewPrompt():
         ],
         "place_names": [
             {
-                "name_str": "Paris"
+                "name": "Paris, France"
             },
             {
-                "name_str": "NYC"
+                "name": "New York City, USA"
             },
             {
-                "name_str": "London"
+                "name": "London, UK"
             },
             {
-                "name_str": "Los Angeles"
+                "name": "Los Angeles, USA"
             },
         ]
     }
@@ -50,7 +70,6 @@ def serve_matching_page():
 @matching.route("/matching/get_prompt/")
 def get_matching_prompt():
     return jsonifyResponse(getNewPrompt())
-    return auto_template('matching.html')
 
 @matching.route("/matching/eval_solution/",methods=['POST'])
 def eval_matching_solution():

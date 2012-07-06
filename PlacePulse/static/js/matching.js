@@ -15,10 +15,9 @@ $(document).ready(function() {
 	$('.resetButton').click(function() {
 		unsetImgFromMatchTo('.draggableImage');
 		$('#matchFrom').append($('.draggableImage').get());
-		updateUI(false);
 	});
 	
-	$('.submitButton').click(function() {
+	function submitMatching() {
 		function avg(list){
 			var sum = 0;
 			for (var x = 0; x < list.length; x++)
@@ -47,12 +46,9 @@ $(document).ready(function() {
 				$('#winStatus').html(statusDiv);
 				
 				displayPrompt(data.next_prompt);
-				updateUI(false);
 			}
 		});
-		// unsetImgFromMatchTo('.draggableImage');
-		// $('#matchFrom').append($('.draggableImage').get());
-	});
+	};
 	
 	
 	function unsetImgFromMatchTo(elemSelector) {
@@ -64,23 +60,8 @@ $(document).ready(function() {
 	
 	function checkIfDone() {
 		// Have we matched all of the images?
-		if ($('#matchTo img').length == 4) {
-			updateUI(true);
-		}
-		else {
-			updateUI(false);
-		}
-	}
-	
-	function updateUI(allImgsMatched) {
-		if (allImgsMatched) {
-			$('.submitButton').css('visibility','visible');
-			$('#matchFrom').hide();			
-		}
-		else {
-			$('.submitButton').css('visibility','hidden');
-			$('#matchFrom').show();
-		}
+		if ($('#matchTo img').length == 4)
+			submitMatching();
 	}
 	
 	function makeDraggable(elem) {
@@ -94,11 +75,20 @@ $(document).ready(function() {
 			accept: '.draggableImage',
 			hoverClass: 'dropZoneHover',
 			drop: function(e,ui) {
+				// If there's already an image dragged here, move it back to #matchFrom
+				if ($(this).children('.draggableImage')) {
+					unsetImgFromMatchTo($(this).children('.draggableImage').get());
+					$('#matchFrom').append($(this).children('.draggableImage'));
+				}
+				
+				// Snap the dropped image into the drop zone
 				$(ui.draggable).css('position','absolute');
 				$(ui.draggable).css('left',0);
 				$(ui.draggable).css('top',0);
 				
 				$(this).append($(ui.draggable));
+				
+				console.log($(ui.draggable).parent());
 				
 				checkIfDone();
 			}
@@ -129,10 +119,10 @@ $(document).ready(function() {
 		}
 		for (var place in data.place_names) {
 			var newPlaceLi = $("<li>").addClass('dragPlace');
-			newPlaceLi.append($("<span>" + data.place_names[place].name_str + "</span>").addClass("placeName"));
+			newPlaceLi.append($('<span>' + data.place_names[place].name + '</span>').addClass("placeName"));
 			$('#matchTo').append(newPlaceLi);
 			makeDroppable(newPlaceLi);
-			newPlaceLi.attr('data-placename',data.place_names[place].name_str);
+			newPlaceLi.attr('data-placename',data.place_names[place].name);
 		}
 	}
 });

@@ -142,6 +142,13 @@ class database(object):
         except:
             return None
 
+    def getRandomLocationByPlace(self,place_id):
+        if isinstance(place_id,ObjectId):
+            place_id = str(place_id)
+        placeCount = Database.locations.find({"places_id": place_id}).count()
+        if placeCount == 0: return None
+        return self.locations.find().limit(-1).skip(randint(0,placeCount-1)).next()
+
 #--------------------Users
 
     def getUserById(self,userID):
