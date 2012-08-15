@@ -1,45 +1,38 @@
 {% set unlocked_results = unlocked_results|default(False) -%}
 {% set unlocked_create_study = unlocked_create_study|default(False) -%}
-{% set active_page = active_page|default('index') -%}
-<div class="navbar">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <a class="brand" href="/"><img src="/static/img/place_pulse_logo_20.png" alt="" /></a>
-      <div class="nav-collapse">
-        <ul class="nav">
-	        <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/about/">About</a></li>
-	        <li{% if 'matching' == active_page %} class="active"{% endif %}><a href="/matching/">Matching</a></li>
-	        <li{% if 'create' == active_page %} class="active"{% endif %}>
-				{% if unlocked_create_study %}
-					<a href="/study/create/">Create Study</a>
-				{% else %}
-					<a href="#" class="navLockedLink" title="Create a study" data-content="Vote more to unlock the ability to create a study!" data-placement="bottom"><i class="icon-lock icon-white"></i> Create Study</a>
-				{% endif %}
-			</li>
-			<li{% if 'results' == active_page %} class="active"{% endif %}>
-				{% if unlocked_results %}
-			        <a href="/results/">Browse Results</a>
-				{% else %}
-					<a href="#" class="navLockedLink" title="Browse results" data-content="Vote more to unlock the results page!" data-placement="bottom"><i class="icon-lock icon-white"></i> Browse Results</a>
-				{% endif %}
-			</li>
-				
-        </ul>
-        <ul class="nav pull-right">
-          {% if userObj and userObj.email %}
-            <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>
-            <li class="divider-vertical"></li>
-            <li><a href="/logout">Sign out</a></li>
-          {% else %}
-            <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="/login">Sign in</a></li>
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+{% set active_page = active_page|default('home') -%}
+      <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">
+            <b>PLACE</b>PULSE
+          </a>
+          <div class="nav-collapse fr">
+            <ul class="nav">
+              <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/about">About</a></li>
+              {% if unlocked_create_study %}
+                <li{% if 'create' == active_page %} class="active"{% endif %}><a href="/create">Create Study</a></li>
+              {% else %}
+                <li><a href="#" class="navLockedLink" title="Create a study" data-content="Vote more to unlock the ability to create a study!" data-placement="bottom"><i class="icon-lock icon-white"></i> Create Study</a></li>
+              {% endif %}
+              {% if unlocked_results %}
+                <li{% if 'browse' == active_page %} class="active"{% endif %}><a href="/browse">Browse Results</a></li>
+              {% else %}
+                <li><a href="#" class="navLockedLink" title="Browse results" data-content="Vote more to unlock the results page!" data-placement="bottom"><i class="icon-lock icon-white"></i> Browse Results</a></li>
+              {% endif %}
+              {% if userObj and userObj.email %}
+                <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>
+                <li><a href="/logout">Sign out</a></li>
+              {% else %}
+                <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="/login">Sign in</a></li>
+              {% endif %}
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!-- end .container -->
+      </div><!-- end .navbar-inner -->
+    </div><!-- end .navbar -->

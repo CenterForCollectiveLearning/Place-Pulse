@@ -1,16 +1,17 @@
 Place Pulse
 ============
-To run Place Pulse on your local machine:
+To run Place Pulse on a Mac using Homebrew:
+If Homebrew is already installed, you can skip step 1 of the Database Setup.
+If you prefer not to use Homebrew, install MongoDB using the intructions on their website and then pickup from step 2.
 
 Database Setup
 --------------------
     
-    Download and install MongoDB from mongodb.org
-	Open Terminal and type (without the $)
+    Open Terminal and type (without the $)
+    $ ruby <(curl -fsSk https://raw.github.com/mxcl/homebrew/go)
 	$ sudo mkdir -p /data/db/
 	$ sudo chown `id -u` /data/db
-	$ cd /in/to/the/directory/where/you/installed/mongo
-	$ ./bin/mongod
+	$ mongod
 	
 Site Setup
 --------------------
@@ -20,11 +21,7 @@ Site Setup
 	$ cd /in/to/the/directory/you/just/cloned
 	$ virtualenv ./PlacePulse --distribute
 	$ source setupEnv.sh
-	$ pip install flask
-	$ pip install pymongo
-	$ pip install Flask-OAuth
+	$ pip install -r requirements.txt
 	$ python ./run_placepulse.py
-    	* Running on http://localhost:8000/
-    	* Restarting with reloader
 
-And then, open up http://localhost:8000/
+Open up http://localhost:8000/

@@ -1,58 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-	<title>Place Pulse | The Collaborative Image of the City</title>
-	<meta name="description" content="Place Pulse is a website that allows anybody to quickly run an urban perception study and visualize the results in powerful ways." />
-	<meta name="author" content="Phil Salesses | Macro Connections | The Media Lab | Massachusetts Institute of Technology" />
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="not-ie" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Place Pulse | The Collaborative Image of the City</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Place Pulse quantitatively measures urban perception by turning visual preference surveys into crowdsourced games.">
+  <meta name="author" content="Phil Salesses | Paul Sawaya | Macro Connections | The Media Lab | Massachusetts Institute of Technology">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+  <!-- CSS -->
+  {% block css %}
+  {% endblock %}
 
-	{% block header %}
-	<!-- Le styles -->
-  <link href="/static/css/bootstrap.css" rel="stylesheet">
-  <link href="/static/css/responsive.css" rel="stylesheet">
-    {% endblock %}
+  <!--[if IE 7]>
+    <link href="/static/css/font-awesome/font-awesome-ie7.css" rel="stylesheet">
+  <![endif]-->
 
-    <!-- Le fav and touch icons -->
-	<link rel="shortcut icon" href="/static/images/customize/favicon.ico" />
-	<link rel="apple-touch-icon" href="/static/images/customize/apple/touch-icon-iphone.png" />
-	<link rel="apple-touch-icon" sizes="72x72" href="/static/images/customize/apple/touch-icon-ipad.png" />
-	<link rel="apple-touch-icon" sizes="114x114" href="/static/images/customize/apple/touch-icon-iphone4.png" />
-  </head>
+  <!-- Google Font Directory -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'>
+  
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+<body>
 
-  <body>
-	{% block nav %}
-	{% include 'nav.html' %}
-	{% endblock %}
-	<div class="container">
-	{% block body %}
-	{% endblock %}
-	{% block footer %}
-	<div style="margin-bottom:120px;"></div>
-	  <hr>
+  <!-- Header -->
+  <header id="header">
+  {% block header %}
+  {% endblock %}
+  </header>
 
-    <footer>
-      <p>&copy; 2012 <a href="http://macroconnections.media.mit.edu">Macro Connections</a> | <a href="http://media.mit.edu">Media Lab</a> | <a href="http://www.mit.edu">Massachusetts Institute of Technology</a></p>
-    </footer>
+  <!-- Navigation -->
+  {% block nav %}
+  {% include 'nav.html' %}
+  {% endblock %}
 
-  </div><!--/.fluid-container-->
-	{% endblock %}
-	<!-- // <script type="text/javascript" src="http://fast.fonts.com/jsapi/a5b4d686-cd11-4ec7-b8b6-1b314ed311ee.js"></script> -->
-	<script src="/static/js/lib/bootstrap.min.js"></script>
-	<script src="/static/js/base_ui.js"></script>
-    <script>
-	  	var _gaq = [['_setAccount', 'UA-21313433-1'], ['_trackPageview']];
-	   	(function(d, t) {
-		    var g = d.createElement(t),
-		    s = d.getElementsByTagName(t)[0];
-		   	g.async = true;
-		    g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		    s.parentNode.insertBefore(g, s);
-		 })(document, 'script');
-	</script>
-  </body>
+  <!-- Content -->
+  <div id="content" class="container">
+  {% block body %}
+  {% endblock %}
+  </div>
+
+  <!-- Footer -->
+  {% block footer %}
+  {% include 'footer.html' %}
+  {% endblock %}
+
+  <!-- Javascript -->
+  {% block js %}
+  {% endblock %}
+
+  {#
+  <script>
+    var _gaq=[["_setAccount","UA-21313433-1"],["_trackPageview"],["_trackPageLoadTime"]];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+    g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+    s.parentNode.insertBefore(g,s)}(document,"script"));
+  </script>
+  #}
+
+</body>
 </html>

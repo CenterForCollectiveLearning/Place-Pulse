@@ -1,22 +1,18 @@
-<header class="jumbotron subhead" style="text-align:center;">
-    <h1 class="mainquestion">Which place looks more {{ study_prompt }}?</h1>
-</header>
+<h1 class="ac" style="margin:20px;">Which place looks more {{ study_prompt }}?</h1>
 <div class="row">
   <div class="span10 offset1">
     <ul class="thumbnails">
       <li class="span5 vote">
         <div id="pano_left" class="streetViewChoice left thumbnail"><a onclick="onStreetViewChoice('left');"><img class="place" /></a></div>
         <div id="pano_left_buffer" class="buffer"><img class="place" /></div>
-        <image id="key_1" height="70" width="67" class="keys" src="/static/images/key_1.png" alt="Button 1" />
+        <image id="key_1" height="70" width="67" class="keys" src="/static/img/key_1.png" alt="Button 1" />
         <div class="clear"></div>
-        <div id="report_left" class="report"><a>report bad image</a></div>
       </li>
       <li class="span5 vote">
         <div id="pano_right" class="streetViewChoice right thumbnail"><a onclick="onStreetViewChoice('right');"><img class="place" /></a></div>
         <div id="pano_right_buffer" class="buffer"><img class="place" /></div>
-        <image id="key_2" height="70" width="67" class="keys" src="/static/images/key_2.png" alt="Button 2" />
+        <image id="key_2" height="70" width="67" class="keys" src="/static/img/key_2.png" alt="Button 2" />
         <div class="clear"></div>
-        <div id="report_right" class="report"><a>report bad image</a></div>
       </li>
     </ul>
   </div><!--/span-->
@@ -24,8 +20,8 @@
 </div><!--/row-->
 <div class="row">
 	<div class="span12" align="center">
-		<div class="vote voteEquals" style="margin-top:-60px;">
-			<a href="#" onclick="onStreetViewChoice('equal');" style="font-size:18px;"><img src="/static/images/key_equals.png" /></a>
+		<div class="vote voteEquals" style="margin-top:-90px;">
+			<a href="#" onclick="onStreetViewChoice('equal');" style="font-size:18px;"><img src="/static/img/key_equals.png" /></a>
 		</div>
 		<div id="voteSuccess" class="alert alert-success">
 			<h2>You just unlocked a new study!</h2>

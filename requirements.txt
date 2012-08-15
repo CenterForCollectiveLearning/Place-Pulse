@@ -1,4 +1,6 @@
-Flask==0.7.2
+Flask
+webassets
+Flask-Assets
 Flask-Mail
 pymongo==2.1
 Flask-OAuth

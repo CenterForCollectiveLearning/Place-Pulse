@@ -1,9 +1,3 @@
-body {
-  background: url('/static/img/header.jpg') repeat-x #ffffff;
-  background-position: center top;
-  padding-top: 0px;
-  padding-bottom: 40px;
-}
 .sidebar-nav {
   padding: 9px 0;
 }
