@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block nav %}
-    {% set active_page = "home" %}
+    {% set active_page = 'home' %}
     {{ super() }}
 {% endblock %}
 
@@ -30,7 +30,7 @@
       <div class="span4">
         <h3 class="ac">Votes Contributed</h3>
         <p class="ac">
-          <a class="btn btn-large btn-primary" href="login.html" title=""><b>748,546</b></a>
+          <a class="btn btn-large btn-primary" href="login.html" title=""><b>{{votes_contributed}}</b></a>
         </p>
       </div>
     </div>

@@ -1,6 +1,6 @@
 @import url("bootstrap/bootstrap.css");
-::-moz-selection{background:#FC9362;color:#fff;text-shadow:none;}
-::selection{background:#FC9362;color:#fff;text-shadow:none;}
+::-moz-selection{background:#ea4839;color:#fff;text-shadow:none;}
+::selection{background:#ea4839;color:#fff;text-shadow:none;}
 :focus{outline-color:transparent!important;outline-style:none!important;}
 html{background:#1C1C1C;}
 body{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;border-top:5px solid #343a4a;}
@@ -52,12 +52,6 @@ footer .social-networks a:hover{background:#000;color:#fff;}
 .carousel-control:hover{background:#ea4839;}
 .carousel-control.left{left:0px;}
 .carousel-control.right{right:0px;}
-#macbook_carousel{position:relative;height:540px;background:url(/static/img/mac.png) top center no-repeat;margin:30px 0 0px 0;}
-#macbook_carousel .carousel{width:600px;margin:0 auto;padding:28px 0 0 0;}
-#macbook_carousel .carousel .item{width:600px;height:360px;overflow:hidden;}
-#macbook_carousel .carousel img{width:600px;}
-#macbook_carousel .carousel-control.left{left:-120px;}
-#macbook_carousel .carousel-control.right{right:-120px;}
 .hero-unit{position:relative;padding:40px 0 0 0;background:#fff;}
 .hero-unit h1{font-size:2.2em;font-weight:600;}
 .faq ul{list-style-type:none;margin:0;}
@@ -70,7 +64,7 @@ footer .social-networks a:hover{background:#000;color:#fff;}
 .pricing ul{list-style-type:none;margin:0 0 20px 0;}
 .pricing ul li{border-bottom:1px solid #eee;padding:4px 0px;font-size:1.2em;color:#222;}
 .pricing .well{background:#fff;border:1px solid #ccc;box-shadow:0 0 10px rgba(0, 0, 0, 0.1);}
-.pricing h2{font-size:30px;margin:4px 0px 20px 0px;color:#0085CC;}
+.pricing h2{font-size:30px;margin:4px 0px 20px 0px;color:#ea4839;}
 .pricing .most-popular{margin-top:-15px;}
 .most-popular{position:relative;color:#fff;display:inline-block;overflow:hidden;font-family:Arial,sans-serif;font-weight:900;}
 .most-popular p span{position:absolute;display:inline-block;right:-25px;color:#fff;box-shadow:0px 0px 10px rgba(0, 0, 0, 0.2),inset 0px 5px 30px rgba(255, 255, 255, 0.2);text-align:center;text-transform:uppercase;top:22px;background:#d93131;width:100px;padding:3px 10px;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);-ms-transform:rotate(45deg);}

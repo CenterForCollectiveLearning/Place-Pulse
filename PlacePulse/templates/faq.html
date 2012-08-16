@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = 'faq' %}
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+<div class="hero-unit faq">
+    <div class="ac">
+      <h1>FAQ</h1><br />
+      <p>Answers to frequently asked questions.</p>
+      <input type="text" value="" placeholder="Search ..." />
+      <a type="" class="search_button btn btn-success"><i class="icon-search icon-white"></i></a>
+    </div>
+  </div>
+  <div class="faq">
+    <ul>
+      <li>
+        <h3>Have you considered referencing your data to crime or housing prices?</h3>
+        <p>Yes.</p>
+      </li>
+      <li>
+        <h3>How do I create a study?</h3>
+        <p>Unlock the ability to create a study by voting 2,000 times. We realize this is a large number of votes to contribute, however, in order to create your own study you will need to provide many more than 2,000 votes. We made the decision, in an attempt to minimize abandoned studies, to require users to input some votes to our system before they are allowed to take from it.</p>
+      </li>
+      <li>
+        <h3>Have you compared the votes provided by Europeans to those provided by Americans?</h3>
+        <p>Yes.</p>
+      </li>
+    </ul>
+    
+    <h3 class="no-results hidden well">No results matching your search.</h3>
+    <br /><br /><br />
+
+  </div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+{% endblock %}

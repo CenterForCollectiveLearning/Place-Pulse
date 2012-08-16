@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block header %}
+{{ super() }}
+<link href="/static/css/sub.css" rel="stylesheet">
+<link href="/static/css/study_create.css" rel="stylesheet">
+{% endblock %}
+
+{% block nav %}
+{% set active_page = "signin" %}
+{{ super() }}
+{% endblock %}
+
+{% block body %}
+<header class="jumbotron subhead">
+    <h1 class="h1extra">Member Log In</h1>
+</header>
+  <div class="row" align="center">
+    <div class="span5 offset1" align="center">
+      <h2>Already a member?</h2>
+      <br />
+      <p>Log in using your email</p>
+      <a class="browserIDLoginButton" href="#"><img src="/static/images/button_browserid.png" /></a>
+      <p>or</p>
+        <div class="fb-login-button" data-scope="email" data-redirect-uri="http://localhost:8000/finished">
+            <a href="{{ fb_login_link }}"><img src="/static/images/button_fb.jpg" /></a>
+        </div>
+  </div>
+  <div class="span5" align="center">
+    <h2>New to Place Pulse?</h2>
+    <br />
+    <p>Create an account for free using only your email</p>
+    <a class="browserIDLoginButton" href="#"><img src="/static/images/button_browserid.png" /></a>
+</div>
+  </div>
+  
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+
+	<script src="https://browserid.org/include.js" type="text/javascript"></script>
+	<script>
+		function doBrowserID() {
+			navigator.id.getVerifiedEmail(function(assertion) {
+			    if (assertion) {
+			        // This code will be invoked once the user has successfully
+			        // selected an email address they control to sign in with.
+					$.ajax({
+						type: 'POST',
+						url: '{{ browserid_login_link }}',
+						data: {
+							assertion: assertion
+						},
+						success: function(e) {
+							// Login success!
+							if (e.error) {
+								alert(e.error_description);
+								return;
+							}
+							window.location = e.next;
+						}
+					});
+		
+			    } else {
+			        // something went wrong!  the user isn't logged in.
+			    }
+			});
+	}
+	
+	function init() {
+		$('.browserIDLoginButton').click(doBrowserID);
+	}
+	
+	$(document).ready(init);
+	</script>
+{% endblock %}
+

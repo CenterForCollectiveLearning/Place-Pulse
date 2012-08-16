@@ -1,83 +1,85 @@
 {% extends "base.html" %}
 
-{% block header %}
-{{ super() }}
-<link href="/static/css/sub.css" rel="stylesheet">
-<link href="/static/css/study_create.css" rel="stylesheet">
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
 {% endblock %}
 
 {% block nav %}
-{% set active_page = "signin" %}
-{{ super() }}
+    {% set active_page = 'about' -%}
+    {{ super() }}
 {% endblock %}
 
 {% block body %}
-<header class="jumbotron subhead">
-    <h1 class="h1extra">Member Log In</h1>
-</header>
-  <div class="row" align="center">
-    <div class="span5 offset1" align="center">
-      <h2>Already a member?</h2>
-      <br />
-      <p>Log in using your email</p>
-      <a class="browserIDLoginButton" href="#"><img src="/static/images/button_browserid.png" /></a>
-      <p>or</p>
-        <div class="fb-login-button" data-scope="email" data-redirect-uri="http://localhost:8000/finished">
-            <a href="{{ fb_login_link }}"><img src="/static/images/button_fb.jpg" /></a>
-        </div>
+<div class="hero-unit">
+    <div class="ac">
+      <h1>Welcome to Place Pulse</h1><br />
+      <hr />
+    </div>
   </div>
-  <div class="span5" align="center">
-    <h2>New to Place Pulse?</h2>
-    <br />
-    <p>Create an account for free using only your email</p>
-    <a class="browserIDLoginButton" href="#"><img src="/static/images/button_browserid.png" /></a>
-</div>
+<div class="row pricing">
+    <div class="span6">
+      <div class="well">
+        <h2>Sign In</h2>
+        <ul>
+          <li>&#10004; 20 users</li>
+          <li>&#10004; Unlimited access</li>
+          <li>&#10004; 3TB of space</li>
+          <li>&#10004; E-mail support</li>
+        </ul>          
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        <hr />
+        <h3 class="ac">$15.99 / month</h3>
+        <hr />
+        <p class="ac">
+          <a class="btn btn-primary btn-large" href="#"><i class="icon-user" style="margin-top:2px;"></i> Sign In</a>
+        </p>
+      </div>
+    </div>
+    <div class="span6">
+      <div class="well">
+        <h2>Create an Account</h2>
+        <ul>
+          <li>&#10004; 5 users</li>
+          <li>&#10004; 1TB of space</li>
+          <li>&#10006; Limited access</li>
+          <li>&#10006; No phone support</li>
+        </ul>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+        <hr />
+        <h3 class="ac">$5.99 / month</h3>
+        <hr />
+        <p class="ac">
+          <a class="btn btn-success btn-large" href="#">Select plan &raquo;</a>
+        </p>
+      </div>
+    </div>
   </div>
-  
+
+  <hr />
+
+  <div class="row">
+    <div class="span12">
+      <h1 class="lead">
+        <b>All plans comes with 90-day</b> money-back guarantee.
+      </h1>
+    </div>
+  </div>
+
+  </div>
 {% endblock %}
 
 {% block footer %}
 {{ super() }}
-
-	<!-- Le javascript
-	================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-
-	<script src="https://browserid.org/include.js" type="text/javascript"></script>
-	<script>
-		function doBrowserID() {
-			navigator.id.getVerifiedEmail(function(assertion) {
-			    if (assertion) {
-			        // This code will be invoked once the user has successfully
-			        // selected an email address they control to sign in with.
-					$.ajax({
-						type: 'POST',
-						url: '{{ browserid_login_link }}',
-						data: {
-							assertion: assertion
-						},
-						success: function(e) {
-							// Login success!
-							if (e.error) {
-								alert(e.error_description);
-								return;
-							}
-							window.location = e.next;
-						}
-					});
-		
-			    } else {
-			        // something went wrong!  the user isn't logged in.
-			    }
-			});
-	}
-	
-	function init() {
-		$('.browserIDLoginButton').click(doBrowserID);
-	}
-	
-	$(document).ready(init);
-	</script>
 {% endblock %}
 
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+{% endblock %}

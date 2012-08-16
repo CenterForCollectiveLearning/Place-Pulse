@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = 'contact' -%}
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+</div>
+<iframe width="100%" height="420" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/?ie=UTF8&amp;cid=1884377004050972720&amp;q=MIT+Media+Lab&amp;t=h&amp;z=14&amp;output=embed"></iframe>
+
+  <div class="container hero-unit">
+    <div class="row">
+      <p class="span4 ac">
+        <br />
+        <a class="btn btn-large btn-primary"><b>@ Write us</b></a><br /><br />
+        <b>Macro Connections</b><br />75 Amherst Street, E14-348B<br />Cambridge, Massachusetts 02139<br /><a href="https://maps.google.com/?ie=UTF8&cid=1884377004050972720&q=MIT+Media+Lab&t=h&hq=MIT+Media+Lab&hnear=&ll=42.366535,-71.087379&spn=0.026635,0.12351&z=14&vpsrc=0&iwloc=A&f=d&daddr=MIT+Media+Lab,+75+Amherst+Street,+Cambridge,+MA+02139&geocode=%3BCV86IftK1szGFX1ehgIdEEvD-yEwgF-95qYmGinFEPOwqHDjiTEwgF-95qYmGg">Get Directions</a>
+      </p>
+      <p class="span4">
+        The way we act, both individually and collectively, depends strongly on how we see the world. The Macro Connections group focuses on the development of analytical tools that can help improve our understanding of the world’s macro structures in all of their complexity.
+      </p>
+      <p class="span4">
+        By developing methods to analyze and represent networks, Macro Connections research aims to help improve our understanding of the world by putting together the pieces that our scientific disciplines have helped to pull apart.
+      </p>
+    </div>
+  </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+{% endblock %}

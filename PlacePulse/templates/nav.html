@@ -1,6 +1,6 @@
 {% set unlocked_results = unlocked_results|default(False) -%}
 {% set unlocked_create_study = unlocked_create_study|default(False) -%}
-{% set active_page = active_page|default('about') -%}
+{% set active_page = activate_page|default('home') %}
       <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
@@ -25,11 +25,12 @@
               {% else %}
                 <li><a href="#" class="navLockedLink" title="Browse results" data-content="Vote more to unlock the results page!" data-placement="bottom"><i class="icon-lock icon-white"></i> Browse Results</a></li>
               {% endif %}
+              <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/faq">FAQ</a></li>
               {% if userObj and userObj.email %}
                 <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>
                 <li><a href="/logout">Sign out</a></li>
               {% else %}
-                <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="/login">Sign in</a></li>
+                <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="/login">Sign In</a></li>
               {% endif %}
             </ul>
           </div><!--/.nav-collapse -->

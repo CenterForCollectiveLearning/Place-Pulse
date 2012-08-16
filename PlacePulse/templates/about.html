@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block nav %}
-    {% set active_page = "about" %}
+    {% set active_page = 'about' -%}
     {{ super() }}
 {% endblock %}
 
@@ -17,13 +17,12 @@
   <div class="hero-unit">
     <div class="ac">
       <h1>The Project</h1><br />
+      <hr />
       <p><em>"Place Pulse, by the Macro Connections group, is a website that puts the full force of science behind fuzzy things like how safe or rich or unusual a city seems, and it does it in the least likely way: by crowdsourcing people’s ratings of streets, using geotagged images, and turning those answers into hard, eminently crunchable numbers." - Fast Company Design</em></p>
     </div>
   </div>
 
 <div id="explore">
-    <hr />
-
     <div class="row">
       <div class="span6">
         <h3>Imagine traveling through a strange city...</h3>
@@ -42,6 +41,7 @@
 <div class="hero-unit">
     <div class="ac">
       <h1>The Team</h1><br />
+      <hr />
     </div>
   </div>
 
@@ -143,6 +143,7 @@
         <img alt="" class="thumbnail" src="/static/img/about/kiran.jpg" />
       </div>
       <p class="member-networks">
+        <a href="https://twitter.com/kiranb13" class="icon-twitter"></a>
         <a href="http://www.linkedin.com/in/kiranbhattaram" class="icon-linkedin"></a>
         <a href="http://www.facebook.com/kiranmayi.bhattaram" class="icon-facebook"></a>
         <a href="https://plus.google.com/114840978159138771186" class="icon-google-plus"></a>
@@ -151,7 +152,7 @@
       <h3 class="member-name">Kiran Bhattaram</h3>
       <h4 class="member-position">Data Scientist</h4>
       <p class="member-bio">
-        Kiran is an undergraduate researcher at MIT.
+        Kiran is an EECS undergraduate at MIT.  In no particular order, she's fascinated by usability, big data, cities and open web technologies.
       </p>
     </article>
 
@@ -163,16 +164,15 @@
         <img alt="" class="thumbnail" src="/static/img/about/amanda.png" />
       </div>
       <p class="member-networks">
-        <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
-        <a href="http://www.linkedin.com/in/philsalesses" class="icon-linkedin"></a>
-        <a href="http://www.facebook.com/philsalesses" class="icon-facebook"></a>
-        <a href="https://plus.google.com/110954196403957869122" class="icon-google-plus"></a>
-        <a href="http://www.github.com/philsalesses" class="icon-github"></a>
+        <a href="https://twitter.com/MandiDavisUX" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/davismandi" class="icon-linkedin"></a>
+        <a href="http://www.facebook.com/mandi.j.davis" class="icon-facebook"></a>
+        <a href="https://plus.google.com/112753355571941122438/" class="icon-google-plus"></a>
       </p>
-      <h3 class="member-name">Amanda Davis</h3>
+      <h3 class="member-name">Mandi Davis</h3>
       <h4 class="member-position">Human Factors</h4>
       <p class="member-bio">
-        Amanda works as a researcher at the Design and Usability Center. 
+        Mandi is a graduate student applying eye-tracking and affective measurement tools to usability and marketing research at the Design and Usability Center. 
       </p>
     </article>
 
@@ -181,20 +181,41 @@
         <img alt="" class="thumbnail" src="/static/img/about/mauro.jpg" />
       </div>
       <p class="member-networks">
-        <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
-        <a href="http://www.linkedin.com/in/philsalesses" class="icon-linkedin"></a>
-        <a href="http://www.facebook.com/philsalesses" class="icon-facebook"></a>
-        <a href="https://plus.google.com/110954196403957869122" class="icon-google-plus"></a>
-        <a href="http://www.github.com/philsalesses" class="icon-github"></a>
+        <a href="http://twitter.com/pacianca3" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/mauromartino" class="icon-linkedin"></a>
+        <a href="https://www.facebook.com/mauro.martino" class="icon-facebook"></a>
       </p>
       <h3 class="member-name">Mauro Martino</h3>
       <h4 class="member-position">Visualizations</h4>
       <p class="member-bio">
-        Mauro is an Assistant Professor at the Northeastern University Center for Complex Network Research, working to visualize and explore complex network data.
+        Mauro is an assistant research professor exploring the visualization of complex networks at Northeastern University's Center for Complex Network Research.
       </p>
     </article>  
 
+    </div>
+    <div class="hero-unit">
+    <div class="ac">
+      <h1>The Advisors</h1><br />
+      <hr />
+    </div>
+  </div>
+    <div class="row">
+
     <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/cesar.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="https://twitter.com/cesifoti" class="icon-twitter"></a>
+      </p>
+      <h3 class="member-name">César Hidalgo</h3>
+      <h4 class="member-position">Principal Investigator</h4>
+      <p class="member-bio">
+        César is an assistant professor and the Asahi Broadcast Corporation Career Development Professor at the MIT Media Lab.
+      </p>
+    </article>
+
+     <article class="member span4">
       <div class="member-avatar">
         <img alt="" class="thumbnail" src="/static/img/about/katja.jpg" />
       </div>
@@ -206,35 +227,12 @@
         <a href="http://www.github.com/philsalesses" class="icon-github"></a>
       </p>
       <h3 class="member-name">Katja Schechtner</h3>
-      <h4 class="member-position">Project Advisor</h4>
+      <h4 class="member-position">Urban Planning Advisor</h4>
       <p class="member-bio">
         Katja leads Europe's largest research group that focuses on Urban Transportation and Mobility.
       </p>
     </article>
-
-    </div>
-    <div class="row">
-
-    <article class="member span4">
-      <div class="member-avatar">
-        <img alt="" class="thumbnail" src="/static/img/about/cesar.jpg" />
-      </div>
-      <p class="member-networks">
-        <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
-        <a href="http://www.linkedin.com/in/philsalesses" class="icon-linkedin"></a>
-        <a href="http://www.facebook.com/philsalesses" class="icon-facebook"></a>
-        <a href="https://plus.google.com/110954196403957869122" class="icon-google-plus"></a>
-        <a href="http://www.github.com/philsalesses" class="icon-github"></a>
-      </p>
-      <h3 class="member-name">César Hidalgo</h3>
-      <h4 class="member-position">Project Advisor</h4>
-      <p class="member-bio">
-        César is an assistant professor and the Asahi Broadcast Corporation Career Development Professor at the MIT Media Lab and a faculty associate at Harvard’s University Center for International Development.
-      </p>
-    </article>
-
-    </div>
-
+  </div>
   </div>
 {% endblock %}
 

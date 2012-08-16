@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = 'contact' -%}
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+<div class="hero-unit">
+    <div class="container">
+      <h1 class="ac">The Place Pulse Dataset</h1><br />
+      <p class="ac">
+        The Place Pulse dataset is the first multi-city dataset on urban perception.
+      </p>
+    </div>
+  </div>
+
+  <!-- Example pricing -->
+  <div class="row pricing">
+
+    <div class="span6">
+      <div class="well">
+        <h2>Dataset includes:</h2>
+        <ul>
+          <li>&#10004; 856,321 votes</li>
+          <li>&#10004; 4,740 geocoded images</li>
+          </ul>          
+        <p>Urban perception preferences were collected using our high-throughput methods. The dataset was generated using user’s preferences over random pairs of geo-tagged images.</p>
+        <hr />
+        <h3 class="ac">Latest Version: August 28, 2012</h3>
+        <hr />
+        <p class="ac">
+          <a class="btn btn-success btn-large" href="/static/dataset/"><i class="icon-download" style="margin-top:2px;"></i> Download</a>
+        </p>
+      </div>
+    </div>
+
+<div class="span6">
+      <p>The datasets presented on this page are intended for the use of researchers. Permission is given to researchers to download and use the Place Pulse dataset with the following provisions:</p>
+      <ol>
+        <li>the data are for the free and fair use of all and not for resale</li>
+        <li>the data must be cited giving the names of the dataset</li>
+      </ol>
+      <p>An example of a proper way to cite these datasets can be found at: <a href="http://www.apastyle.org/apa-style-help.aspx">APA Style</a></p>
+      <p>The Place Pulse dataset should not be considered completely accurate representations of the original source documents. Although every effort is made to transcribe the data accurately, some transcription errors may be present.</p>
+  </div>
+  </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+{% endblock %}
