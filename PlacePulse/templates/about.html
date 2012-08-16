@@ -1,143 +1,252 @@
 {% extends "base.html" %}
 
-{% block header %}
-{{ super() }}
-<link href="/static/css/sub.css" rel="stylesheet">
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
 {% endblock %}
 
 {% block nav %}
     {% set active_page = "about" %}
-    {% include 'nav.html' %}
+    {{ super() }}
 {% endblock %}
 
 {% block body %}
 
-<!-- Masthead
-================================================== -->
-<header class="jumbotron subhead">
-    <h1 class="h1extra">About</h1>
-</header>
-<div class="row" align="center">
-   <h1>We <span class="h1bold">measure</span> urban perception</h1>
-   <div class="span6" align="left">
-      <ul class="thumbnails">
-          <li class="span6">
-            <div class="thumbnail">
-              <img src="/static/img/about/visualization.jpg" alt="" />
-              <div class="caption">
-              <p><strong>Dynamic Visualization</strong></p>
-              <p>The data for "Which place looks safer?" is displayed for Salzburg, Austria.  The color green corresponds to positive perceptions of safety while red corresponds to negative perceptions of safety. The height of the white bar represents the amount of votes collected for each point.</p>
-              </div>
-            </div>
-          </li>
-        </ul>
-   </div>
-   <div class="span6" align="left">
-     <h3 style="margin-bottom:20px;">Imagine traveling through a strange city...</h3>
-     <p>Inside your mind, subconscious judgements about your surroundings are made in real time. Do you feel safe? Does the area you are in seem unique? Does it appear wealthy, clean or energetic? You may not think about, let alone understand, what goes into making these anecdotal determinations, but when elicited, your opinions can be understood as part of a more substantial collective and used in powerful ways.</p>
-     <p>Place Pulse is a website that allows anybody to quickly run a perception study and visualize the results in powerful ways. Developed at the MIT Media Lab by the Macro Connections group, Place Pulse crowdsources surveys to internet participants, asking binary perception questions across a large number of geotagged images. From the responses of each participant we generate perception layers that can be plugged into existing applications. Any company, from Android to Yahoo, could make use of this data and incorporate human perception data into their apps.</p>
-   </div>   
-</div><!--/row-->
-<div class="row">
-  <div class="span12" align="center">
-    <h1 style="margin-top:20px;">Place Pulse <span class="h1bold">Team</span></h1>
-    <ul class="thumbnails">
-        <li class="span2">
-          <div class="thumbnail">
-           <img id="phil" src="/static/img/about/phil.jpg" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="paul" src="/static/img/about/paul.jpg" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="michaelw" src="/static/img/about/michaelw.jpg" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="michaelx" src="/static/img/about/michaelx.jpg" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="tony" src="/static/img/about/tony.jpg" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="kiran" src="/static/img/about/kiran.jpg" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="amanda" src="/static/img/about/amanda.png" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="mauro" src="/static/img/about/mauro.jpg" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="katja" src="/static/img/about/katja.jpg" alt="" />
-          </div>
-        </li>
-        <li class="span2">
-          <div class="thumbnail">
-            <img id="cesar" src="/static/img/about/cesar.jpg" alt="" />
-          </div>
-        </li>
-      </ul>
-   </div>
-</div>
+  <div class="hero-unit">
+    <div class="ac">
+      <h1>The Project</h1><br />
+      <p><em>"Place Pulse, by the Macro Connections group, is a website that puts the full force of science behind fuzzy things like how safe or rich or unusual a city seems, and it does it in the least likely way: by crowdsourcing people’s ratings of streets, using geotagged images, and turning those answers into hard, eminently crunchable numbers." - Fast Company Design</em></p>
+    </div>
+  </div>
 
+<div id="explore">
+    <hr />
+
+    <div class="row">
+      <div class="span6">
+        <h3>Imagine traveling through a strange city...</h3>
+        <p>Inside your mind, subconscious judgements about your surroundings are made in real time. Do you feel safe? Does the area you are in seem unique? Does it appear wealthy, clean or energetic? You may not think about, let alone understand, what goes into making these anecdotal determinations, but when elicited, your opinions can be understood as part of a more substantial collective and used in powerful ways.</p>
+     <p>Place Pulse is a website that allows anybody to quickly run a perception study and visualize the results in powerful ways. Developed at the MIT Media Lab by the Macro Connections group, Place Pulse crowdsources surveys to internet participants, asking binary perception questions across a large number of geotagged images. From the responses of each participant we generate perception layers that can be plugged into existing applications. Any company, from Android to Yahoo, could make use of this data and incorporate human perception data into their apps.</p>
+      </div>
+      <div class="span6">
+        <p>
+          <img rel="tooltip" title="Ars Electronica Visualization" alt="" class="thumbnail fr" src="/static/img/about/visualization.jpg" width="400" />
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+<div class="hero-unit">
+    <div class="ac">
+      <h1>The Team</h1><br />
+    </div>
+  </div>
+
+  <div id="team-members">
+    
+    <div class="row">
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/phil.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/philsalesses" class="icon-linkedin"></a>
+        <a href="http://www.facebook.com/philsalesses" class="icon-facebook"></a>
+        <a href="https://plus.google.com/110954196403957869122" class="icon-google-plus"></a>
+        <a href="http://www.github.com/philsalesses" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Phil Salesses</h3>
+      <h4 class="member-position">Project Lead</h4>
+      <p class="member-bio">
+        Phil is a graduate researcher at the MIT Media Lab who has worked with web technologies, geographic information systems and various forms of remote sensing data. 
+      </p>
+    </article>
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/paul.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.twitter.com/automin" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/paulsawaya" class="icon-linkedin"></a>
+        <a href="http://www.facebook.com/sawaya" class="icon-facebook"></a>
+        <a href="https://plus.google.com/u/0/107751448889323794562" class="icon-google-plus"></a>
+        <a href="http://www.github.com/psawaya" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Paul Sawaya</h3>
+      <h4 class="member-position">Software Engineer</h4>
+      <p class="member-bio">
+        Paul is an employee of Mozilla and previous undergraduate researcher at Hampshire College. He has worked for industry titans such as Apple, Bloomberg and up-and-coming startup Justin.tv.
+      </p>
+    </article>  
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/tony.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="https://twitter.com/tonydevincenzi" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/tonydev" class="icon-linkedin"></a>
+        <a href="https://www.facebook.com/tony.devincenzi" class="icon-facebook"></a>
+        <a href="https://plus.google.com/114584989361764422376" class="icon-google-plus"></a>
+      </p>
+      <h3 class="member-name">Anthony DeVincenzi</h3>
+      <h4 class="member-position">Designer</h4>
+      <p class="member-bio">
+        Anthony is a creative director, designer and graduate researcher at the Media Lab.
+      </p>
+    </article>
+
+    </div>
+    <div class="row">
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/michaelx.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.twitter.com/automin" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/paulsawaya" class="icon-linkedin"></a>
+        <a href="https://www.facebook.com/michaelx2" class="icon-facebook"></a>
+        <a href="http://www.github.com/michaelx11" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Michael Xu</h3>
+      <h4 class="member-position">Software Engineer</h4>
+      <p class="member-bio">
+        Michael is an undergraduate researcher at MIT. 
+      </p>
+    </article>
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/michaelw.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.twitter.com/mbwong" class="icon-twitter"></a>
+        <a href="http://www.facebook.com/berlin.wong" class="icon-facebook"></a>
+        <a href="http://www.github.com/mbwong" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Michael Wong</h3>
+      <h4 class="member-position">Data Scientist</h4>
+      <p class="member-bio">
+        Michael is an undergraduate researcher at Harvard.
+      </p>
+    </article>  
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/kiran.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.linkedin.com/in/kiranbhattaram" class="icon-linkedin"></a>
+        <a href="http://www.facebook.com/kiranmayi.bhattaram" class="icon-facebook"></a>
+        <a href="https://plus.google.com/114840978159138771186" class="icon-google-plus"></a>
+        <a href="http://www.github.com/kiran-b" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Kiran Bhattaram</h3>
+      <h4 class="member-position">Data Scientist</h4>
+      <p class="member-bio">
+        Kiran is an undergraduate researcher at MIT.
+      </p>
+    </article>
+
+    </div>
+    <div class="row">
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/amanda.png" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/philsalesses" class="icon-linkedin"></a>
+        <a href="http://www.facebook.com/philsalesses" class="icon-facebook"></a>
+        <a href="https://plus.google.com/110954196403957869122" class="icon-google-plus"></a>
+        <a href="http://www.github.com/philsalesses" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Amanda Davis</h3>
+      <h4 class="member-position">Human Factors</h4>
+      <p class="member-bio">
+        Amanda works as a researcher at the Design and Usability Center. 
+      </p>
+    </article>
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/mauro.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/philsalesses" class="icon-linkedin"></a>
+        <a href="http://www.facebook.com/philsalesses" class="icon-facebook"></a>
+        <a href="https://plus.google.com/110954196403957869122" class="icon-google-plus"></a>
+        <a href="http://www.github.com/philsalesses" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Mauro Martino</h3>
+      <h4 class="member-position">Visualizations</h4>
+      <p class="member-bio">
+        Mauro is an Assistant Professor at the Northeastern University Center for Complex Network Research, working to visualize and explore complex network data.
+      </p>
+    </article>  
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/katja.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/philsalesses" class="icon-linkedin"></a>
+        <a href="http://www.facebook.com/philsalesses" class="icon-facebook"></a>
+        <a href="https://plus.google.com/110954196403957869122" class="icon-google-plus"></a>
+        <a href="http://www.github.com/philsalesses" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Katja Schechtner</h3>
+      <h4 class="member-position">Project Advisor</h4>
+      <p class="member-bio">
+        Katja leads Europe's largest research group that focuses on Urban Transportation and Mobility.
+      </p>
+    </article>
+
+    </div>
+    <div class="row">
+
+    <article class="member span4">
+      <div class="member-avatar">
+        <img alt="" class="thumbnail" src="/static/img/about/cesar.jpg" />
+      </div>
+      <p class="member-networks">
+        <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/in/philsalesses" class="icon-linkedin"></a>
+        <a href="http://www.facebook.com/philsalesses" class="icon-facebook"></a>
+        <a href="https://plus.google.com/110954196403957869122" class="icon-google-plus"></a>
+        <a href="http://www.github.com/philsalesses" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">César Hidalgo</h3>
+      <h4 class="member-position">Project Advisor</h4>
+      <p class="member-bio">
+        César is an assistant professor and the Asahi Broadcast Corporation Career Development Professor at the MIT Media Lab and a faculty associate at Harvard’s University Center for International Development.
+      </p>
+    </article>
+
+    </div>
+
+  </div>
 {% endblock %}
 
 {% block footer %}
 {{ super() }}
+{% endblock %}
 
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
-<script src="/static/js/bootstrap-transition.js"></script>
-<script src="/static/js/bootstrap-alert.js"></script>
-<script src="/static/js/bootstrap-modal.js"></script>
-<script src="/static/js/bootstrap-dropdown.js"></script>
-<script src="/static/js/bootstrap-scrollspy.js"></script>
-<script src="/static/js/bootstrap-tab.js"></script>
-<script src="/static/js/bootstrap-tooltip.js"></script>
-<script src="/static/js/bootstrap-popover.js"></script>
-<script src="/static/js/bootstrap-button.js"></script>
-<script src="/static/js/bootstrap-collapse.js"></script>
-<script src="/static/js/bootstrap-carousel.js"></script>
-<script src="/static/js/bootstrap-typeahead.js"></script>
-<script>
-$('#phil').popover({'placement':'top','title':'Phil Salesses','content':'Phil is a graduate researcher at the MIT Media Lab who has worked with web technologies, geographic information systems and various forms of remote sensing data.'});
-$('#paul').popover({'placement':'top','title':'Paul Sawaya','content':'Paul is an undergraduate researcher at Hampshire College and has worked for industry titans such as Apple, Bloomberg and up-and-coming Justin.tv.'});
-$('#michaelw').popover({'placement':'top','title':'Michael Wong','content':'Michael is an undergraduate researcher at Harvard.'});
-$('#michaelx').popover({'placement':'top','title':'Michael Xu','content':'Michael is an undergraduate researcher at MIT.'});
-$('#tony').popover({'placement':'top','title':'Anthony DeVincenzi','content':'Anthony is a creative director, designer and graduate researcher at the Media Lab.'});
-$('#kiran').popover({'placement':'top','title':'Kiran Bhattaram','content':'Kiran is an undergraduate researcher at MIT.'});
-$('#amanda').popover({'placement':'top','title':'Amanda Davis','content':'Amanda works as a researcher at the Design and Usability Center.'});
-$('#mauro').popover({'placement':'top','title':'Mauro Martino','content':'Mauro is an Assistant Professor at the Northeastern University Center for Complex Network Research, working to visualize and explore complex network data.'});
-$('#katja').popover({'placement':'top','title':'Katja Schechtner','content':'Katja leads Europe\'s largest research group that focuses on Urban Transportation and Mobility. '});
-$('#cesar').popover({'placement':'top','title':'César Hidalgo','content':'César is an assistant professor and the Asahi Broadcast Corporation Career Development Professor at the MIT Media Lab and a faculty associate at Harvard’s University Center for International Development.'});
-$(document).ready(function() {
-    // On page load, load the GMaps API. Once that's loaded, callback to init()
-    function loadScript() {
-      var script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init";
-      document.body.appendChild(script);
-    }
-
-    loadScript();
-});
-</script>
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
 {% endblock %}
