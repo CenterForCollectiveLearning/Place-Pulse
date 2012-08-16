@@ -4,8 +4,8 @@ class Gamification(object):
     GamifySettings = {
         "VoteUnlockPoints": {
             # Map number of votes to study ID results to unlock
-            5: '4fad3e2c1fdcef82b8003ec6',
-            25: '4fad3e2c1fdcef82b8003ec5'
+            10: '502736ca9313a728f9000000',
+            25: '502736ca9313a728f9000000'
         }
     }
     @classmethod
