@@ -23,3 +23,7 @@ def load_faq():
 @root.route("/contact/")
 def load_contact():
 	return auto_template('contact.html')
+
+@root.route("/press/")
+def load_contact():
+	return auto_template('press.html')

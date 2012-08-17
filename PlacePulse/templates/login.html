@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block nav %}
-    {% set active_page = 'about' -%}
+    {% set active_page = 'signin' -%}
     {{ super() }}
 {% endblock %}
 
 {% block body %}
 <div class="hero-unit">
     <div class="ac">
-      <h1>Welcome is Place Pulse</h1><br />
+      <h1>Welcome to Place Pulse</h1><br />
       <hr />
     </div>
   </div>
@@ -24,47 +24,33 @@
       <div class="well">
         <h2>Sign In</h2>
         <ul>
-          <li>&#10004; 20 users</li>
-          <li>&#10004; Unlimited access</li>
-          <li>&#10004; 3TB of space</li>
-          <li>&#10004; E-mail support</li>
+          <li></li>
+          <li class="ac">
+            <div class="fb-login-button" data-scope="email" data-redirect-uri="http://localhost:8000/finished">
+              <a href="{{ fb_login_link }}">
+                <img src="/static/images/button_fb.jpg" />
+              </a>
+            </div>
+          </li>
+          <li class="ac"><a class="browserIDLoginButton" href="#"><img src="/static/images/button_browserid.png" /></a></li>
         </ul>          
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <hr />
-        <h3 class="ac">$15.99 / month</h3>
-        <hr />
-        <p class="ac">
-          <a class="btn btn-primary btn-large" href="#"><i class="icon-user" style="margin-top:2px;"></i> Sign In</a>
-        </p>
+        <p>Connecting with Facebook requires an existing account with Facebook.</p>
+        <p>BrowserID is a secure user authentication service run by Mozilla and requires only an email and a password to create a new account.</p>
       </div>
     </div>
     <div class="span5">
       <div class="well">
         <h2>Create an Account</h2>
         <ul>
-          <li>&#10004; 5 users</li>
-          <li>&#10004; 1TB of space</li>
-          <li>&#10006; Limited access</li>
-          <li>&#10006; No phone support</li>
+          <li>&#10004; Create your own studies</li>
+          <li>&#10004; View results</li>
         </ul>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-        <hr />
-        <h3 class="ac">$5.99 / month</h3>
+        <p>Creating a new account requires only providing an email.</p>
         <hr />
         <p class="ac">
-          <a class="btn btn-success btn-large" href="#">Select plan &raquo;</a>
+          <a class="browserIDLoginButton btn btn-large" href="#">Create an account &raquo;</a>
         </p>
       </div>
-    </div>
-  </div>
-
-  <hr />
-
-  <div class="row">
-    <div class="span12">
-      <h1 class="lead">
-        <b>All plans comes with 90-day</b> money-back guarantee.
-      </h1>
     </div>
   </div>
 
@@ -82,4 +68,39 @@
 <script src="/static/js/libs/jquery.touchSwipe.js"></script>
 <script src="/static/js/base_ui.js"></script>
 <script src="/static/js/functions.min.js"></script>
+<script src="https://browserid.org/include.js" type="text/javascript"></script>
+  <script>
+    function doBrowserID() {
+      navigator.id.getVerifiedEmail(function(assertion) {
+          if (assertion) {
+              // This code will be invoked once the user has successfully
+              // selected an email address they control to sign in with.
+          $.ajax({
+            type: 'POST',
+            url: '{{ browserid_login_link }}',
+            data: {
+              assertion: assertion
+            },
+            success: function(e) {
+              // Login success!
+              if (e.error) {
+                alert(e.error_description);
+                return;
+              }
+              window.location = e.next;
+            }
+          });
+    
+          } else {
+              // something went wrong!  the user isn't logged in.
+          }
+      });
+  }
+  
+  function init() {
+    $('.browserIDLoginButton').click(doBrowserID);
+  }
+  
+  $(document).ready(init);
+  </script>
 {% endblock %}
