@@ -5,8 +5,6 @@
 <link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
 <link rel="stylesheet" href="/static/css/style.css"/>
 <link rel="stylesheet" href="/static/css/main.css"/>
-<link rel="stylesheet" href="/static/css/sub.css" />
-<link rel="stylesheet" href="/static/css/study_create.css" />
 {% endblock %}
 
 {% block nav %}
@@ -26,7 +24,7 @@
 
 <div id="admin">
   <div class="row">
-        <div class="span3">
+    <div class="span3">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
           <li class="nav-header">Control Panel</li>
@@ -43,6 +41,8 @@
         </ul>
       </div><!--/.well -->
     </div><!--/span-->
+    {% block admin_body %}
+    {% endblock %}
   </div><!--/row-->
   </div>
 </div>

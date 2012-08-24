@@ -1,45 +1,63 @@
-{% extends "base_admin.html" %}
+{% extends "base.html" %}
 
-{% block header %}
-{{ super() }}
-<link href="/static/css/sub.css" rel="stylesheet">
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
 {% endblock %}
 
 {% block nav %}
+    {% set active_page = 'admin' -%}
     {{ super() }}
-{% endblock %}
+  {% endblock %}
 
 {% block body %}
 
-<!-- Masthead
-================================================== -->
-<header class="jumbotron subhead">
-    <h1 class="h1extra">Control Panel</h1>
-</header>
-<div class="row" align="center">
-   <div class="span3" align="left">
+  <div class="hero-unit">
+    <div class="ac">
+      <h1>Control Panel</h1><br />
+      <p id="info-alert">Administer all aspects of your account from one place.</p>
+      <hr />
+    </div>
+  </div>
+
+<div id="admin">
+  <div class="row">
+    <div class="span3">
       <div class="well sidebar-nav">
         <ul class="nav nav-list">
           <li class="nav-header">Control Panel</li>
           <li><a href='/admin/studies/'><i class="icon-book"></i> Studies</a></li>
           <li><a href='/admin/places/'><i class="icon-plane"></i> Places</a></li>
           <li><a href='/admin/locations/'><i class="icon-map-marker"></i> Locations</a></li>
-          <li><a href='/admin/images/'><i class="icon-picture"></i> Images</a></li>
+          <li><a href='/admin/images/'><i class="icon-picture icon-white"></i> Images</a></li>
           <li><a href='/admin/votes/'><i class="icon-ok"></i> Votes</a></li>
-          <li class="active"><a href='/admin/results/'><i class="icon-signal icon-white"></i> Results</a></li>
+          <li class="active"><a href='/admin/results/'><i class="icon-signal"></i> Results</a></li>
           <li class="nav-header">Your Account</li>
           <li><a href='/admin/users/view_all'><i class="icon-user"></i> Profile</a></li>
           <li><a href='/admin/users/view_specific'><i class="icon-cog"></i> Settings</a></li>
           <li><a href='/admin/users/view_specific'><i class="icon-question-sign"></i> Help</a></li>
         </ul>
       </div><!--/.well -->
-   </div>
-   <div class="span9" align="left">
-     <h2>Feature Coming Soon...</h2>
+    </div><!--/span-->
+    <div class="span9" align="left">
+     <h3>Feature Coming Soon...</h3>
+    </div>
+  </div><!--/row-->
   </div>
-</div><!--/row-->
+</div>
 {% endblock %}
 
 {% block footer %}
-{{ super() }}
+  {{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
 {% endblock %}

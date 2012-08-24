@@ -1,25 +1,63 @@
 {% extends "base.html" %}
 
-{% block header %}
-<!-- Le styles -->
-<link href="/static/css/bootstrap.css" rel="stylesheet">
-<link href="/static/css/responsive.css" rel="stylesheet">
-<link href="/static/css/main.css" rel="stylesheet">
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/view_study.css"/>
+
 {% endblock %}
 
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = 'home' %}
+    {{ super() }}
+{% endblock %}
 
 {% block body %}
-	{% include "widgets/vote_widget.html" %}
+{% include 'widgets/vote_widget.html' %}
+
+    <div class="row">
+      <div class="span8">
+        <h3>
+          <b>Study Created By:</b> {{owner}}
+        </h3>
+        <h3>
+          <b>Date:</b> {{study_date}}
+        </h3>
+      </div>
+      <div class="span4">
+        <h3 class="ac">Votes Contributed</h3>
+        <p class="ac">
+          <span class="btn btn-large btn-primary" title=""><b>{{votes_contributed}}</b></span>
+        </p>
+      </div>
+    </div>
+
+    <hr />
 {% endblock %}
 
 {% block footer %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
 <script src="/static/js/main.js"></script>
 <script>
 var study_id = "{{ study_id }}";
 $(document).ready(function() {
-	
-	// On page load, load the GMaps API. Once that's loaded, callback to init()
+  
+  // On page load, load the GMaps API. Once that's loaded, callback to init()
     function loadScript() {
       var script = document.createElement("script");
       script.type = "text/javascript";
@@ -27,9 +65,7 @@ $(document).ready(function() {
       document.body.appendChild(script);
     }
 
-	loadScript();
+  loadScript();
 });
 </script>
-
-<link href="/static/css/view_study.css" type="text/css" rel="stylesheet">
 {% endblock %}
