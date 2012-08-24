@@ -20,11 +20,7 @@
               {% else %}
                 <li><a href="#" class="navLockedLink" title="Create a study" data-content="Vote more to unlock the ability to create a study!" data-placement="bottom"><i class="icon-lock icon-white"></i> Create Study</a></li>
               {% endif %}
-              {% if unlocked_results %}
-                <li{% if 'browse' == active_page %} class="active"{% endif %}><a href="/browse">Browse Results</a></li>
-              {% else %}
-                <li><a href="#" class="navLockedLink" title="Browse results" data-content="Vote more to unlock the results page!" data-placement="bottom"><i class="icon-lock icon-white"></i> Browse Results</a></li>
-              {% endif %}
+              <li{% if 'browse' == active_page %} class="active"{% endif %}><a href="/results">Browse Results</a></li>
               <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/faq">FAQ</a></li>
               {% if userObj and userObj.email %}
                 <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>

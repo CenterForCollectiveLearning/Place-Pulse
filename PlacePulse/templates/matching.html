@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
-{% block header %}
-{{ super() }}
-<link href="/static/css/sub.css" rel="stylesheet">
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/sub.css"/>
 <style>
 .draggableImage img {
 	cursor:move;
@@ -59,21 +62,31 @@
 	cursor:pointer;
 }
 </style>
+
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+<a href="https://github.com/philsalesses"><img style="position: absolute; top: 0; left: 0; border: 0; z-index: 99;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 {% endblock %}
 
 {% block nav %}
-    {% set active_page = "matching" %}
-    {% include 'nav.html' %}
+    {% set active_page = 'home' %}
+    {{ super() }}
 {% endblock %}
 
 {% block body %}
-<header class="jumbotron subhead">
-    <h1 class="h1extra">Matching Game</h1>
-</header>
+ <div class="hero-unit">
+    <div class="ac">
+      <h1>Matching</h1><br />
+      <p id="info-alert">Can you match the city pictures to their names?</p>
+      <hr />
+    </div>
+ </div>
 
-<div class="row">
+<div id="matching">
+  <div class="row">
 	<div class="span12" id="winStatus">
-	</div>
 </div>
 <div class="row" align="center">
 	<div class="span5" align="left">
@@ -89,20 +102,22 @@
 		</div>
 	</div>
 </div>
-<div class="row">
-	<div class="span12 explanationText">
-		<h2>Well travelled?</h2>
-		<h3>Can you match the city pictures to their names?</h3>
-		<h3>One correct answer gives you 1 point, two gives you 2, and four gives you 8!</h3>
-		<h4>This matching game is helping us understand what defines the look of each city.</h4>
-	</div>	
+  </div><!--/row-->
+  </div>
 </div>
-
 {% endblock %}
 
 {% block footer %}
 {{ super() }}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
 <script src="/static/js/lib/jquery-ui-1.8.20.custom.min.js"></script>
 <script src="/static/js/matching.js"></script>
 {% endblock %}

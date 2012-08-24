@@ -23,17 +23,17 @@
 
     <div class="row">
       <div class="span8">
-        <h3>
-          <b>Study Created By:</b> {{owner}}
-        </h3>
-        <h3>
-          <b>Date:</b> {{study_date}}
-        </h3>
+        <p>
+          <b>Study Name:</b> {{study_name}}
+        </p>
+        <p>
+          <b>Creator:</b> {{owner}}
+        </p>
       </div>
       <div class="span4">
         <h3 class="ac">Votes Contributed</h3>
         <p class="ac">
-          <span class="btn btn-large btn-primary" title=""><b>{{votes_contributed}}</b></span>
+          <span class="btn btn-large btn-primary" href="#" title=""><b>{{votes_contributed}}</b></span>
         </p>
       </div>
     </div>
@@ -55,6 +55,7 @@
 <script src="/static/js/main.js"></script>
 <script>
 var study_id = "{{ study_id }}";
+var GAMIFICATION_STATUS = {{ Gamification.getUnlockStatus(userObj)|tojson|safe }};
 $(document).ready(function() {
   
   // On page load, load the GMaps API. Once that's loaded, callback to init()

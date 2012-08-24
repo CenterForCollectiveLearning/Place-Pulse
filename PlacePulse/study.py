@@ -256,7 +256,7 @@ def server_view_study(study_id):
     studyObj = Database.getStudy(study_id)
     if studyObj is None:
         return redirect('/')
-    return auto_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'))
+    return auto_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'),owner=studyObj.get('owner'),study_name=studyObj.get('study_name'))
 
 @study.route('/location/view/<location_id>/',methods=['GET'])
 def get_location(location_id):
