@@ -109,7 +109,7 @@ function setupUI() {
             $('#selectPlaces').show();
             $('#mapInterface').show();
             $('#createStudyForm').hide();
-            $('#info-alert').html('<strong>Step 2 of 5:</strong><br />Now, select an area you want to study by drawing polygon on the map. To start, click any three places on the map.');
+            $('#info-alert').html('Now, select an area you want to study by drawing polygon on the map. To start, click any three places on the map.');
             $('#info').replaceWith('<li id="info"><a href="/admin/studies/"><i class="icon-book"></i> Study Information</a></li>');
             $('#define').replaceWith('<li id="define" class="active"><a href="/admin/studies/"><i class="icon-book icon-white"></i> Select Places</a></li>');
             //Replace Selected menu

@@ -25,5 +25,5 @@ def load_contact():
 	return auto_template('contact.html')
 
 @root.route("/press/")
-def load_contact():
+def load_press():
 	return auto_template('press.html')

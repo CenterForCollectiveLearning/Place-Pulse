@@ -1,20 +1,30 @@
 {% extends "base.html" %}
 
-{% block header %}
-{{ super() }}
-<link href="/static/css/sub.css" rel="stylesheet">
-<link href="/static/css/study_create.css" rel="stylesheet">
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/sub.css" />
+<link rel="stylesheet" href="/static/css/study_create.css" />
 {% endblock %}
 
 {% block nav %}
-    {% set active_page = "create" %}
+    {% set active_page = 'study' -%}
     {{ super() }}
 {% endblock %}
 
 {% block body %}
-<header class="jumbotron subhead">
-    <h1 class="h1extra">Create a Study</h1>
-</header>
+
+  <div class="hero-unit">
+    <div class="ac">
+      <h1>Create a Study</h1><br />
+      <p id="info-alert">Your study has started. Send out a link to your study and start collecting votes.</p>
+      <hr />
+    </div>
+  </div>
+
+<div id="curate">
   <div class="row">
     <div class="span4">
       <div class="well sidebar-nav">
@@ -27,14 +37,10 @@
           <li id="start" class="active"><a href='#'><i class="icon-ok icon-white"></i> Start Collecting Votes</a></li>
         </ul>
       </div><!--/.well -->
-      <div class="alert alert-info" id="info-alert">
-    	<strong>Step 5 of 5:</strong>
-    	<br />Your study has started. Send out a link to your study and start collecting votes.
-    	</div>
-    	
+      
     </div><!--/span-->
     <div class="span8">
-      <h2 style="margin-bottom:30px;">Congratulations...</h2>
+      <h2>Congratulations...</h2>
       <p>This link will directly access your study. You can send it to friends so they can participate.</p>
       <table class="table table-bordered"><tr><td>http://pulse.media.mit.edu/study/view/{{ study_id }}</td></tr>
         <tr><td style="padding-top:18px;"><!-- AddThis Button BEGIN -->
@@ -49,45 +55,22 @@
         
     </div>
   </div><!--/row-->
+  </div>
+
+
+
+</div>
 {% endblock %}
 
 {% block footer %}
 {{ super() }}
+{% endblock %}
 
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script src="/static/js/bootstrap-modal.js"></script>
-<script src="/static/js/bootstrap-transition.js"></script>
-<script src="/static/js/bootstrap-dropdown.js"></script>
-<script src="/static/js/study_curate.js"></script>
-<script src="/static/js/lib/waypoints.js"></script>
-<script>
-$(document).ready(function() {
-	// On page load, load the GMaps API. Once that's loaded, callback to init()
-    function loadScript() {
-      var script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init";
-      document.body.appendChild(script);
-    }
-	loadScript();
-  	$.waypoints.settings.scrollThrottle = 30;
-    	$('#leftpin').waypoint(function(event, direction) {
-         if (direction === 'down') {
-           $('#leftpin').css("top","0");
-           $('#leftpin').css("position","fixed");
-         }
-         else {
-            $('#leftpin').css("position","relative");
-         }
-      });
-    	$('#leftpin').bind('waypoint.reached', function(event, direction) {
-      });
-});
-function init() {
-	initialize("{{ study_id }}","{{ polygon }}");
-}
-</script>
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
 {% endblock %}
