@@ -70,7 +70,6 @@
 <script src="/static/js/main.js"></script>
 <script>
   var study_id = "{{ study_id }}";
-  var GAMIFICATION_STATUS = {{ Gamification.getUnlockStatus(userObj)|tojson|safe }};
   $(document).ready(function() {
       function loadScript() {
         var script = document.createElement("script");
