@@ -23,7 +23,7 @@
               <li{% if 'browse' == active_page %} class="active"{% endif %}><a href="/results">Browse Results</a></li>
               <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/faq">FAQ</a></li>
               {% if userObj and userObj.email %}
-                <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">Control Panel</a></li>
+                <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">My Studies</a></li>
                 <li><a href="/logout">Sign out</a></li>
               {% else %}
                 <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="/login">Sign In</a></li>

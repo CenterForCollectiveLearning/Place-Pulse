@@ -52,17 +52,17 @@
                <tr>
                  <th>Studies</th>
                  <th>Public</th>
-                 <th>Permalink</th>
                  <th>Actions</th>
                </tr>
              </thead>
              <tbody>
                {%for study in studies:%}
                <tr id="row{{study._id}}">
-                 <td><a href='/admin/study/{{study._id}}'>{{study.study_name}}</a></td>
+                 <td><a href='/study/view/{{study._id}}'>{{study.study_name}}</a></td>
                   <td>{{study.study_public|capitalize}}</td>    
-                 <td><a href='/study/view/{{study._id}}'>Visit Study</a></td>    
-                 <td><a class="btn" style="padding:0px 4px 0px;" href="/admin/study/{{study._id}}" title="Edit Study"><i class="icon-edit" style="margin-top:3px;"></i></a> <a class="btn" style="padding:0px 4px 0px;" onclick="deleteStudy('{{study._id}}')" title="Delete Study"><i class="icon-trash" style="margin-top:3px;"></i></a></td>             
+                 <td><a class="btn" style="padding:0px 4px 0px;" href="/admin/study/{{study._id}}" title="Edit Study"><i class="icon-edit" style="margin-top:3px;"></i></a> 
+                  <a class="btn" style="padding:0px 4px 0px;" href="/place/curate/{{study.places_id[0]}}" title="Curate Images"><i class="icon-picture" style="margin-top:3px;"></i></a> 
+                  <a class="btn" style="padding:0px 4px 0px;" onclick="deleteStudy('{{study._id}}')" title="Delete Study"><i class="icon-trash" style="margin-top:3px;"></i></a></td>             
               </tr>
                {%endfor%}
              </tbody>

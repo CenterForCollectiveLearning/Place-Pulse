@@ -12,10 +12,8 @@ from db import Database
 def load_admin():
     if getLoggedInUser() is None:
         return redirect("/login/")
-    popular_studies = Database.getPopularStudies(5)
-    new_cities = Database.getNewCities(5)
-    inactive_studies = Database.getInactiveStudies(5)
-    return auto_template('admin.html',popular_studies=popular_studies,new_cities=new_cities,inactive_studies=inactive_studies)
+    studies = Database.getStudies(session['userObj']['email'])
+    return auto_template('admin.html',studies=studies)
     
 #--------------------Studies
 @admin.route("/admin/studies/")
