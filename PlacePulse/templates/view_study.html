@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% set active_page = "index" %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
@@ -13,10 +14,6 @@
 {{ super() }}
 {% endblock %}
 
-{% block nav %}
-    {% set active_page = 'home' %}
-    {{ super() }}
-{% endblock %}
 
 {% block body %}
 {% include 'widgets/vote_widget.html' %}

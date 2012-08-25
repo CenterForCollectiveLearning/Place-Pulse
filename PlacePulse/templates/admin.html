@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% set active_page = "mystudies" %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
@@ -6,11 +7,6 @@
 <link rel="stylesheet" href="/static/css/style.css"/>
 <link rel="stylesheet" href="/static/css/main.css"/>
 {% endblock %}
-
-{% block nav %}
-    {% set active_page = 'admin' -%}
-    {{ super() }}
-  {% endblock %}
 
 {% block body %}
 
@@ -43,7 +39,7 @@
                  <td><a href='/study/view/{{study._id}}'>{{study.study_name}}</a></td>
                   <td>{{study.study_public|capitalize}}</td>    
                  <td><a class="btn" style="padding:0px 4px 0px;" href="/admin/study/{{study._id}}" title="Edit Study"><i class="icon-edit" style="margin-top:3px;"></i></a> 
-                  <a class="btn" style="padding:0px 4px 0px;" href="/place/curate/{{study.places_id[0]}}" title="Curate Images"><i class="icon-picture" style="margin-top:3px;"></i></a> 
+                  <a class="btn" style="padding:0px 4px 0px;" href="/place/curate/{{study.places_id[0]}}/{{study._id}}" title="Curate Images"><i class="icon-picture" style="margin-top:3px;"></i></a> 
                   <a class="btn" style="padding:0px 4px 0px;" onclick="deleteStudy('{{study._id}}')" title="Delete Study"><i class="icon-trash" style="margin-top:3px;"></i></a></td>             
               </tr>
               {% else %}

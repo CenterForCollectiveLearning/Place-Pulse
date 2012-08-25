@@ -35,10 +35,42 @@
   </header>
 
   <!-- Navigation -->
-  {% block nav %}
-  {% include 'nav.html' %}
-  {% endblock %}
-
+{% set navigation_bar = [
+    ('/about/', 'about', 'About'),
+    ('/study/create/', 'create', 'Create a Study'),
+    ('/results/', 'results', 'Browse Results'),
+    ('/faq/', 'faq', 'FAQ')
+] -%}
+{% set active_page = active_page|default('index') -%}
+      <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="/">
+            <b>PLACE</b> PULSE
+          </a>
+          <div class="nav-collapse fr">
+            <ul class="nav">
+            {% for href, id, caption in navigation_bar %}
+              <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+            {% endfor %}
+            
+            {% if userObj and userObj.email %}
+              <li{% if 'mystudies' == active_page %} class="active"{% endif %}><a href="/admin/">My Studies</a></li>
+              <li><a href="/logout">Sign out</a></li>
+            {% else %}
+              <li{% if 'signin' == active_page %} class="active"{% endif %}><a href="/login">Sign In</a></li>
+            {% endif %}
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!-- end .container -->
+      </div><!-- end .navbar-inner -->
+    </div><!-- end .navbar -->
+ 
   <!-- Content -->
   <div id="content" class="container">
   {% block body %}

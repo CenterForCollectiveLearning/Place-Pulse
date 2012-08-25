@@ -1,6 +1,10 @@
-{% set unlocked_results = unlocked_results|default(True) -%}
-{% set unlocked_create_study = unlocked_create_study|default(True) -%}
-{% set active_page = activate_page|default('home') %}
+{% set navigation_bar = [
+    ('/', 'about', 'About'),
+    ('/study/create/', 'create', 'Create a Study'),
+    ('/results/', 'browse', 'Browse Results'),
+    ('/faq/', 'faq', 'FAQ')
+] -%}
+{% set active_page = active_page|default('index') -%}
       <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
@@ -10,24 +14,20 @@
             <span class="icon-bar"></span>
           </a>
           <a class="brand" href="/">
-            <b>PLACE</b> PULSE
+            <b>PLACE</b> PULSE{{active_page}}
           </a>
           <div class="nav-collapse fr">
             <ul class="nav">
-              <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/about">About</a></li>
-              {% if unlocked_create_study %}
-                <li{% if 'create' == active_page %} class="active"{% endif %}><a href="/study/create">Create Study</a></li>
-              {% else %}
-                <li><a href="#" class="navLockedLink" title="Create a study" data-content="Vote more to unlock the ability to create a study!" data-placement="bottom"><i class="icon-lock icon-white"></i> Create Study</a></li>
-              {% endif %}
-              <li{% if 'browse' == active_page %} class="active"{% endif %}><a href="/results">Browse Results</a></li>
-              <li{% if 'about' == active_page %} class="active"{% endif %}><a href="/faq">FAQ</a></li>
-              {% if userObj and userObj.email %}
-                <li{% if active_page == 'controlpanel' %} class="active"{% endif %}><a href="/admin/">My Studies</a></li>
-                <li><a href="/logout">Sign out</a></li>
-              {% else %}
-                <li{% if active_page == 'signin' %} class="active"{% endif %}><a href="/login">Sign In</a></li>
-              {% endif %}
+            {% for href, id, caption in navigation_bar %}
+              <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+            {% endfor %}
+            
+            {% if userObj and userObj.email %}
+              <li{% if 'controlpanel' == active_page %} class="active"{% endif %}><a href="/admin/">My Studies</a></li>
+              <li><a href="/logout">Sign out</a></li>
+            {% else %}
+              <li{% if 'signin' == active_page %} class="active"{% endif %}><a href="/login">Sign In</a></li>
+            {% endif %}
             </ul>
           </div><!--/.nav-collapse -->
         </div><!-- end .container -->

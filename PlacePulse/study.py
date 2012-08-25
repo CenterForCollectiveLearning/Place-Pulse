@@ -91,6 +91,12 @@ def curate_study(place_id):
     place = Database.getPlace(place_id)
     locations = Database.getLocations(place_id,48)
     return auto_template('study_curate.html',polygon=place['polygon'],locations=locations,place_id=place_id, study_id=study_id)
+
+@study.route('/place/curate/<place_id>/<study_id>',methods=['GET'])
+def curate_study_again(place_id,study_id):
+    place = Database.getPlace(place_id)
+    locations = Database.getLocations(place_id,48)
+    return auto_template('study_curate.html',polygon=place['polygon'],locations=locations,place_id=place_id, study_id=study_id)
     
 @study.route('/place/curate/location/<id>',methods=['POST'])
 def curate_location():    
@@ -256,7 +262,8 @@ def server_view_study(study_id):
     studyObj = Database.getStudy(study_id)
     if studyObj is None:
         return redirect('/')
-    return auto_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'),owner=studyObj.get('owner'),study_name=studyObj.get('study_name'))
+    votesCount = Database.getVotesCount(study_id)
+    return auto_template('view_study.html',study_id=study_id,study_prompt=studyObj.get('study_question'),owner=studyObj.get('owner'),study_name=studyObj.get('study_name'), votes_contributed = votesCount)
 
 @study.route('/location/view/<location_id>/',methods=['GET'])
 def get_location(location_id):

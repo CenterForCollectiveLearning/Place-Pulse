@@ -96,6 +96,7 @@ footer .social-networks a:hover{background:#000;color:#fff;}
 #back-to-top{display:none;position:fixed;bottom:10px;right:10px;height:20px;width:40px;padding:8px 0 12px 0;text-align:center;font-size:20px;color:#fff;cursor:pointer;background:#444;line-height:1em;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";filter:alpha(opacity=80);opacity:0.8;}
 #back-to-top:hover{background-color:#f30;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";filter:alpha(opacity=80);opacity:0.8;}
 #explore h3{margin:0 0 10px 0;}
+.browserIDLoginButton {cursor: pointer;}
 ul.the-icons{margin:0;}
 ul.the-icons li{display:inline;padding:10px 20px;margin:0;border-radius:4px;-moz-border-radius:4px;-webkit-border-radius:4px;}
 ul.the-icons li:hover{background:#eee;}

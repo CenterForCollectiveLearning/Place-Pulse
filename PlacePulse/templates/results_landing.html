@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% set active_page = "results" %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
@@ -12,11 +13,6 @@
 		}
 	</style>
 <link rel="stylesheet" href="/static/css/sub.css"/>
-{% endblock %}
-
-{% block nav %}
-    {% set active_page = 'results' -%}
-    {{ super() }}
 {% endblock %}
 
 {% block body %}

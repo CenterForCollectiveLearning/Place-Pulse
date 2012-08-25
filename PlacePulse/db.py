@@ -192,9 +192,12 @@ class database(object):
         except:
             return None
 
-    def getVotesCount(self):
+    def getVotesCount(self, study_id=None):
         try:
-            return self.votes.find().count()
+            if study_id is not None:
+                return self.votes.find({"study_id": study_id}).count()
+            else:
+                return self.votes.find().count()
         except:
             return None      
                   
