@@ -1,16 +1,62 @@
-{% extends "base_results.html" %}
+{% extends "base.html" %}
 {% set active_page = "results" %}
 
-{% block header %}
-
-	{{ super() }}
-	<style>
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+<style>
 	#results_map {
 		width:100%;
 		height:300px;
 	}
 	.rankedItems {
 		color:#dddddd;
+	}
+	.rank {
+		font-weight:bold;
+	}
+	.rankings img {
+		padding:5px;
+		z-index:99;
+	}
+	.rankings img:hover {
+		cursor:pointer;
+	}
+	.rankedImage {
+		float:left;
+		width:230px;
+		height:173px;
+	
+		margin:3px;
+	
+		cursor:pointer;
+		
+		margin:5px;
+	
+	    border: 1px solid #ddd;
+	    -webkit-border-radius: 4px;
+	    -moz-border-radius: 4px;
+	    border-radius: 4px;
+	    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	
+	}
+	.rankedImageStats {
+		visibility:hidden;
+		color:white;
+	}
+	.rankedImage:hover .rankedImageStats {
+		visibility:visible;
+		opacity:0.7;
+		background-color:black;
+		position:absolute;
+	}
+	#results_map_container {
+  	  /*FIXME: position:fixed may not work in IE7&8, need testing.*/
+  	  position:fixed;
 	}
 	</style>
 	<script>
@@ -19,30 +65,46 @@
 {% endblock %}
 
 {% block body %}
-{{ super() }}
-<header class="jumbotron subhead">
-	<h1 class="h1extra">
-		Results
-	</h1>
-</header>
 
-<div class="row">
-	<div class="span4">
-		<div class="well">
-      <div id="results_map"></div>
+	<div class="hero-unit">
+		<div class="ac">
+			<h1>Results</h1><br />
+			<hr />
 		</div>
 	</div>
-	
-	<div class="span8">
-		<div class="rankItems"></div>
+
+	<div id="results">
+		<div class="row">
+		  <div class="span4">
+			<div class="well">
+	      		<div id="results_map">
+	      		</div>
+			</div>
+		</div>
+		
+		<div class="span8">
+			<div class="rankItems">
+			</div>
+		</div>
 	</div>
+</div>
+
+
 </div>
 {% endblock %}
 
 {% block footer %}
-	{{ super() }}
-	<script src="/static/js/lib/jquery.appear-1.1.1.min.js"></script>
-	<script src="/static/js/results.js"></script>
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+<script src="/static/js/results.js"></script>
 	
 	<script type="text/template" id="rankItemTemplate">
 		<div>
@@ -66,3 +128,4 @@
 		</div>
 	</script>
 {% endblock %}
+
