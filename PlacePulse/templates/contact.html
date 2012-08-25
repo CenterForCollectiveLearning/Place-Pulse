@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% set active_page = "contact" %}
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
@@ -7,10 +8,6 @@
 <link rel="stylesheet" href="/static/css/main.css"/>
 {% endblock %}
 
-{% block nav %}
-    {% set active_page = 'contact' -%}
-    {{ super() }}
-{% endblock %}
 
 {% block body %}
 </div>
@@ -23,11 +20,11 @@
         <a class="btn btn-large btn-primary" href="mailto:salesses@mit.edu"><b>@ Write us</b></a><br /><br />
         <b>Macro Connections</b><br />75 Amherst Street, E14-348B<br />Cambridge, Massachusetts 02139<br /><a href="https://maps.google.com/?ie=UTF8&cid=1884377004050972720&q=MIT+Media+Lab&t=h&hq=MIT+Media+Lab&hnear=&&z=15&vpsrc=0&iwloc=A&f=d&daddr=MIT+Media+Lab,+75+Amherst+Street,+Cambridge,+MA+02139">Get Directions</a>
       </p>
-      <p class="span4">
-        The way we act, both individually and collectively, depends strongly on how we see the world. The Macro Connections group focuses on the development of analytical tools that can help improve our understanding of the world’s macro structures in all of their complexity.
+      <p class="span4" style="text-align:justify;">
+        The way we act, both individually and collectively, depends strongly on how we see the world. Our group focuses on the development of analytical tools that can help improve our understanding of the world’s macro structures in all of their complexity.
       </p>
-      <p class="span4">
-        By developing methods to analyze and represent networks, Macro Connections research aims to help improve our understanding of the world by putting together the pieces that our scientific disciplines have helped to pull apart.
+      <p class="span4" style="text-align:justify;">
+        By developing methods to analyze and represent complex networks, Macro Connections research aims to help improve our understanding of the world by putting together the pieces that our scientific disciplines have helped to pull apart.
       </p>
     </div>
   </div>
