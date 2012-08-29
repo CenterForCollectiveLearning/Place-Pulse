@@ -19,27 +19,130 @@
 
   <div class="hero-unit">
     <div class="ac">
-      <h1>Results</h1>
+      <h1>2012 Venice Architecture Biennale Results</h1>
       <hr />
     </div>
   </div>
 
 <div id="results">
   <div class="row">
-    <div class="span12">
-		<h3>Questions</h3>
-		<ul>
-			{% for study in studies %}
-				<li>
-						<a href="/study/results/{{ study._id }}">
-							Which place looks more <strong>{{ study.study_question }}</strong>?
-						</a>
-				</li>
-			{% endfor %}
-		</ul>
-		<div class="rankItems"></div>
+    <div class="span8 offset2 hero-unit ac">
+		<p>Keep your eye on this page to see the results of your voting.<br />Available shortly after the 2012 Venice Architecture Biennale opening.<br /><em>-Paul Sawaya and Michael Wong</em></p>
 	</div>
   </div><!--/row-->
+  <div class="row">
+	<div class="hero-unit">
+    <div class="ac">
+      <h1>2011 Ars Electronica Results</h1>
+      <hr />
+    </div>
+  </div>
+<div id="portfolio">
+
+    <!-- portfolio filter -->   
+    <ul id="portfolio-filter" class="nav nav-tabs">
+      <li class="active"><a href="#" class="filter" data-filter="*">Which place looks:</a></li>
+      <li><a href="#" class="filter" data-filter=".safer">Safer?</a></li>
+      <li><a href="#" class="filter" data-filter=".upperclass">More Upper-Class?</a></li>
+      <li><a href="#" class="filter" data-filter=".unique">More Unique?</a></li>
+    </ul>
+
+    <!-- portfolio items -->    
+    <div class="row" id="portfolio-items">
+
+      <!-- portfolio item-->
+      <div class="span4 project" data-tags="safer">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=_wOQet324vM">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/_wOQet324vM?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/_wOQet324vM?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">New York City, USA</b>
+        </a>
+      </div>
+        
+        <div class="span4 project" data-tags="safer">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=SBFfQvEGFpw">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/SBFfQvEGFpw?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/SBFfQvEGFpw?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">Salzburg, Austria</b>
+        </a>
+      </div>
+
+      <div class="span4 project" data-tags="safer">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=R4qPsOPtrXA">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/R4qPsOPtrXA?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/R4qPsOPtrXA?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">Linz, Austria</b>
+        </a>
+      </div>
+
+            <div class="span4 project" data-tags="upperclass">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=2z1NyZIlYzw">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/2z1NyZIlYzw?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/2z1NyZIlYzw?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">New York City, USA</b>
+        </a>
+      </div>
+            <div class="span4 project" data-tags="upperclass">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=ELOoSe33tpw">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/ELOoSe33tpw?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/ELOoSe33tpw?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">Salzburg, Austria</b>
+        </a>
+      </div>
+            <div class="span4 project" data-tags="upperclass">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=m4ZsSWZS7HY">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/m4ZsSWZS7HY?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/m4ZsSWZS7HY?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">Linz, Austria</b>
+        </a>
+      </div>
+
+  <div class="span4 project" data-tags="unique">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=pouXP3Q7LUw">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/pouXP3Q7LUw?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/pouXP3Q7LUw?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">New York City, USA</b>
+        </a>
+      </div>
+        
+        <div class="span4 project" data-tags="unique">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=CnVwzqcFScA">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/CnVwzqcFScA?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/CnVwzqcFScA?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">Salzburg, Austria</b>
+        </a>
+      </div>
+
+      <div class="span4 project" data-tags="unique">
+
+        <a class="thumbnail" href="http://www.youtube.com/watch?v=vkZP8V9LGT0">
+          <!-- image -->
+          <object width="300" height="225"><param name="movie" value="https://www.youtube.com/v/vkZP8V9LGT0?version=3&amp;hl=en_US&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="https://www.youtube.com/v/vkZP8V9LGT0?version=3&amp;hl=en_US&amp;rel=0" type="application/x-shockwave-flash" width="290" height="192" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+          <!-- name -->
+          <b class="project-name">Linz, Austria</b>
+        </a>
+      </div>
+
+
+    </div>
+</div>
+  </div>
  </div>
 
 

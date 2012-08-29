@@ -1840,6 +1840,40 @@ button.close {
 .btn-primary.active {
   background-color: #d95817 \9;
 }
+.btn-facebook {
+  background-color: #6D8BC9;
+  background-image: -moz-linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-image: -ms-linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6D8BC9), to(#6D8BC9));
+  background-image: -webkit-linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-image: -o-linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-image: linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6D8BC9', endColorstr='#6D8BC9', GradientType=0);
+  border-color: #6D8BC9 #6D8BC9 #6D8BC9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #6D8BC9;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.btn-persona {
+  background-color: #6D8BC9;
+  background-image: -moz-linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-image: -ms-linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6D8BC9), to(#6D8BC9));
+  background-image: -webkit-linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-image: -o-linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-image: linear-gradient(top, #6D8BC9, #6D8BC9);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6D8BC9', endColorstr='#6D8BC9', GradientType=0);
+  border-color: #6D8BC9 #6D8BC9 #6D8BC9;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #6D8BC9;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
 .btn-warning {
   background-color: #faa732;
   background-image: -moz-linear-gradient(top, #fbb450, #f89406);
@@ -1856,6 +1890,22 @@ button.close {
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+.btn-facebook:hover,
+.btn-facebook:active,
+.btn-facebook.active,
+.btn-facebook.disabled,
+.btn-facebook[disabled] {
+  background-color: #335795;
+  *background-color: #335795;
+}
+.btn-persona:hover,
+.btn-persona:active,
+.btn-persona.active,
+.btn-persona.disabled,
+.btn-persona[disabled] {
+  background-color: #335795;
+  *background-color: #335795;
 }
 .btn-warning:hover,
 .btn-warning:active,

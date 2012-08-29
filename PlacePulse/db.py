@@ -110,7 +110,7 @@ class database(object):
             return None
 
 #--------------------Locations
-    def getLocations(self,place_id,limit=24):
+    def getLocations(self,place_id,limit=96):
         try:
             return self.locations.find({'place_id': place_id}).limit(limit)
         except:

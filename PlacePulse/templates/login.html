@@ -11,43 +11,27 @@
 {% block body %}
 <div class="hero-unit">
     <div class="ac">
-      <h1>Welcome to Place Pulse</h1><br />
-      <hr />
     </div>
   </div>
 <div class="row pricing">
-    <div class="span5 offset1">
+    <div class="span6 offset3">
       <div class="well">
         <h2>Sign In</h2>
-        <ul>
-          <li></li>
-          <li class="ac">
-            <div class="fb-login-button" data-scope="email" data-redirect-uri="http://localhost:8000/finished">
-              <a href="{{ fb_login_link }}">
-                <img src="/static/img/button_fb.jpg" />
+            <div class="fb-login-button pull-left" data-scope="email" data-redirect-uri="http://localhost:8000/finished">
+              <a href="{{ fb_login_link }}" class="btn btn-primary btn-facebook btn-large">
+                  <i class="icon-facebook-sign icon-white" style="margin-top:3px; font-size: 18px;"></i> Sign in with Facebook
               </a>
             </div>
-          </li>
-          <li class="ac"><img src="/static/img/button_browserid.png" class="browserIDLoginButton" /></li>
-        </ul>          
-        <p>Connecting with Facebook requires an existing account with Facebook.</p>
-        <p>BrowserID is a secure user authentication service run by Mozilla and requires only an email and a password to sign in.</p>
+          <div class="btn btn-primary btn-error btn-large browserIDLoginButton pull-right" style="cursor:pointer;">
+                  <i class="icon-user icon-white" style="margin-top:3px; font-size: 18px;"></i> Sign in with Persona
+              </div> 
+        <br /><br /><br />
+        <p>Signing in with Facebook requires an existing account with Facebook.</p>
+        <p>Mozilla Persona is a secure user authentication service run by Mozilla and requires only an email and a password to sign in.</p>
       </div>
+      <p class="ac">Don't have an account? <a href="https://login.persona.org/signup" target="_blank">Create one using Mozilla Persona</a><br /><a href="http://www.mozilla.org/en-US/persona/">Learn more about Mozilla Persona</a></p>
     </div>
-    <div class="span5">
-      <div class="well">
-        <h2>Create an Account</h2>
-        <ul>
-          <li>&#10004; Create your own studies</li>
-          <li>&#10004; View and browse results</li>
-        </ul>
-        <p>To create an account with Place Pulse, sign in with an existing Facebook account.</p>
-        <p>Alternatively, create a new Place Pulse account by signing up for BrowserID. BrowserID is a secure user authentication service run by Mozilla and requires only an email and a password to get started.</p><p>(Opens in a new window)</p>
-        <hr />
-        <p class="ac">
-          <a class="browserIDLoginButton btn btn-large" href="#">Create an account &raquo;</a>
-        </p>
-      </div>
+
     </div>
   </div>
 
