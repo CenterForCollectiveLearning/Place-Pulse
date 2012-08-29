@@ -24,7 +24,7 @@ def generate_results_page(study_id,final_rankings):
         # I'm assuming there'll only be one in common, since a location should appear
         # in a study only once.
         # place_id = list(study_places&set(locationObj['place_id']))[0]
-        place_id = list(study_places&set(locationObj['places_id']))[0]
+        place_id = list(study_places&set(locationObj['place_id']))[0]
         score = final_rankings[rankedLocationID]
         places[place_id].append({
             "location_id": rankedLocationID,
