@@ -12,7 +12,7 @@
       <label class="control-label" for="study_question">Question to Ask Users</label>
       <div class="controls">
         <div class="input-prepend">
-          <span class="add-on">Which place looks more </span>
+          <span class="add-on">Which place looks </span>
           <input class="span2" id="study_question" size="16" type="text" placeholder="i.e. unique" data-provide="typeahead" data-items="{{numQs}}" data-source="{{studyQs}}" {% if study %} value="{{ study.study_question }}" {% endif %}>
           ?
           <span id="study_question_error" class="help-inline hidden">Please use at most three words.</span>
