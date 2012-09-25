@@ -117,6 +117,14 @@ def study_delete_p(study_id):
     'success': str(studyDeleted)
     })
     
+@admin.route("/admin/study/deleteadmin/<study_id>",methods = ['POST'])
+def study_delete_padmin(study_id):
+    # Insert the new study into Mongo
+    studyDeleted = Database.deleteStudyAdmin(study_id)
+    return jsonifyResponse({
+    'success': str(studyDeleted)
+    })
+
 @admin.route("/admin/place/<place_id>/",methods = ['GET'])
 def edit_places(place_id):
     if getLoggedInUser() is None:
