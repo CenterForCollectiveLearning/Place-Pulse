@@ -112,8 +112,7 @@ def add_place_delete_p(place_id):
 @admin.route("/admin/study/delete/<study_id>",methods = ['POST'])
 def study_delete_p(study_id):
     # Insert the new study into Mongo
-    owner = session['userObj']['email']
-    studyDeleted = Database.deleteStudy(study_id, owner)
+    studyDeleted = Database.deleteStudyAdmin(study_id)
     return jsonifyResponse({
     'success': str(studyDeleted)
     })
