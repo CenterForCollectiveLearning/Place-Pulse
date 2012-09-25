@@ -15,7 +15,7 @@ def load_admin():
     studies = Database.getStudies(session['userObj']['email'])
     return auto_template('admin.html',studies=studies)
 
-@admin.route("/admin/all_studies")
+@admin.route("/admin/all_studies/")
 def load_admin_studies():
     if getLoggedInUser() is None:
         return redirect("/login/")
