@@ -14,6 +14,14 @@ def load_admin():
         return redirect("/login/")
     studies = Database.getStudies(session['userObj']['email'])
     return auto_template('admin.html',studies=studies)
+
+@admin.route("/admin/all_studies")
+def load_admin_studies():
+    if getLoggedInUser() is None:
+        return redirect("/login/")
+    if session['userObj']['email'] == 'hidalgo@mit.edu' or session['userObj']['email'] == 'salesses@mit.edu' or session['userObj']['email'] == 'philsalesses@me.com':
+        studies = Database.getStudiesAdmin()
+    return auto_template('admin_all.html',studies=studies)
     
 #--------------------Studies
 @admin.route("/admin/studies/")

@@ -55,12 +55,25 @@ class database(object):
         except:
             return None
 
+    def deleteStudyAdmin(self,study_id):
+        try:
+            self.studies.remove( { '_id' : ObjectId(study_id)})
+            return True
+        except:
+            return None
+
     def returnObjectId(self,study_id):
         return ObjectId(study_id)
 
     def getStudies(self,owner):
         try:
             return self.studies.find({'owner':owner})
+        except:
+            return None
+
+    def getStudiesAdmin(self):
+        try:
+            return self.studies.find()
         except:
             return None
 

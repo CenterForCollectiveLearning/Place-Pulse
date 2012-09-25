@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% set active_page = "mystudies" %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+{% endblock %}
+
+{% block body %}
+
+  <div class="hero-unit">
+    <div class="ac">
+      <h1>My Studies</h1>
+      <hr />
+    </div>
+  </div>
+
+<div id="admin">
+  <div class="row">
+    <div class="span12" align="left">
+     <div id="studyDeleted" class="alert alert-success" align="left" style="display:none;">
+        <a class="close" data-dismiss="alert">×</a>
+        <h4 class="alert-heading">Success!</h4>
+        Your study has been deleted.
+      </div>
+     <table class="table table-bordered">
+             <thead>
+               <tr>
+                 <th>Studies</th>
+                 <th>Public</th>
+                 <th>Actions</th>
+               </tr>
+             </thead>
+             <tbody>
+               {% for study in studies %}
+               <tr id="row{{study._id}}">
+                 <td><a href='/study/view/{{study._id}}'>{{study.study_name}}</a></td>
+                  <td>{{study.study_public|capitalize}}</td>    
+                 <td><a class="btn" style="padding:0px 4px 0px;" href="/admin/study/{{study._id}}" title="Edit Study"><i class="icon-edit" style="margin-top:3px;"></i></a> 
+                  <a class="btn" style="padding:0px 4px 0px;" href="/place/curate/{{study.places_id[0]}}/{{study._id}}" title="Curate Images"><i class="icon-picture" style="margin-top:3px;"></i></a> 
+                  <a class="btn" style="padding:0px 4px 0px;" onclick="deleteStudyAdmin('{{study._id}}')" title="Delete Study"><i class="icon-trash" style="margin-top:3px;"></i></a></td>             
+              </tr>
+              {% else %}
+              <tr>
+                 <td>None</a></td>
+                  <td>N/A</td>    
+                 <td>N/A</td>             
+              </tr>
+              {% endfor %}
+             </tbody>
+           </table> 
+           <div class="well" align="left">
+              <form id="add_study" action="/study/create/" style="margin:0;">
+                <button class="btn btn-danger" onclick="window.location.replace("http://pulse.media.mit.edu/study/create/");">Create a New Study</button>
+              </form>
+            </div>
+            <div class="modal hide fade" id="deleteStudyModal">
+              <div class="modal-header">
+                <a class="close" data-dismiss="modal">×</a>
+                <h3>Confirm Delete</h3>
+              </div>
+              <div class="modal-body">
+                <p>Are you sure you want to delete this study?</p>
+              </div>
+              <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+                <a id="confirmDelete" class="btn btn-primary">Delete Study</a>
+              </div>
+            </div>
+  </div>
+  </div><!--/row-->
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+  {{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+<script>
+function deleteStudy(studyID)
+{
+  $('#deleteStudyModal').modal('toggle');
+  $('#confirmDelete').click(function() {
+    confirmDeleteStudy(studyID);
+  });
+}
+function confirmDeleteStudy(studyID)
+{
+  $('#deleteStudyModal').modal('toggle');
+  $.ajax({
+          url:'/admin/study/delete/' + studyID,
+          // Expect JSON to be returned. This is also enforced on the server via mimetype.
+          dataType: 'json',
+          data: {
+              id: studyID
+          },
+          type: 'POST',
+          success: function(data) {
+              if (data.success === "True")
+              {
+                  $("#row" + studyID).remove();
+                  $('#studyDeleted').show();
+              }
+          }
+      });
+}
+</script>
+{% endblock %}
