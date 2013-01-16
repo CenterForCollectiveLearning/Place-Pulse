@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% set active_page = "create" %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+<link rel="stylesheet" href="/static/css/sub.css" />
+<link rel="stylesheet" href="/static/css/study_create.css" />
+{% endblock %}
+
+{% block body %}
+
+  <div class="hero-unit">
+    <div class="ac">
+      <h1>Create a Study</h1><br />
+      <p id="info-alert">We are now searching for Google Street View locations that are within the place you defined.</br />Please don't leave this page until search has completed.</p>
+      <hr />
+    </div>
+  </div>
+
+<div id="populate">
+    <div class="row">
+        <div class="span3">
+      <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+          <li class="nav-header">Steps to Creating a Study</li>
+          <li id="info"><a href='#'><i class="icon-book"></i> Study Information</a></li>
+          <li id="define"><a href='#'><i class="icon-plane"></i> Define Places</a></li>
+          <li id="populate" class="active"><a href='#'><i class="icon-map-marker icon-white"></i> Populate Locations</a></li>
+          <li id="curate"><a href='#'><i class="icon-picture"></i> Curate Images</a></li>
+          <li id="start"><a href='#'><i class="icon-ok"></i> Start Collecting Votes</a></li>
+        </ul>
+      </div><!--/.well -->
+    </div><!--/span-->
+    <div class="span9">
+      <div class="progress progress-danger progress-striped active">
+        <div id="progress_bar" class="bar" style="width: 0%;"></div>
+      </div>
+      <div class="well">
+          <div id="map"></div>
+      </div>
+    </div><!--/span-->
+  </div><!--/row-->
+  </div>
+
+
+
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+<script src="/static/js/study_populate_new.js"></script>
+<script>
+$(document).ready(function() {
+  // On page load, load the GMaps API. Once that's loaded, callback to init()
+    function loadScript() {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init&libraries=geometry";
+      document.body.appendChild(script);
+    }
+  loadScript();
+});
+function init() {
+  startPopulatingPlace("{{ place_id }}","{{ polygon }}","{{ dataRes }}","{{ locDist }}","{{ points_to_add }}");
+}
+</script>
+{% endblock %}
