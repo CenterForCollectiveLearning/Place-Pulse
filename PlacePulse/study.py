@@ -20,9 +20,9 @@ def serve_create_study():
     if getLoggedInUser() is None:
         return redirect(url_for('login.signin',next="/study/create"))
     return auto_template('study_create.html')
-    
+
 @study.route('/study/create/',methods=['POST'])
-def create_study():    
+def create_study():
     #Insert new Place
     newPlaceID = Database.places.insert({
         'data_resolution': request.form['data_resolution'],
@@ -31,7 +31,7 @@ def create_study():
         'place_name': request.form['place_name'],
         'owner': session['userObj']['email'],
     })
-    
+
     # Insert the new study into Mongo
     newStudyID = Database.studies.insert({
         'study_name': request.form['study_name'],
@@ -53,7 +53,13 @@ def serve_populate_place(place_id):
     place = Database.getPlace(place_id)
     return render_template('study_populate.html',polygon=place['polygon'],place_id=place_id,
                            locDist = place['location_distribution'], dataRes = place['data_resolution'], studyID=session['currentStudy'])
-                           
+
+@study.route('/place/populate/<place_id>/<points_to_add>/',methods=['GET'])
+def serve_populate_place_2(place_id, points_to_add):
+    place = Database.getPlace(place_id)
+    return render_template('study_populate_custompoints.html',polygon=place['polygon'],place_id=place_id,
+                           locDist = place['location_distribution'], dataRes = place['data_resolution'], points_to_add = points_to_add, studyID=session['currentStudy'])
+
 @study.route('/place/populate/<place_id>/',methods=['POST'])
 def populate_place(place_id):
    location_id = Database.locations.insert({
@@ -66,10 +72,10 @@ def populate_place(place_id):
        'votes':0
    })
    Database.qs.update({
-       'location_id' : str(location_id), 
+       'location_id' : str(location_id),
        'study_id': str(session['currentStudy']),
        'place_id': place_id
-   }, { '$set': {'num_votes' : 0 } }, True)    
+   }, { '$set': {'num_votes' : 0 } }, True)
    return jsonifyResponse({
        'success': True
    })
@@ -83,7 +89,7 @@ def finish_populate_place(place_id):
     return jsonifyResponse({
         'success': True
     })
-    
+
 #--------------------Curate
 @study.route('/place/curate/<place_id>/',methods=['GET'])
 def curate_study(place_id):
@@ -97,9 +103,9 @@ def curate_study_again(place_id,study_id):
     place = Database.getPlace(place_id)
     locations = Database.getLocations(place_id,48)
     return auto_template('study_curate.html',polygon=place['polygon'],locations=locations,place_id=place_id, study_id=study_id)
-    
+
 @study.route('/place/curate/location/<id>',methods=['POST'])
-def curate_location():    
+def curate_location():
     # Insert the new study into Mongo
     location = Database.getLocation(id)
     # Return the ID for the client to rendezvous at /study/populate/<id>
@@ -120,7 +126,7 @@ def update_location(id):
     return jsonifyResponse({
     'success': str(locationUpdated)
     })
-    
+
 @study.route('/place/curate/location/delete/<id>',methods=['POST'])
 def delete_location(id):
     locationDeleted = Database.deleteLocation(id)
@@ -131,7 +137,7 @@ def delete_location(id):
 @study.route('/study/start/<study_id>/',methods=['GET'])
 def start_start(study_id):
     #--Set study to "run"
-    
+
     return auto_template('study_start.html',study_id=study_id)
 #--------------------Vote
 @study.route("/study/vote/<study_id>/",methods=['POST'])
@@ -218,10 +224,10 @@ def get_study_pairing(study_id):
         })
     #get location 2
     if not QS1.has_key('q'): # location 1 has no q score
-        QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
+        QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id'))
     else:
         #get 25 locations with q scores
-        obj = { 
+        obj = {
             'study_id': study_id,
             'location_id' : { '$ne' : QS1.get('location_id') },
             'num_votes' : { '$lte' : 30 },
@@ -230,19 +236,19 @@ def get_study_pairing(study_id):
         f = 25
         count = Database.qs.find(obj).count()-1
         s = randint(0,max(0,count-f))
-        QSCursor = Database.qs.find(obj).skip(s).limit(f)            
-        
+        QSCursor = Database.qs.find(obj).skip(s).limit(f)
+
         #pick location with closest score
         dist = lambda QS: abs(QS.get('q') - QS1['q'])
-        try: 
+        try:
             QS2 = min(QSCursor, key=dist)
         except ValueError: # db query yields zero results
-            QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id')) 
+            QS2 = Database.randomQS(study_id, exclude=QS1.get('location_id'))
     if QS2 is None:
         return jsonifyResponse({
             'error': "Could not get location 2 from QS collection."
         })
-    
+
     # convert to location objects
     location1 = Database.getLocation(QS1.get('location_id'))
     location2 = Database.getLocation(QS2.get('location_id'))
@@ -251,7 +257,7 @@ def get_study_pairing(study_id):
         return jsonifyResponse({
             'error': "Locations could not be retrieved from location collection!"
         })
-    
+
     return jsonifyResponse({
         'locs' : map(objifyPlace, locationsToDisplay)
     })
