@@ -14,7 +14,7 @@ function onStreetViewChoice(choice) {
             right: locs[1].id,
             choice: choice
         };
-	GAMIFICATION_STATUS.numVotes += 1;
+	//GAMIFICATION_STATUS.numVotes += 1;
 	if (typeof(GAMIFICATION_STATUS) != 'undefined') {
 		// If we just unlocked a new study, request an update for the GAMIFICATION_STATUS obj from the server
 		// and display the success box.
@@ -46,7 +46,7 @@ function onStreetViewChoice(choice) {
 function getImagesFromBuffer() {
     var buffer_left = $('#pano_left_buffer img.place').attr('src');
     var buffer_right = $('#pano_right_buffer img.place').attr('src');
-    
+
     $('#pano_left img.place').attr('src', buffer_left);
     $('#pano_right img.place').attr('src', buffer_right);
     locs = locs_buffer;
