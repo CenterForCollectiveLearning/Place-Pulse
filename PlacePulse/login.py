@@ -4,7 +4,7 @@ import urllib2,urllib
 
 from flask import Module
 from flask import redirect,request,session,url_for
-from flaskext.oauth import OAuth
+from flask.ext.oauth import OAuth
 
 from db import Database
 from util import *
