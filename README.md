@@ -1,12 +1,3 @@
-Creative Commons Attribution 3.0 Unported License.
-==================================================
-Place Pulse by Phil Salesses, Paul Sawaya, Michael Wong, Michael Xu, Deepak Jagdish is licensed under a Creative Commons Attribution 3.0 Unported License.
-
-http://creativecommons.org/licenses/by/3.0/
-
-Based on a work at http://pulse.media.mit.edu.
-
-
 Place Pulse
 ===============
 To run Place Pulse on a Mac using Homebrew:
@@ -35,4 +26,15 @@ Site Setup
 
 Open up http://localhost:8000/
 
-To deploy, you'll need to figure this out on your own depending on your setup. I recommend filing 
+Deployment
+--------------------
+
+To deploy, you'll need to figure this out on your own depending on your setup. The code on GitHub was deployed using Tornado and WSGI. Now, for most projects, I (Phil Salesses) user Heroku and GUnicorn. For deployment instructions, contact phil.salesses@gmail.com for help.
+
+License
+===============
+Place Pulse by Phil Salesses, Paul Sawaya, Michael Wong, Michael Xu, Deepak Jagdish and César Hidalgo is licensed under a Creative Commons Attribution 3.0 Unported License.
+
+http://creativecommons.org/licenses/by/3.0/
+
+Based on a work at http://pulse.media.mit.edu.
