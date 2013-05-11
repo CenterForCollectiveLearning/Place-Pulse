@@ -4,9 +4,10 @@ app = Flask(__name__)
 import os
 import logging
 import re
-
+import pymongo
 from db import Database
 from util import *
+from random import random
 
 import json
 
@@ -33,7 +34,6 @@ app.register_module(study)
 
 app.secret_key = os.environ['COOKIE_SECRET_KEY']
 
-
 @app.route("/")
 def main():
 	studyObj = Database.getRandomStudy()
@@ -44,8 +44,24 @@ def main():
 
 def buildIndices():
     # Build spatial index
-    Database.places.ensureIndex({
-        'loc': '2d'
-    })
+    Database.qs.ensure_index([ ('study_id', pymongo.ASCENDING), ('random', pymongo.ASCENDING) ])
+    #Database.places.ensureIndex({
+    #    'loc': '2d'
+    #})
     
-    Database.places.ensureIndex( { study_id : 1, random : 1, bucket : 1 } )
+    #Database.places.ensureIndex( { study_id : 1, random : 1, bucket : 1 } )
+
+
+# adding a random field to each entry in order to support selecting a random image
+# call this function only once when changing to look of the db
+def add_random_field_to_qs():
+  c = 0
+  for qs in Database.qs.find():
+    Database.qs.update(qs, {"$set": {"random": random()}})
+    c+=1
+    if c%1000 == 0: print c
+  print 'done adding random fields to qs'
+
+buildIndices()
+# call the next function only once when shifting to the new version of the db
+#add_random_field_to_qs()

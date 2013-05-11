@@ -244,26 +244,15 @@ class database(object):
         except:
             return None
 
-    def randomQS(self, study_id, exclude=None, sort=None, fewestVotes=False):
-        #Play with this function DJ
-        '''WTF DOES this do? Random QScore? From which bucket?'''
-        try:
-            o = { 'study_id': study_id }
-            if exclude is not None: o['location_id'] = { '$ne' : exclude }
-            if fewestVotes: 
-                f = 10
-                #Set s = random int between f=10 and number of images in study-1
-                s = randint(0,min(f,self.qs.find(o).count()-1))
-                #
-                QS = self.qs.find(o).sort('num_votes',ASCENDING).limit(f).skip(s).next()
-            else:
-                s = randint(0, self.qs.find(o).count()-1)
-                QS = self.qs.find(o).skip(s).limit(1).next()
-            if QS.get('num_votes')  > 30 and sort is None:
-                return self.randomQS(study_id, exclude=exclude, sort=True)
-            return QS
-        except:
-            return None
+    def randomQS(self, study_id, exclude=None):
+      rand = random.random()
+      query = { 'study_id' : study_id, 'random' : { '$gte' : rand}}
+      if exclude: query['location_id'] = {'$ne' : exclude}
+      qs = Database.qs.find_one( query )
+      if qs is None:
+        query['random'] = { '$lte' : rand}
+        qs = Database.qs.find_one(query) 
+      return qs
     
     @property
     def locations(self):
@@ -312,4 +301,5 @@ class database(object):
             self._conn = pymongo.Connection(os.environ['MONGO_HOSTNAME'], port=int(os.environ['MONGO_PORT']))
         return self._conn
 
+# a singleton object
 Database = database()
