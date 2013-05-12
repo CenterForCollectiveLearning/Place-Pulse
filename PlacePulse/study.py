@@ -65,7 +65,7 @@ def populate_place(place_id):
    location_id = Database.locations.insert({
        'loc': [request.form['lat'],request.form['lng']],
        'type':'gsv',
-       'place_id': [place_id],
+       'place_id': place_id,
        'owner': session['userObj']['email'], #TODO: REAL LOGIN SECURITY
        'heading': 0,
        'pitch': 0,
