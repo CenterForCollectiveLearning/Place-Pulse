@@ -2,13 +2,12 @@ from flask import Module
 
 from flask import redirect,render_template,request,session,url_for
 
-from gamify import Gamification
 from util import *
 
 from datetime import datetime
 from random import random,randint
 from uuid import uuid4
-
+from trueskill import trueskill
 
 study = Module(__name__)
 
@@ -24,15 +23,10 @@ def serve_create_study():
 @study.route('/study/create/',methods=['POST'])
 def create_study():
     #Insert new Place
-    newPlaceID = Database.places.insert({
-        'data_resolution': request.form['data_resolution'],
-        'location_distribution': request.form['location_distribution'],
-        'polygon': request.form['polygon'],
-        'place_name': request.form['place_name'],
-        'owner': session['userObj']['email'],
-    })
+    newPlaceID = Database.add_place(request.form['data_resolution'], request.form['location_distribution'],
+        request.form['polygon'], request.form['place_name'], session['userObj']['email'])
 
-    # Insert the new study into Mongo
+    # Insert the new study
     newStudyID = Database.studies.insert({
         'study_name': request.form['study_name'],
         'study_question': request.form['study_question'],
@@ -40,6 +34,7 @@ def create_study():
         'places_id': [newPlaceID],
         'owner': session['userObj']['email'],
         })
+
     session['currentStudy'] = newStudyID
     # Return the ID for the client to rendezvous at /study/populate/<id>
     return jsonifyResponse({
@@ -62,23 +57,11 @@ def serve_populate_place_2(place_id, points_to_add):
 
 @study.route('/place/populate/<place_id>/',methods=['POST'])
 def populate_place(place_id):
-   location_id = Database.locations.insert({
-       'loc': [request.form['lat'],request.form['lng']],
-       'type':'gsv',
-       'place_id': place_id,
-       'owner': session['userObj']['email'], #TODO: REAL LOGIN SECURITY
-       'heading': 0,
-       'pitch': 0,
-       'votes':0
-   })
-   Database.qs.update({
-       'location_id' : str(location_id),
-       'study_id': str(session['currentStudy']),
-       'place_id': place_id
-   }, { '$set': {'num_votes' : 0 } }, True)
-   return jsonifyResponse({
-       'success': True
-   })
+  lat, lng, study_id, owner = request.form['lat'], request.form['lng'], str(session['currentStudy']), session['userObj']['email']
+  Database.add_location(lat, lng, place_id, owner, str(session['currentStudy']))
+  return jsonifyResponse({
+     'success': True
+  })
 
 @study.route('/place/finish_populate/<place_id>/',methods=['POST'])
 def finish_populate_place(place_id):
@@ -142,25 +125,15 @@ def start_start(study_id):
 #--------------------Vote
 @study.route("/study/vote/<study_id>/",methods=['POST'])
 def post_new_vote(study_id):
-    def incVotes(obj):
-        # Keep obj updates for consistency
-        if obj.get('votes'):
-            obj['votes'] += 1
-        Database.locations.update({
-            '_id': obj['_id']
-        }, {
-            '$inc': {
-                'votes': 1
-            }
-        })
-        Database.incQSVoteCount(study_id, str(obj.get('_id')))
-    leftObj = Database.getLocation(request.form['left'])
-    rightObj = Database.getLocation(request.form['right'])
-    if leftObj is None or rightObj is None:
-        return jsonifyResponse({
-            'error': "Locations don't exist!"
-        })
-    map(incVotes, [leftObj,rightObj])
+    if request.form['choice'] in ['left', 'equal']:
+      winner_locid = request.form['left']
+      loser_locid = request.form['right']
+    else:
+      winner_locid = request.form['right']
+      loser_locid = request.form['left']
+    isDraw = request.form['choice'] == 'equal'
+    Database.updateQScores(study_id, winner_locid, loser_locid, isDraw)
+
     newVoteObj = {
         'study_id' : request.form['study_id'],
         'left' : request.form['left'],
@@ -190,28 +163,10 @@ def post_new_vote(study_id):
     })
     # And in cookied object
     session['userObj']['num_votes'] = session['userObj']['num_votes']+1 if session['userObj'].get('num_votes') else 1
-    # Did the user unlock anything?
-    unlockedStudies = Gamification.unlockNew(session['userObj'])
-    if len(unlockedStudies) > 0:
-        Database.users.update({
-            '_id': session['userObj']['_id']
-        }, {
-            '$pushAll': {
-                'unlocked_studies': unlockedStudies
-            },
-            '$set': {
-                'last_unlocked_at': session['userObj']['num_votes']
-            }
-        })
-        # Get user obj from database and update cookied object
-        session['userObj'] = Database.getUserById(session['userObj']['_id'])
     session.modified = True
     response = {
         'success': True
     }
-    # Finally, if the user requested an update to their gamification status, send it
-    if request.form.get('gamification_status'):
-        response['gamificationStatus'] = Gamification.getUnlockStatus(session['userObj'])
     return jsonifyResponse(response)
 
 @study.route("/study/getpair/<study_id>/",methods=['GET'])

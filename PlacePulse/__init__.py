@@ -8,7 +8,7 @@ import pymongo
 from db import Database
 from util import *
 from random import random
-
+from trueskill import trueskill
 import json
 
 """
@@ -43,25 +43,18 @@ def main():
 	return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
 
 def buildIndices():
+    Database.qs.ensure_index([('study_id', pymongo.ASCENDING), ('location_id', pymongo.ASCENDING)]) # for updating the q scores after every vote
+    Database.qs.ensure_index([ ('study_id', pymongo.ASCENDING), ('random', pymongo.ASCENDING) ]) # for quick selection of random pair of images for a given study
+    Database.qs.ensure_index('trueskill.score') # for ranking purposes (e.g. showing top 10 and bottom 10 images from a given place/study)
+    Database.db.qs_place.ensure_index([('study_id', pymongo.ASCENDING), ('place_id', pymongo.ASCENDING)]) # for updating the q scores of a place (city) after every vote
+    # if there are not that many cities, this index is not necessary
+    #Database.db.qs_place.ensure_index('trueskill.score') # for ranking purposes (e.g. showing top 10 and bottom 10 places for a given study)
+    Database.locations.ensure_index("place_id") # for finding all the images for a given study by going through all the place_ids retrieved from a given study
+
     # Build spatial index
-    Database.qs.ensure_index([ ('study_id', pymongo.ASCENDING), ('random', pymongo.ASCENDING) ])
     #Database.places.ensureIndex({
     #    'loc': '2d'
     #})
-    
-    #Database.places.ensureIndex( { study_id : 1, random : 1, bucket : 1 } )
 
-
-# adding a random field to each entry in order to support selecting a random image
-# call this function only once when changing to look of the db
-def add_random_field_to_qs():
-  c = 0
-  for qs in Database.qs.find():
-    Database.qs.update(qs, {"$set": {"random": random()}})
-    c+=1
-    if c%1000 == 0: print c
-  print 'done adding random fields to qs'
 
 buildIndices()
-# call the next function only once when shifting to the new version of the db
-#add_random_field_to_qs()

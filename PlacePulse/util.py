@@ -1,7 +1,6 @@
 import os
 
 from PlacePulse import app
-from gamify import Gamification
 
 from flask import render_template,request,session,url_for
 from bson.objectid import ObjectId
@@ -19,7 +18,6 @@ def auto_template(template_name, **kwargs):
     extraObj = {
         'userObj': session['userObj'] if session.get('userObj') else dict(),
         'logoutUrl': url_for('login.logout',next=request.path),
-        'Gamification': Gamification
     }
     kwargs.update(extraObj)
     return render_template(template_name, **kwargs)

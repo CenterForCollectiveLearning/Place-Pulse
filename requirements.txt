@@ -2,6 +2,8 @@ Flask
 webassets
 Flask-Assets
 Flask-Mail
-pymongo==2.1
+pymongo
 Flask-OAuth
 Tornado
+numpy
+scipy

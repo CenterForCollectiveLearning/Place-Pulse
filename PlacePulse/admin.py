@@ -3,6 +3,7 @@ from flask import redirect,request
 
 from random import sample
 from util import *
+from trueskill import trueskill
 
 admin = Module(__name__)
 
@@ -19,7 +20,7 @@ def load_admin():
 def load_admin_studies():
     if getLoggedInUser() is None:
         return redirect("/login/")
-    if session['userObj']['email'] == 'hidalgo@mit.edu' or session['userObj']['email'] == 'salesses@mit.edu' or session['userObj']['email'] == 'philsalesses@me.com':
+    if session['userObj']['email'] in ['hidalgo@mit.edu','salesses@mit.edu','philsalesses@me.com','dsmilkov@gmail.com']:
         studies = Database.getStudiesAdmin()
     return auto_template('admin_all.html',studies=studies)
     
@@ -64,14 +65,8 @@ def add_place_g():
     
 @admin.route("/admin/place/add/",methods = ['POST'])
 def add_place_p():
-    # Insert the new study into Mongo
-    newPlaceID = Database.places.insert({
-    'data_resolution': request.form['data_resolution'],
-    'location_distribution': request.form['location_distribution'],
-    'polygon': request.form['polygon'],
-    'place_name': request.form['place_name'],
-    'owner': session['userObj']['email']
-    })
+    newPlaceID = Database.add_place(request.form['data_resolution'], request.form['location_distribution'],
+        request.form['polygon'], request.form['place_name'], session['userObj']['email'])
     return jsonifyResponse({
     'placeID': str(newPlaceID)
     })
@@ -83,43 +78,29 @@ def admin_populate_place_g(place_id):
 
 @admin.route('/admin/place/populate/<place_id>/',methods=['POST'])
 def admin_populate_place_p(place_id):
-   location_id = Database.locations.insert({
-       'loc': [request.form['lat'],request.form['lng']],
-       'type':'gsv',
-       'place_id': place_id,
-       'owner': session['userObj']['email'], #TODO: REAL LOGIN SECURITY
-       'heading': 0,
-       'pitch': 0,
-       'votes':0
-   })
-   Database.qs.update({
-       'location_id' : str(location_id), 
-       'study_id': str(session['currentStudy']),
-       'place_id': place_id
-   }, { '$set': {'num_votes' : 0 } }, True)    
+   Database.add_location(request.form['lat'], request.form['lng'], place_id, session['userObj']['email'], str(session['currentStudy']))
    return jsonifyResponse({
        'success': True
    })
 
 @admin.route("/admin/place/delete/<place_id>",methods = ['POST'])
-def add_place_delete_p(place_id):
-    # Insert the new study into Mongo
+def delete_place(place_id):
     placeDeleted = Database.deletePlace_Locations(place_id)
     return jsonifyResponse({
     'success': str(placeDeleted)
     })
     
 @admin.route("/admin/study/delete/<study_id>",methods = ['POST'])
-def study_delete_p(study_id):
-    # Insert the new study into Mongo
-    studyDeleted = Database.deleteStudyAdmin(study_id)
+def delete_study(study_id):
+    if getLoggedInUser() is None: return redirect("/login/")
+    owner = session['userObj']['email']
+    studyDeleted = Database.deleteStudy(study_id, owner)
     return jsonifyResponse({
     'success': str(studyDeleted)
     })
     
 @admin.route("/admin/study/deleteadmin/<study_id>",methods = ['POST'])
-def study_delete_padmin(study_id):
-    # Insert the new study into Mongo
+def delete_study_admin(study_id):
     studyDeleted = Database.deleteStudyAdmin(study_id)
     return jsonifyResponse({
     'success': str(studyDeleted)
@@ -153,7 +134,6 @@ def admin_locations():
     
 @admin.route("/admin/locations/delete/<location_id>",methods = ['POST'])
 def location_delete_p(location_id):
-    # Insert the new study into Mongo
     locationDeleted = Database.deleteLocation(location_id)
     return jsonifyResponse({
     'success': str(locationDeleted)
