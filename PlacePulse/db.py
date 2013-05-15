@@ -266,6 +266,9 @@ class database(object):
         place_id = qs_row_loc['place_id']
         study_id = qs_row_loc['study_id']
         qs_place = self.get_qs_place(place_id, study_id)
+        if qs_place == None:
+            print "Couldn't find qs_place row with place_id", place_id, "and study_id", study_id
+            return
         # update the score of a place accordingly (qs_entry)
         # get the old scores
         old_mu = qs_place['trueskill']['mus'][-1]
@@ -291,6 +294,12 @@ class database(object):
         # 1. update the scores of the two locations (images)
         winner_qs = self.getQS(study_id, winner_locid)
         loser_qs = self.getQS(study_id, loser_locid)
+        if winner_qs is None:
+            print "Couldn't find a qs row with study_id", study_id, "and location id", winner_locid
+            return
+        if loser_qs is None:
+            print "Couldn't find a qs row with study_id", study_id, "and location id", loser_locid
+            return
         # get the last mu and standard deviation
         old_mu_winner = winner_qs['trueskill']['mus'][-1]
         old_std_winner = winner_qs['trueskill']['stds'][-1]
