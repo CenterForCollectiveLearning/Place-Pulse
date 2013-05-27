@@ -46,7 +46,28 @@ def insert_qs():
     print 'finished processing study', study['study_name'], 'ninserts:', ninserts
 
 
+def transition_votes():
+  votes = Database.votes.find()
+  print votes.count(), 'votes found in the db'
+  nremoved = 0
+  old2new_studyid = { '50a68a51fdc9f05596000002' : '50a68a51fdc9f05596000002', # safer
+                              '50f62ae5a84ea7c5fdd2e451' : '50f62c68a84ea7c5fdd2e456', # cleaner
+                              '50f62cb7a84ea7c5fdd2e458' : '50f62cb7a84ea7c5fdd2e458', # wealthier
+                              '50f62b33a84ea7c5fdd2e452' : '50f62ccfa84ea7c5fdd2e459', # more depressing
+                            }
+  for vote in votes:
+    if vote['study_id'] not in old2new_studyid or Database.getLocation(vote['left']) is None \
+                                          or Database.getLocation(vote['right']) is None:
+      Database.votes.remove({'_id': vote['_id']})
+      nremoved+=1
+    else:
+      vote['study_id'] = old2new_studyid[vote['study_id']]
+      Database.votes.update({'_id': vote['_id']}, vote)
+  print nremoved, 'invalid votes removed from the db'
+
+
 def process_past_votes():
+  print 'start processing past votes'
   Database.qs.ensure_index([  ('study_id', pymongo.ASCENDING), ('location_id', pymongo.ASCENDING)]) # for updating the q scores of the two images after every vote 
   Database.db.qs_place.ensure_index([('study_id', pymongo.ASCENDING), ('place_id', pymongo.ASCENDING)]) # for updating the q scores of the places after every vote 
   Database.locations.ensure_index("place_id")
@@ -78,4 +99,5 @@ def count_scores():
 
 
 insert_qs()
+transition_votes()
 process_past_votes()
