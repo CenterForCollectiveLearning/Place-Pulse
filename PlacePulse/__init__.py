@@ -44,7 +44,7 @@ def main():
 
 def buildIndices():
     Database.qs.ensure_index([('study_id', pymongo.ASCENDING), ('location_id', pymongo.ASCENDING)]) # for updating the q scores after every vote
-    Database.qs.ensure_index([ ('study_id', pymongo.ASCENDING), ('random', pymongo.ASCENDING) ]) # for quick selection of random pair of images for a given study
+    Database.qs.ensure_index([ ('study_id', 1), ('random', 1) ]) # for quick selection of random pair of images for a given study
     Database.qs.ensure_index('trueskill.score') # for ranking purposes (e.g. showing top 10 and bottom 10 images from a given place/study)
     Database.db.qs_place.ensure_index([('study_id', pymongo.ASCENDING), ('place_id', pymongo.ASCENDING)]) # for updating the q scores of a place (city) after every vote
     # if there are not that many cities, this index is not necessary

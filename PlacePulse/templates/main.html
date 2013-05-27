@@ -66,9 +66,10 @@
 <script src="/static/js/libs/jquery.isotope.min.js"></script>
 <script src="/static/js/libs/jquery.touchSwipe.js"></script>
 <script src="/static/js/base_ui.js"></script>
-<script src="/static/js/functions.min.js"></script>
-<script src="/static/js/main.js"></script>
-<script>
+<script src="/static/js/libs/imagesloaded.pkgd.min.js"> </script>
+<!-- <script src="/static/js/functions.min.js"></script> -->
+<script> var study_id = "{{ study_id }}"; </script>
+<!-- <script>
   var study_id = "{{ study_id }}";
   $(document).ready(function() {
       function loadScript() {
@@ -80,4 +81,6 @@
     loadScript();
   });
 </script>
+-->
+<script src="/static/js/main.js"></script>
 {% endblock %}

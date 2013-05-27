@@ -130,7 +130,7 @@
   border-radius: 0 0 4px 4px;
 }
 .buffer {
-  display: none;
+  /*display: none; */
 }
 .keys {
   margin-top: -40px;
@@ -166,6 +166,20 @@
 .voteProgress .progress {
 	text-align:left;
 }
+
 #voteSuccess {
 	display:none;
+}
+
+.loadingmsg {
+  position: absolute;
+  top:110px;
+  width:780px;
+  text-align: center;
+}
+
+.equalbutton {
+  position: absolute;
+  left: 360px;
+  top: 230px;
 }

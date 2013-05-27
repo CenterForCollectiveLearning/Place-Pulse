@@ -315,11 +315,11 @@ class database(object):
     def randomQS(self, study_id, exclude=None):
       rand = random.random()
       query = { 'study_id' : study_id, 'random' : { '$gte' : rand}}
-      if exclude: query['location_id'] = {'$ne' : exclude}
       qs = Database.qs.find_one( query )
       if qs is None:
         query['random'] = { '$lte' : rand}
         qs = Database.qs.find_one(query) 
+      if exclude and qs["location_id"] == exclude: return Database.randomQS(study_id, exclude)
       return qs
     
     @property
