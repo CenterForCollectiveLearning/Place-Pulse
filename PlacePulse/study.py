@@ -169,6 +169,61 @@ def post_new_vote(study_id):
     }
     return jsonifyResponse(response)
 
+@study.route("/study/<study_id>/getcityrank/",methods=['GET'])
+def get_city_rank(study_id):
+    qs_places = list(Database.qs_place.find({'study_id': study_id}).sort('trueskill.score', direction=-1))
+    for qs_place in qs_places:
+        place = Database.getPlace(qs_place['place_id'])
+        qs_place['place_name'] = place['place_name']
+    return jsonifyResponse(qs_places)
+
+
+@study.route("/study/<study_id>/gettopnimages/<int:n>",methods=['GET'])
+def get_top_n(study_id, n):
+    qss = list(Database.qs.find({'study_id': study_id}).sort('trueskill.score', direction=-1).limit(n))
+    for qs in qss:
+        place = Database.getPlace(qs['place_id'])
+        qs['place_name'] = place['place_name']
+        location = Database.getLocation(qs['location_id'])['loc']
+        qs['location'] = location
+    return jsonifyResponse(qss)
+
+@study.route("/study/<study_id>/getbottomnimages/<int:n>",methods=['GET'])
+def get_bottom_n(study_id, n):
+    qss = list(Database.qs.find({'study_id': study_id}).sort('trueskill.score', direction=1).limit(n))
+    for qs in qss:
+        place = Database.getPlace(qs['place_id'])
+        qs['place_name'] = place['place_name']
+        location = Database.getLocation(qs['location_id'])['loc']
+        qs['location'] = location
+    return jsonifyResponse(qss)
+
+
+@study.route("/study/<study_id>/place/<place_id>/gettopnimages/<int:n>",methods=['GET'])
+def get_top_n_place(study_id, place_id, n):
+    qss = list(Database.qs.find({'study_id': study_id, 'place_id': place_id}).sort('trueskill.score', direction=-1).limit(n))
+    for qs in qss:
+        #place = Database.getPlace(qs['place_id'])
+        #qs['place_name'] = place['place_name']
+        location = Database.getLocation(qs['location_id'])['loc']
+        qs['location'] = location
+    return jsonifyResponse(qss)
+
+@study.route("/study/<study_id>/place/<place_id>/getbottomnimages/<int:n>",methods=['GET'])
+def get_bottom_n_place(study_id, place_id, n):
+    qss = list(Database.qs.find({'study_id': study_id, 'place_id': place_id}).sort('trueskill.score', direction=1).limit(n))
+    for qs in qss:
+        #place = Database.getPlace(qs['place_id'])
+        #qs['place_name'] = place['place_name']
+        location = Database.getLocation(qs['location_id'])['loc']
+        qs['location'] = location
+    return jsonifyResponse(qss)
+
+
+
+
+
+
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
     # get location 1

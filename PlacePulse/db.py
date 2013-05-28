@@ -353,6 +353,10 @@ class database(object):
     @property
     def qs(self):
         return self.db.qs
+
+    @property
+    def qs_place(self):
+        return self.db.qs_place
     
     @property
     def db(self):
