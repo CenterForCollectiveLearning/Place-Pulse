@@ -188,6 +188,12 @@ def get_top_n(study_id, n):
         qs['location'] = location
     return jsonifyResponse(qss)
 
+@study.route("/study/<study_id>/getminmaxscore/",methods=['GET'])
+def get_min_max_score(study_id):
+    minscore = Database.qs.find({'study_id': study_id}).sort('trueskill.score', direction=1).limit(1)[0]['trueskill']['score']
+    maxscore = Database.qs.find({'study_id': study_id}).sort('trueskill.score', direction=-1).limit(1)[0]['trueskill']['score']
+    return jsonifyResponse([minscore, maxscore])
+
 @study.route("/study/<study_id>/getbottomnimages/<int:n>",methods=['GET'])
 def get_bottom_n(study_id, n):
     qss = list(Database.qs.find({'study_id': study_id}).sort('trueskill.score', direction=1).limit(n))
@@ -197,6 +203,8 @@ def get_bottom_n(study_id, n):
         location = Database.getLocation(qs['location_id'])['loc']
         qs['location'] = location
     return jsonifyResponse(qss)
+
+
 
 
 @study.route("/study/<study_id>/place/<place_id>/gettopnimages/<int:n>",methods=['GET'])
