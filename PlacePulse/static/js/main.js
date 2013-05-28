@@ -67,11 +67,7 @@ function getImagePair() {
                 console.log(locs);
                 console.log(study_id);
             }
-            //console.log("obtained image pair")
-            $('#pano_left img.place').attr('src', getSVURL(locs[0].loc[0],locs[0].loc[1]));
-            $('#pano_right img.place').attr('src', getSVURL(locs[1].loc[0],locs[1].loc[1]));
             imagesLoaded( $('ul.thumbnails'), function(){
-                //console.log('all images are loaded')
                 $("img.place").unbind('click');
                 $('#pano_left img.place').on("click", function() { onStreetViewChoice('left'); });
                 $('#pano_right img.place').on("click", function() { onStreetViewChoice('right'); });
@@ -80,7 +76,10 @@ function getImagePair() {
                 $("ul.thumbnails").css("opacity", 1.0);
                 $(".equalbutton").css("opacity", 1.0);
             });
-            //loadImagesToBuffer();
+            $('#pano_left img.place').attr('src', getSVURL(locs[0].loc[0],locs[0].loc[1]));
+            $('#pano_right img.place').attr('src', getSVURL(locs[1].loc[0],locs[1].loc[1]));
+            
+            
         }
     });
 }

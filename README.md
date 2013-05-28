@@ -29,7 +29,9 @@ Open up http://localhost:8000/
 Deployment
 --------------------
 
-To deploy, you'll need to figure this out on your own depending on your setup. The code on GitHub was deployed using Tornado and WSGI. Now, for most projects, I (Phil Salesses) user Heroku and GUnicorn. For deployment instructions, contact phil.salesses@gmail.com for help.
+  Same as Site Setup except for
+  $ source setupDeployEnv.sh instead of $ source setupEnv.sh and
+  $ sudo -E python ./run_placepulse.py instead of $ python ./run_placepulse.py
 
 License
 ===============
