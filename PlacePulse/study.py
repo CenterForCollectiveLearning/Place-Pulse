@@ -169,6 +169,15 @@ def post_new_vote(study_id):
     }
     return jsonifyResponse(response)
 
+@study.route("/getstudies/",methods=['GET'])
+def get_studies():
+    return jsonifyResponse(list(Database.getStudiesAdmin()))
+
+@study.route("/getplaces/",methods=['GET'])
+def get_places():
+    return jsonifyResponse(list(Database.getPlaces()))
+
+
 @study.route("/study/<study_id>/getcityrank/",methods=['GET'])
 def get_city_rank(study_id):
     qs_places = list(Database.qs_place.find({'study_id': study_id}).sort('trueskill.score', direction=-1))

@@ -29,9 +29,8 @@ Open up http://localhost:8000/
 Deployment
 --------------------
 
-  Same as Site Setup except for
-  $ source setupDeployEnv.sh instead of $ source setupEnv.sh and
-  $ sudo -E python ./run_placepulse.py instead of $ python ./run_placepulse.py
+	Same as Site Setup except for $ source setupDeployEnv.sh instead of $ source setupEnv.sh and
+	$ sudo -E python ./run_placepulse.py instead of $ python ./run_placepulse.py
 
 License
 ===============

@@ -56,7 +56,7 @@ class database(object):
         return self.studies.find({'owner':owner})
         
     def getStudiesAdmin(self):
-        return self.studies.find()
+        return self.studies.find({}, {'places_id': 0})
         
     def getNewStudies(self,limit):
         return self.studies.find().limit(limit)
@@ -68,8 +68,8 @@ class database(object):
         return self.studies.find().limit(limit) #Need to add votes_needed field for studies to track how long they have to go.
         
 #--------------------Places
-    def getPlaces(self,owner):
-        return self.places.find({'owner':owner})
+    def getPlaces(self):
+        return self.places.find()
         
     def getPlace(self,place_id):
         return self.places.find_one(ObjectId(place_id))
