@@ -183,3 +183,73 @@
   left: 360px;
   top: 230px;
 }
+
+.centered {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.centered2 {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.floatleft {
+  float: left;
+}
+
+.rankrow {
+  width: 450px;
+  height: 30px;
+}
+
+.cell {
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.ranker {
+  margin-left: 30px;
+}
+
+.ranknum {
+  text-align: center;
+  padding-left: 15px;
+  width: 25px;
+  font-weight: bold;
+}
+
+.name {
+  width: 150px;
+  font-style: bold;
+  text-align: left;
+  padding-left: 15px;
+}
+
+.score {
+  text-align: center;
+  padding-left: 15px;
+  width: 30px;
+}
+
+.trend {
+  text-align: center;
+  padding-left: 30px;
+  width: 100px;
+}
+
+.header101 {
+  font-size: 16px;
+  font-style: bold;
+  margin-bottom: 15px;
+  margin-left: 5px;
+}
+
+.q_ref_icon {
+  opacity: 0.2;
+  margin-left: 20px;
+}

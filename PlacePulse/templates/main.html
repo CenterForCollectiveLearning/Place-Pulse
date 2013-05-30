@@ -10,7 +10,7 @@
 
 {% block header %}
 {{ super() }}
-<a href="https://github.com/philsalesses/Place-Pulse"><img style="position: absolute; top: 0; left: 0; border: 0; z-index: 99;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+<a href="https://github.com/MacroConnections/Place-Pulse"><img style="position: absolute; top: 0; left: 0; border: 0; z-index: 99;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 {% endblock %}
 
 {% block nav %}
@@ -22,11 +22,6 @@
 {% include 'widgets/vote_widget.html' %}
 
     <div class="row" style="margin: 0 auto 0 auto; width: 960px;">
-      <div class="span8">
-        <h1 class="lead">
-          <b>Place Pulse</b> quantitatively measures urban perception by crowdsourcing visual surveys to users around the globe.
-        </h1>
-      </div>
       <div class="span4">
         <h3 class="ac">Votes Contributed</h3>
         <p class="ac">
@@ -38,20 +33,57 @@
     <hr />
 
     <div class="row" style="margin: 0 auto 0 auto; width: 960px;">
-      <div class="span4">
-        <h2><span class="grey">Learn </span> about us</h2>
-         <p>Developed by the <a href="http://macroconnections.media.mit.edu">Macro Connections</a> group, as part of the <a href="http://media.mit.edu">MIT Media Lab</a> City Science Initiative, Place Pulse is a tool to measure urban perception and study its effects on social and economic outcomes.</p>
-        <p><a class="" href="/about">Learn More &raquo;</a></p>
+      <div class="ranker floatleft">
+        <div class="rankrow">
+          <div class="ranknum floatleft title">RANK</div>
+          <div class="floatleft name cell title">CITY NAME</div>
+          <div class="floatleft score cell title">SCORE</div>
+          <div class="floatleft trend cell title">TREND</div>
+        </div>
+        <div class="rankrow">
+          <div class="ranknum floatleft">1</div>
+          <div id="1_name" class="floatleft name cell">p_SomeCityNameHere</div>
+          <div id="1_score" class="floatleft score cell">25.892</div>
+          <div id="1_trend" class="floatleft trend cell"></div>
+        </div>
+        <div class="rankrow">
+          <div class="ranknum floatleft">2</div>
+          <div id="2_name" class="floatleft name cell">p_SomeCityNameHere</div>
+          <div id="2_score" class="floatleft score cell">11.456</div>
+          <div id="2_trend" class="floatleft trend cell"></div>
+        </div>
+        <div class="rankrow">
+          <div class="ranknum floatleft">3</div>
+          <div id="3_name" class="floatleft name cell">p_SomeCityNameHere</div>
+          <div id="3_score" class="floatleft score cell">10.342</div>
+          <div id="3_trend" class="floatleft trend cell"></div>
+        </div>
       </div>
-      <div class="span4">
-        <h2><span class="grey">Use</span> our data</h2>
-         <p>The Place Pulse dataset is the first multi-city dataset on urban perception, collected using a high-throughput method, and is based on people’s preferences over random pairs of geo-tagged images.</p>
-        <p><a class="" href="/data">Download Data &raquo;</a></p>
-      </div>
-      <div class="span4">
-        <h2><span class="grey">Join</span> our team</h2>
-        <p>Consider joining our team and help develop Place Pulse further. We are an <a href="https://github.com/philsalesses/Place-Pulse">open source project</a> and even if you don’t have enough time to be an active member, you can still contribute meaningfully to the study of urban perception.</p>
-        <p><a class="" href="/contact">Learn More &raquo;</a></p>
+      <div class="ranker floatleft">
+        <div class="rankrow">
+          <div class="ranknum floatleft">RANK</div>
+          <div class="floatleft name cell title">CITY NAME</div>
+          <div class="floatleft score cell title">SCORE</div>
+          <div class="floatleft trend cell title">TREND</div>
+        </div>
+        <div class="rankrow">
+          <div class="ranknum floatleft">56</div>
+          <div id="56_name" class="floatleft name cell">p_SomeCityNameHere</div>
+          <div id="56_score" class="floatleft score cell">25.892</div>
+          <div id="56_trend" class="floatleft trend cell"></div>
+        </div>
+        <div class="rankrow">
+          <div class="ranknum floatleft">55</div>
+          <div id="55_name" class="floatleft name cell">p_SomeCityNameHere</div>
+          <div id="55_score" class="floatleft score cell">11.456</div>
+          <div id="55_trend" class="floatleft trend cell"></div>
+        </div>
+        <div class="rankrow">
+          <div class="ranknum floatleft">54</div>
+          <div id="54_name" class="floatleft name cell">p_SomeCityNameHere</div>
+          <div id="54_score" class="floatleft score cell">10.342</div>
+          <div id="54_trend" class="floatleft trend cell"></div>
+        </div>
       </div>
     </div>
 {% endblock %}
@@ -67,20 +99,84 @@
 <script src="/static/js/libs/jquery.touchSwipe.js"></script>
 <script src="/static/js/base_ui.js"></script>
 <script src="/static/js/libs/imagesloaded.pkgd.min.js"> </script>
-<!-- <script src="/static/js/functions.min.js"></script> -->
+<script src="/static/js/libs/jquery.sparkline.min.js"> </script>
+
 <script> var study_id = "{{ study_id }}"; </script>
-<!-- <script>
-  var study_id = "{{ study_id }}";
-  $(document).ready(function() {
-      function loadScript() {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=init";
-        document.body.appendChild(script);
+<script type="text/javascript">
+  var linecol = '#191919';
+  var fillcol_hi = '#aaff56';
+  var fillcol_lo = '#ff5656'
+  var sp_height = 20;
+
+
+  $.ajax({
+      url: '/study/'+study_id+'/getcityrank' ,
+      type: 'GET',
+      success: function(data) {
+        var topbot3 = [];
+
+        topbot3.push(data[0]);
+        topbot3.push(data[1]);
+        topbot3.push(data[2]);
+        topbot3.push(data[53]);
+        topbot3.push(data[54]);
+        topbot3.push(data[55]);
+
+        $("#1_trend").sparkline(topbot3[0].trueskill.mus, {
+          type: 'line',
+          width: '100',
+          height: sp_height,
+          lineColor: linecol,
+          fillColor: fillcol_hi});
+        $("#2_trend").sparkline(topbot3[1].trueskill.mus, {
+          type: 'line',
+          width: '100',
+          height: sp_height,
+          lineColor: linecol,
+          fillColor: fillcol_hi});
+        $("#3_trend").sparkline(topbot3[2].trueskill.mus, {
+          type: 'line',
+          width: '100',
+          height: sp_height,
+          lineColor: linecol,
+          fillColor: fillcol_hi});
+        $("#54_trend").sparkline(topbot3[3].trueskill.mus, {
+          type: 'line',
+          width: '100',
+          height: sp_height,
+          lineColor: linecol,
+          fillColor: fillcol_lo});
+        $("#55_trend").sparkline(topbot3[4].trueskill.mus, {
+          type: 'line',
+          width: '100',
+          height: sp_height,
+          lineColor: linecol,
+          fillColor: fillcol_lo});
+        $("#56_trend").sparkline(topbot3[5].trueskill.mus, {
+          type: 'line',
+          width: '100',
+          height: sp_height,
+          lineColor: linecol,
+          fillColor: fillcol_lo});
+
+        $("#1_name").html(topbot3[0].place_name.split("_")[1]);
+        $("#2_name").html(topbot3[1].place_name.split("_")[1]);
+        $("#3_name").html(topbot3[2].place_name.split("_")[1]);
+        $("#54_name").html(topbot3[3].place_name.split("_")[1]);
+        $("#55_name").html(topbot3[4].place_name.split("_")[1]);
+        $("#56_name").html(topbot3[5].place_name.split("_")[1]);
+
+        $("#1_score").html(Math.round(topbot3[0].trueskill.score*100)/100);
+        $("#2_score").html(Math.round(topbot3[1].trueskill.score*100)/100);
+        $("#3_score").html(Math.round(topbot3[2].trueskill.score*100)/100);
+        $("#54_score").html(Math.round(topbot3[3].trueskill.score*100)/100);
+        $("#55_score").html(Math.round(topbot3[4].trueskill.score*100)/100);
+        $("#56_score").html(Math.round(topbot3[5].trueskill.score*100)/100);
       }
-    loadScript();
   });
+
 </script>
--->
+
+
 <script src="/static/js/main.js"></script>
 {% endblock %}

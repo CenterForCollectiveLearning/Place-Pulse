@@ -39,7 +39,11 @@
         <div id="progress_bar" class="bar" style="width: 0%;"></div>
       </div>
       <div class="well">
-          <div id="map"></div>
+          <div id="current"></div>
+          <div id="successes"></div>
+          <div id="failures"></div>
+          <div id="sent"></div>
+          <div id="notinpoly"></div>
       </div>
     </div><!--/span-->
   </div><!--/row-->
@@ -74,7 +78,7 @@ $(document).ready(function() {
   loadScript();
 });
 function init() {
-  startPopulatingPlace("{{ place_id }}","{{ polygon }}","{{ dataRes }}","{{ locDist }}","{{ points_to_add }}");
+  startPopulatingPlace("{{ place_id }}","{{ polygon }}","{{ dataRes }}","{{ locDist }}");
 }
 </script>
 {% endblock %}

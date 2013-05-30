@@ -16,20 +16,13 @@
 <div class="row pricing">
     <div class="span6 offset3">
       <div class="well">
-        <h2>Sign In</h2>
-            <div class="fb-login-button pull-left" data-scope="email" data-redirect-uri="http://pulse.media.mit.edu/finished">
-              <a href="{{ fb_login_link }}" class="btn btn-primary btn-facebook btn-large">
-                  <i class="icon-facebook-sign icon-white" style="margin-top:3px; font-size: 18px;"></i> Sign in with Facebook
-              </a>
-            </div>
-          <div class="btn btn-primary btn-error btn-large browserIDLoginButton pull-right" style="cursor:pointer;">
+          <div class="btn btn-primary btn-error btn-large browserIDLoginButton centered2" style="cursor:pointer;">
                   <i class="icon-user icon-white" style="margin-top:3px; font-size: 18px;"></i> Sign in with Persona
-              </div> 
-        <br /><br /><br />
-        <p>Signing in with Facebook requires an existing account with Facebook.</p>
+          </div>
+        <br/><br/>
         <p>Mozilla Persona is a secure user authentication service run by Mozilla and requires only an email and a password to sign in.</p>
       </div>
-      <p class="ac">Don't have an account? <a href="https://login.persona.org/signup" target="_blank">Create one using Mozilla Persona</a><br /><a href="http://www.mozilla.org/en-US/persona/">Learn more about Mozilla Persona</a></p>
+      <p class="ac">Don't have an account? <a href="https://login.persona.org/signup" target="_blank">Create one using Mozilla Persona</a></p>
     </div>
 
     </div>
@@ -71,17 +64,17 @@
               window.location = e.next;
             }
           });
-    
+
           } else {
               // something went wrong!  the user isn't logged in.
           }
       });
   }
-  
+
   function init() {
     $('.browserIDLoginButton').click(doBrowserID);
   }
-  
+
   $(document).ready(init);
   </script>
 {% endblock %}

@@ -78,8 +78,8 @@ function getImagePair() {
             });
             $('#pano_left img.place').attr('src', getSVURL(locs[0].loc[0],locs[0].loc[1]));
             $('#pano_right img.place').attr('src', getSVURL(locs[1].loc[0],locs[1].loc[1]));
-            
-            
+
+
         }
     });
 }

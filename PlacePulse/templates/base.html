@@ -41,9 +41,8 @@
   <!-- Navigation -->
 {% set navigation_bar = [
     ('/about/', 'about', 'About'),
-    ('/results/', 'results', 'Results'),
-    ('/data/', 'data', 'Data'),
-    ('/faq/', 'faq', 'FAQ'),
+    ('/data/', 'data', 'Ongoing Study'),
+    ('/results/', 'results', '2012 Study Results'),
     ('/contact/', 'contact', 'Contact')
 ] -%}
 {% set active_page = active_page|default('index') -%}
@@ -67,8 +66,6 @@
             {% if userObj and userObj.email %}
               <li{% if 'mystudies' == active_page %} class="active"{% endif %}><a href="/admin/">My Studies</a></li>
               <li><a href="/logout">Sign out</a></li>
-            {% else %}
-              <li{% if 'signin' == active_page %} class="active"{% endif %}><a href="/login">Sign In</a></li>
             {% endif %}
             </ul>
           </div><!--/.nav-collapse -->

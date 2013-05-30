@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block body %}
-
   <div class="hero-unit">
     <div class="ac">
       <h1>The Project</h1><br />
@@ -19,11 +18,15 @@
 
 <div id="explore">
     <div class="row">
+      <div class="span8" style="width:80%; text-align:center; margin-left:100px;">
+        <h1 class="lead">
+          <b>Place Pulse</b> quantitatively measures urban perception by crowdsourcing visual surveys to users around the globe.
+        </h1>
+      </div>
+
       <div class="span6 project">
 
-        <a class="thumbnail">
-          <img src="/static/img/about/visualization.jpg" />
-        </a>
+        <iframe width="450" height="280" src="http://www.youtube.com/embed/QtVz0_fA5qE" frameborder="0" allowfullscreen></iframe>
       </div>
       <div class="span6">
         <p>Since Wilson and Kelling introduced the broken windows theory in 1982, academics have been studying the link between urban perception and social &amp; economic outcomes. <blockquote><b>Place Pulse attempts to help our understanding by using the crowd to unlock the knowledge hidden within big online imagery datasets.</b></blockquote><p>
@@ -36,21 +39,58 @@
 
 
 
-<div class="hero-unit">
+  <div class="hero-unit">
     <div class="ac">
-      <h1>The Team</h1><br />
+      <h1>Current Team</h1><br />
       <hr />
     </div>
   </div>
 
   <div id="team-members">
-    
     <div class="row">
 
     <article class="member span4">
-      <div class="member-avatar">
-        <img alt="" class="thumbnail" src="/static/img/about/phil.jpg" />
-      </div>
+      <p class="member-networks">
+        <a href="https://twitter.com/cesifoti" class="icon-twitter"></a>
+      </p>
+      <h3 class="member-name">César Hidalgo</h3>
+      <h4 class="member-position">Principal Investigator</h4>
+      <p class="member-bio">
+        César is an assistant professor and the Asahi Broadcast Corporation Career Development Professor at the MIT Media Lab.
+      </p>
+    </article>
+    <article class="member span4">
+      <p class="member-networks">
+        <a href="http://www.twitter.com/dj247" class="icon-twitter"></a>
+        <a href="http://www.linkedin.com/pub/deepak-jagdish/5/7a/a20" class="icon-linkedin"></a>
+        <a href="http://www.github.com/djagdish" class="icon-github"></a>
+      </p>
+      <h3 class="member-name">Deepak Jagdish</h3>
+      <h4 class="member-position">Researcher</h4>
+      <p class="member-bio">
+        Deepak worked as a visualization &amp; design researcher at Nokia Research Center after finishing his Master's in HCI at Georgia Tech. Now as a graduate student at the Media Lab, he's worked on adding more cities &amp; studies to the new version of Place Pulse.
+      </p>
+    </article>
+    <article class="member span4">
+      <p class="member-networks">
+      </p>
+      <h3 class="member-name">Daniel Smilkov</h3>
+      <h4 class="member-position">Researcher</h4>
+      <p class="member-bio">
+        Daniel is interested in data-mining, modeling and designing algorithms for large real-world networks. He has been working on improving the robustness of the ranking algorithm metrics and other server related functionalities.
+      </p>
+    </article>
+</div>
+  <div class="hero-unit">
+    <div class="ac">
+      <h1>Past Team</h1><br />
+      <hr />
+    </div>
+  </div>
+
+<div class="row">
+
+    <article class="member span4">
       <p class="member-networks">
         <a href="http://www.facebook.com/philsalesses" class="icon-facebook-sign"></a>
         <a href="http://www.twitter.com/philsalesses" class="icon-twitter"></a>
@@ -61,14 +101,11 @@
       <h3 class="member-name">Phil Salesses</h3>
       <h4 class="member-position">Project Lead</h4>
       <p class="member-bio">
-        Phil is a graduate researcher at the MIT Media Lab who has worked with web technologies, geographic information systems and various forms of remote sensing data. 
+        Phil is a graduate researcher at the MIT Media Lab who has worked with web technologies, geographic information systems and various forms of remote sensing data.
       </p>
     </article>
 
      <article class="member span4">
-      <div class="member-avatar">
-        <img alt="" class="thumbnail" src="/static/img/about/katja.jpg" />
-      </div>
       <p class="member-networks">
         <a href="https://www.facebook.com/katja.schechtner" class="icon-facebook-sign"></a>
         <a href="http://at.linkedin.com/pub/katja-schechtner/2/a43/608" class="icon-linkedin"></a>
@@ -80,21 +117,6 @@
       </p>
     </article>
 
-        <article class="member span4">
-      <div class="member-avatar">
-        <img alt="" class="thumbnail" src="/static/img/about/cesar.jpg" />
-      </div>
-      <p class="member-networks">
-        <a href="https://twitter.com/cesifoti" class="icon-twitter"></a>
-      </p>
-      <h3 class="member-name">César Hidalgo</h3>
-      <h4 class="member-position">Principal Investigator</h4>
-      <p class="member-bio">
-        César is an assistant professor and the Asahi Broadcast Corporation Career Development Professor at the MIT Media Lab.
-      </p>
-    </article>
-</div>
-<div class="row">
     <article class="member span4">
       <p class="member-networks">
 
@@ -109,10 +131,10 @@
       <p class="member-bio">
         Paul studied computer science at Hampshire College, and hacks on identity at Mozilla. He's interested in big data, user privacy, and all of the complicated issues at their intersection.
       </p>
-    </article>  
+      </article>
 
-       <article class="member span4">
- 
+      <article class="member span4">
+
       <p class="member-networks">
         <a href="http://www.facebook.com/berlin.wong" class="icon-facebook-sign"></a>
         <a href="http://www.twitter.com/mbwong" class="icon-twitter"></a>
@@ -125,7 +147,7 @@
       <p class="member-bio">
         Michael studied at Harvard and recently joined Applied Predictive Technologies in San Francisco. He is passionate about using big data to understand and improve our world.
       </p>
-    </article>  
+    </article>
 
     <article class="member span4">
 
@@ -141,11 +163,9 @@
         Michael is a sophomore at the Massachusetts Institute of Technology and is majoring in computer science.
       </p>
     </article>
-</div>
-<div class="row">
 
- <article class="member span4">
-      
+    <article class="member span4">
+
       <p class="member-networks">
         <a href="https://www.facebook.com/tony.devincenzi" class="icon-facebook-sign"></a>
         <a href="https://twitter.com/tonydevincenzi" class="icon-twitter"></a>
@@ -159,73 +179,25 @@
       </p>
     </article>
 
-    <article class="member span4">
-
-      <p class="member-networks">
-        <a href="https://www.facebook.com/mauro.martino" class="icon-facebook-sign"></a>
-        <a href="http://twitter.com/pacianca3" class="icon-twitter"></a>
-        <a href="http://www.linkedin.com/in/mauromartino" class="icon-linkedin"></a>
-      </p>
-      <h3 class="member-name">Mauro Martino</h3>
-      <h4 class="member-position">Ars Electronica Visualizations</h4>
-      <p class="member-bio">
-        Mauro is an assistant research professor exploring the visualization of complex networks at Northeastern University's Center for Complex Network Research.
-      </p>
-    </article>  
-
-    <article class="member span4">
-  
-      <p class="member-networks">
-        <a href="http://www.facebook.com/kiranmayi.bhattaram" class="icon-facebook-sign"></a>
-        <a href="https://twitter.com/kiranb13" class="icon-twitter"></a>
-        <a href="https://plus.google.com/114840978159138771186" class="icon-google-plus"></a>
-        <a href="http://www.linkedin.com/in/kiranbhattaram" class="icon-linkedin"></a>
-        <a href="http://www.github.com/kiran-b" class="icon-github"></a>
-      </p>
-      <h3 class="member-name">Kiran Bhattaram</h3>
-      <h4 class="member-position">Preliminary Data Analysis</h4>
-      <p class="member-bio">
-        Kiran is an EECS undergraduate at MIT.  In no particular order, she's fascinated by usability, big data, cities and open web technologies.
-      </p>
-    </article>
-    
-
 </div>
-<div class="row">
-
-<article class="member span4">
-
-      <p class="member-networks">
-        <a href="http://www.facebook.com/mandi.j.davis" class="icon-facebook-sign"></a>
-        <a href="https://twitter.com/MandiDavisUX" class="icon-twitter"></a>
-        <a href="https://plus.google.com/112753355571941122438/" class="icon-google-plus"></a>
-        <a href="http://www.linkedin.com/in/davismandi" class="icon-linkedin"></a>
-      </p>
-      <h3 class="member-name">Mandi Davis</h3>
-      <h4 class="member-position">Eye Tracking Studies</h4>
-      <p class="member-bio">
-        Mandi is a graduate student applying eye-tracking and affective measurement tools to usability and marketing research at the Design and Usability Center. 
-      </p>
-    </article>
-    </div>
 
   <div class="hero-unit">
     <div class="ac">
-      <h1>The Media</h1>
+      <h1>Media</h1>
     </div>
   </div>
 
 <div id="portfolio">
 
-    <!-- portfolio filter -->   
+    <!-- portfolio filter -->
     <ul id="portfolio-filter" class="nav nav-tabs">
       <li class="active"><a href="#" class="filter" data-filter="*">All</a></li>
-      <li><a href="#" class="filter" data-filter=".exhibitions">Exhibitions</a></li>
+      <li><a href="#" class="filter" data-filter=".exhibitions">Exhibits</a></li>
       <li><a href="#" class="filter" data-filter=".talks">Talks</a></li>
       <li><a href="#" class="filter" data-filter=".press">Press</a></li>
     </ul>
 
-    <!-- portfolio items -->    
+    <!-- portfolio items -->
     <div class="row" id="portfolio-items">
 
       <!-- portfolio item-->
@@ -273,7 +245,7 @@
           <b class="project-name">2011 Ars Electronica</b>
         </a>
       </div>
-      
+
             <!-- portfolio item-->
       <div class="span4 project" data-tags="exhibitions">
 

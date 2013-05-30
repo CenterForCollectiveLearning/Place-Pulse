@@ -21,12 +21,10 @@
             {% for href, id, caption in navigation_bar %}
               <li{% if id == active_page %} class="active"{% endif %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
             {% endfor %}
-            
+
             {% if userObj and userObj.email %}
               <li{% if 'controlpanel' == active_page %} class="active"{% endif %}><a href="/admin/">My Studies</a></li>
               <li><a href="/logout">Sign out</a></li>
-            {% else %}
-              <li{% if 'signin' == active_page %} class="active"{% endif %}><a href="/login">Sign In</a></li>
             {% endif %}
             </ul>
           </div><!--/.nav-collapse -->

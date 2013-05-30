@@ -1,21 +1,20 @@
  <div class="hero-unit">
     <div class="ac">
-      <h1>Which place looks {{ study_prompt }}?</h1>
+      <h1>Which place looks <b>{{ study_prompt }}</b> ?</h1>
+      <div style="float:right"><image height="26" width="30" src="/static/img/question_refresh_icon.png" class="q_ref_icon" alt="another question"/></div>
     </div>
   </div>
 <div class="row">
-  <div class="span10 offset1" style="position:relative;">
-    <h1 class="loadingmsg">Loading...</h1>
-    <div class="equalbutton"><a href="#" onclick="onStreetViewChoice('equal');" style="font-size:18px;"><img src="/static/img/key_equals.png" /></a></div>
-    <ul class="thumbnails" style="opacity:0.1;">
+  <div class="span10 offset1">
+    <ul class="thumbnails">
       <li class="span5 vote">
-        <div id="pano_left" class="streetViewChoice left thumbnail"><a><img class="place" /></a></div>
+        <div id="pano_left" class="streetViewChoice left thumbnail"><a onclick="onStreetViewChoice('left');"><img class="place" /></a></div>
         <div id="pano_left_buffer" class="buffer"><img class="place" /></div>
         <image id="key_1" height="70" width="67" class="keys" src="/static/img/key_1.png" alt="Button 1" />
         <div class="clear"></div>
       </li>
       <li class="span5 vote">
-        <div id="pano_right" class="streetViewChoice right thumbnail"><a><img class="place" /></a></div>
+        <div id="pano_right" class="streetViewChoice right thumbnail"><a onclick="onStreetViewChoice('right');"><img class="place" /></a></div>
         <div id="pano_right_buffer" class="buffer"><img class="place" /></div>
         <image id="key_2" height="70" width="67" class="keys" src="/static/img/key_2.png" alt="Button 2" />
         <div class="clear"></div>
@@ -23,5 +22,11 @@
     </ul>
   </div><!--/span-->
 </div><!--/row-->
+<div class="row">
+	<div class="span12" align="center">
+		<div class="vote voteEquals" style="margin-top:-90px;">
+			<a href="#" onclick="onStreetViewChoice('equal');" style="font-size:18px;"><img src="/static/img/key_equals.png" /></a>
+		</div>
+	</div>
 </div>
   <hr />
