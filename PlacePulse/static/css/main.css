@@ -218,16 +218,17 @@
 
 .ranknum {
   text-align: center;
-  padding-left: 15px;
-  width: 25px;
+  padding-left: 0px;
+  width: 40px;
   font-weight: bold;
+  font-size: 14px;
 }
 
 .name {
   width: 150px;
   font-style: bold;
   text-align: left;
-  padding-left: 15px;
+  padding-left: 20px;
 }
 
 .score {
@@ -242,14 +243,28 @@
   width: 100px;
 }
 
-.header101 {
-  font-size: 16px;
-  font-style: bold;
-  margin-bottom: 15px;
-  margin-left: 5px;
+.q_ref_icon {
+  cursor: pointer;
+  opacity: 0.2;
+  margin-left: 15px;
+  margin-bottom: 3px;
 }
 
-.q_ref_icon {
-  opacity: 0.2;
-  margin-left: 20px;
+.q_ref_icon:hover {
+  opacity: 0.6;
+  margin-left: 15px;
+  margin-bottom: 3px;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.votes {
+  background-color: #F6F6F6;
+  border: 1px solid gray;
+  color: black;
+  cursor:default;
+  margin-top: 20px;
+  margin-left: 30px;
 }

@@ -21,71 +21,70 @@
 {% block body %}
 {% include 'widgets/vote_widget.html' %}
 
-    <div class="row" style="margin: 0 auto 0 auto; width: 960px;">
-      <div class="span4">
-        <h3 class="ac">Votes Contributed</h3>
-        <p class="ac">
-          <span class="btn btn-large btn-primary" style="cursor:default;"><b>{{votes_contributed}}</b></span>
-        </p>
-      </div>
-    </div>
+<div class="row" style="margin: 0 auto 0 auto; width: 960px;">
+  <div class="span8" style="width:100%; margin-left: 0px;">
+    <h1 class="lead centered" style="margin-bottom: 0px;">
+      For the above question, across 56 global cities, current winners &amp; losers:
+    </h1>
+  </div>
+</div>
 
-    <hr />
+<hr/>
 
-    <div class="row" style="margin: 0 auto 0 auto; width: 960px;">
-      <div class="ranker floatleft">
-        <div class="rankrow">
-          <div class="ranknum floatleft title">RANK</div>
-          <div class="floatleft name cell title">CITY NAME</div>
-          <div class="floatleft score cell title">SCORE</div>
-          <div class="floatleft trend cell title">TREND</div>
-        </div>
-        <div class="rankrow">
-          <div class="ranknum floatleft">1</div>
-          <div id="1_name" class="floatleft name cell">p_SomeCityNameHere</div>
-          <div id="1_score" class="floatleft score cell">25.892</div>
-          <div id="1_trend" class="floatleft trend cell"></div>
-        </div>
-        <div class="rankrow">
-          <div class="ranknum floatleft">2</div>
-          <div id="2_name" class="floatleft name cell">p_SomeCityNameHere</div>
-          <div id="2_score" class="floatleft score cell">11.456</div>
-          <div id="2_trend" class="floatleft trend cell"></div>
-        </div>
-        <div class="rankrow">
-          <div class="ranknum floatleft">3</div>
-          <div id="3_name" class="floatleft name cell">p_SomeCityNameHere</div>
-          <div id="3_score" class="floatleft score cell">10.342</div>
-          <div id="3_trend" class="floatleft trend cell"></div>
-        </div>
-      </div>
-      <div class="ranker floatleft">
-        <div class="rankrow">
-          <div class="ranknum floatleft">RANK</div>
-          <div class="floatleft name cell title">CITY NAME</div>
-          <div class="floatleft score cell title">SCORE</div>
-          <div class="floatleft trend cell title">TREND</div>
-        </div>
-        <div class="rankrow">
-          <div class="ranknum floatleft">56</div>
-          <div id="56_name" class="floatleft name cell">p_SomeCityNameHere</div>
-          <div id="56_score" class="floatleft score cell">25.892</div>
-          <div id="56_trend" class="floatleft trend cell"></div>
-        </div>
-        <div class="rankrow">
-          <div class="ranknum floatleft">55</div>
-          <div id="55_name" class="floatleft name cell">p_SomeCityNameHere</div>
-          <div id="55_score" class="floatleft score cell">11.456</div>
-          <div id="55_trend" class="floatleft trend cell"></div>
-        </div>
-        <div class="rankrow">
-          <div class="ranknum floatleft">54</div>
-          <div id="54_name" class="floatleft name cell">p_SomeCityNameHere</div>
-          <div id="54_score" class="floatleft score cell">10.342</div>
-          <div id="54_trend" class="floatleft trend cell"></div>
-        </div>
-      </div>
+<div class="row" style="margin: 0 auto 0 auto; width: 960px;">
+  <div class="ranker floatleft">
+    <div class="rankrow">
+      <div class="floatleft title">RANK</div>
+      <div class="floatleft name title">CITY</div>
+      <div class="floatleft score title">SCORE</div>
+      <div class="floatleft trend title">TREND</div>
     </div>
+    <div class="rankrow">
+      <div class="ranknum floatleft">1</div>
+      <div id="1_name" class="floatleft name cell"></div>
+      <div id="1_score" class="floatleft score cell"></div>
+      <div id="1_trend" class="floatleft trend cell"></div>
+    </div>
+    <div class="rankrow">
+      <div class="ranknum floatleft">2</div>
+      <div id="2_name" class="floatleft name cell"></div>
+      <div id="2_score" class="floatleft score cell"></div>
+      <div id="2_trend" class="floatleft trend cell"></div>
+    </div>
+    <div class="rankrow">
+      <div class="ranknum floatleft">3</div>
+      <div id="3_name" class="floatleft name cell"></div>
+      <div id="3_score" class="floatleft score cell"></div>
+      <div id="3_trend" class="floatleft trend cell"></div>
+    </div>
+  </div>
+  <div class="ranker floatleft">
+    <div class="rankrow">
+      <div class=" floatleft title">RANK</div>
+      <div class="floatleft name title">CITY</div>
+      <div class="floatleft score title">SCORE</div>
+      <div class="floatleft trend title">TREND</div>
+    </div>
+    <div class="rankrow">
+      <div class="ranknum floatleft">54</div>
+      <div id="4_name" class="floatleft name cell"></div>
+      <div id="4_score" class="floatleft score cell"></div>
+      <div id="4_trend" class="floatleft trend cell"></div>
+    </div>
+    <div class="rankrow">
+      <div class="ranknum floatleft">55</div>
+      <div id="5_name" class="floatleft name cell"></div>
+      <div id="5_score" class="floatleft score cell"></div>
+      <div id="5_trend" class="floatleft trend cell"></div>
+    </div>
+    <div class="rankrow">
+      <div class="ranknum floatleft">56</div>
+      <div id="6_name" class="floatleft name cell"></div>
+      <div id="6_score" class="floatleft score cell"></div>
+      <div id="6_trend" class="floatleft trend cell"></div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block footer %}
@@ -107,76 +106,51 @@
   var fillcol_hi = '#aaff56';
   var fillcol_lo = '#ff5656'
   var sp_height = 20;
-
+  var max = 0;
+  var min = 0;
 
   $.ajax({
       url: '/study/'+study_id+'/getcityrank' ,
       type: 'GET',
       success: function(data) {
-        var topbot3 = [];
+        var topbot = [];
+        max = data[0].trueskill.score;
+        min = data[55].trueskill.score;
+        //taking top 3 and bottom 3 ranked cities
+        topbot.push(data[0]);
+        topbot.push(data[1]);
+        topbot.push(data[2]);
+        topbot.push(data[53]);
+        topbot.push(data[54]);
+        topbot.push(data[55]);
 
-        topbot3.push(data[0]);
-        topbot3.push(data[1]);
-        topbot3.push(data[2]);
-        topbot3.push(data[53]);
-        topbot3.push(data[54]);
-        topbot3.push(data[55]);
-
-        $("#1_trend").sparkline(topbot3[0].trueskill.mus, {
-          type: 'line',
-          width: '100',
-          height: sp_height,
-          lineColor: linecol,
-          fillColor: fillcol_hi});
-        $("#2_trend").sparkline(topbot3[1].trueskill.mus, {
-          type: 'line',
-          width: '100',
-          height: sp_height,
-          lineColor: linecol,
-          fillColor: fillcol_hi});
-        $("#3_trend").sparkline(topbot3[2].trueskill.mus, {
-          type: 'line',
-          width: '100',
-          height: sp_height,
-          lineColor: linecol,
-          fillColor: fillcol_hi});
-        $("#54_trend").sparkline(topbot3[3].trueskill.mus, {
-          type: 'line',
-          width: '100',
-          height: sp_height,
-          lineColor: linecol,
-          fillColor: fillcol_lo});
-        $("#55_trend").sparkline(topbot3[4].trueskill.mus, {
-          type: 'line',
-          width: '100',
-          height: sp_height,
-          lineColor: linecol,
-          fillColor: fillcol_lo});
-        $("#56_trend").sparkline(topbot3[5].trueskill.mus, {
-          type: 'line',
-          width: '100',
-          height: sp_height,
-          lineColor: linecol,
-          fillColor: fillcol_lo});
-
-        $("#1_name").html(topbot3[0].place_name.split("_")[1]);
-        $("#2_name").html(topbot3[1].place_name.split("_")[1]);
-        $("#3_name").html(topbot3[2].place_name.split("_")[1]);
-        $("#54_name").html(topbot3[3].place_name.split("_")[1]);
-        $("#55_name").html(topbot3[4].place_name.split("_")[1]);
-        $("#56_name").html(topbot3[5].place_name.split("_")[1]);
-
-        $("#1_score").html(Math.round(topbot3[0].trueskill.score*100)/100);
-        $("#2_score").html(Math.round(topbot3[1].trueskill.score*100)/100);
-        $("#3_score").html(Math.round(topbot3[2].trueskill.score*100)/100);
-        $("#54_score").html(Math.round(topbot3[3].trueskill.score*100)/100);
-        $("#55_score").html(Math.round(topbot3[4].trueskill.score*100)/100);
-        $("#56_score").html(Math.round(topbot3[5].trueskill.score*100)/100);
+        for(var i=1; i<=6; i++) {
+          var mus_length = topbot[i-1].trueskill.mus.length;
+          //if mus array is very large, use only most recent 500 values for scores & sparklines
+          if (mus_length > 500) {
+            topbot[i-1].trueskill.mus = topbot[i-1].trueskill.mus.slice(mus_length-500);
+            mus_length = topbot[i-1].trueskill.mus.length;
+          }
+          for(var j=0;j<mus_length;j++) {
+            topbot[i-1].trueskill.mus[j] = Math.round(norm(topbot[i-1].trueskill.mus[j])*100)/100;
+          }
+          //rendering each row of the ranking table with sparklines
+          $("#"+i+"_trend").sparkline(topbot[i-1].trueskill.mus, {
+            type: 'line',
+            width: '100',
+            height: sp_height,
+            lineColor: linecol,
+            fillColor: (i<4) ? fillcol_hi : fillcol_lo});
+          $("#"+i+"_name").html(topbot[i-1].place_name.split("_")[1]);
+          $("#"+i+"_score").html(Math.round(norm(topbot[i-1].trueskill.score)*100)/100);
+        }
       }
   });
 
+  function norm(s) {
+    return (s-min)/(max-min);
+  }
 </script>
-
 
 <script src="/static/js/main.js"></script>
 {% endblock %}

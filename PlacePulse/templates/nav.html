@@ -1,9 +1,4 @@
-{% set navigation_bar = [
-    ('/', 'about', 'About'),
-    ('/study/create/', 'create', 'Create a Study'),
-    ('/results/', 'browse', 'Browse Results'),
-    ('/faq/', 'faq', 'FAQ')
-] -%}
+
 {% set active_page = active_page|default('index') -%}
       <div class="navbar">
       <div class="navbar-inner">
@@ -16,6 +11,7 @@
           <a class="brand" href="/">
             <b>PLACE</b> PULSE{{active_page}}
           </a>
+
           <div class="nav-collapse fr">
             <ul class="nav">
             {% for href, id, caption in navigation_bar %}
