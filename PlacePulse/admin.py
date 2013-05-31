@@ -20,10 +20,10 @@ def load_admin():
 def load_admin_studies():
     if getLoggedInUser() is None:
         return redirect("/login/")
-    if session['userObj']['email'] in ['hidalgo@mit.edu','salesses@mit.edu','philsalesses@me.com','dsmilkov@gmail.com']:
+    if session['userObj']['email'] in ['hidalgo@mit.edu','salesses@mit.edu','philsalesses@me.com','dsmilkov@gmail.com','deepak.jagdish@gmail.com']:
         studies = Database.getStudiesAdmin()
     return auto_template('admin_all.html',studies=studies)
-    
+
 #--------------------Studies
 @admin.route("/admin/studies/")
 def view_studies():
@@ -31,20 +31,20 @@ def view_studies():
         return redirect("/login/")
     studies = Database.getStudies(session['userObj']['email'])
     return auto_template('admin_studies.html',studies=studies)
-    
+
 @admin.route("/admin/study/<study_id>/",methods = ['GET'])
 def edit_studies(study_id):
     if getLoggedInUser() is None:
         return redirect("/login/")
     study = Database.getStudy(study_id)
     return auto_template('admin_study.html',study=study,study_id=study_id)
-    
+
 @admin.route('/admin/study/update/<study_id>/',methods=['POST'])
 def update_study(study_id):
     study_name = request.form['study_name']
     study_question = request.form['study_question']
     study_public = request.form['study_public']
-    Database.studies.update({'_id': Database.returnObjectId(study_id)}, { '$set': {'study_name' : study_name, 'study_question':study_question, 'study_public':study_public } }, True)    
+    Database.studies.update({'_id': Database.returnObjectId(study_id)}, { '$set': {'study_name' : study_name, 'study_question':study_question, 'study_public':study_public } }, True)
     return jsonifyResponse({
     'success': True
     })
@@ -56,13 +56,13 @@ def view_places():
         return redirect("/login/")
     places = [i for i in Database.getPlaces(session['userObj']['email'])]
     return auto_template('admin_places.html',places=places)
-    
+
 @admin.route("/admin/place/add/",methods = ['GET'])
 def add_place_g():
     if getLoggedInUser() is None:
         return redirect("/login/")
     return auto_template('admin_place_add.html')
-    
+
 @admin.route("/admin/place/add/",methods = ['POST'])
 def add_place_p():
     newPlaceID = Database.add_place(request.form['data_resolution'], request.form['location_distribution'],
@@ -89,7 +89,7 @@ def delete_place(place_id):
     return jsonifyResponse({
     'success': str(placeDeleted)
     })
-    
+
 @admin.route("/admin/study/delete/<study_id>",methods = ['POST'])
 def delete_study(study_id):
     if getLoggedInUser() is None: return redirect("/login/")
@@ -98,7 +98,7 @@ def delete_study(study_id):
     return jsonifyResponse({
     'success': str(studyDeleted)
     })
-    
+
 @admin.route("/admin/study/deleteadmin/<study_id>",methods = ['POST'])
 def delete_study_admin(study_id):
     studyDeleted = Database.deleteStudyAdmin(study_id)
@@ -112,13 +112,13 @@ def edit_places(place_id):
         return redirect("/login/")
     place = Database.getPlace(place_id)
     return auto_template('admin_place.html',place=place)
-    
+
 @admin.route('/admin/place/update/<study_id>/',methods=['POST'])
 def update_place(study_id):
     study_name = request.form['study_name']
     study_question = request.form['study_question']
     study_public = request.form['study_public']
-    Database.studies.update({'_id': Database.returnObjectId(study_id)}, { '$set': {'study_name' : study_name, 'study_question':study_question, 'study_public':study_public } }, True)    
+    Database.studies.update({'_id': Database.returnObjectId(study_id)}, { '$set': {'study_name' : study_name, 'study_question':study_question, 'study_public':study_public } }, True)
     return jsonifyResponse({
     'success': True
     })
@@ -131,7 +131,7 @@ def admin_locations():
     owner = session['userObj']['email']
     locations = Database.getLocationsByOwner(owner)
     return auto_template('admin_locations.html',locations=locations)
-    
+
 @admin.route("/admin/locations/delete/<location_id>",methods = ['POST'])
 def location_delete_p(location_id):
     locationDeleted = Database.deleteLocation(location_id)

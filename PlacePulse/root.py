@@ -10,16 +10,20 @@ from db import Database
 
 @root.route("/about/")
 def load_about():
-	return auto_template('about.html')
+  votesCount = Database.getVotesCount()
+  return auto_template('about.html', votes_contributed=votesCount)
 
 @root.route("/data/")
 def load_data():
-	return auto_template('data.html')
+  votesCount = Database.getVotesCount()
+  return auto_template('data.html', votes_contributed=votesCount)
 
-@root.route("/faq/")
+@root.route("/results/")
 def load_faq():
-	return auto_template('faq.html')
+  votesCount = Database.getVotesCount()
+  return auto_template('results_landing.html', votes_contributed=votesCount)
 
 @root.route("/contact/")
 def load_contact():
-	return auto_template('contact.html')
+  votesCount = Database.getVotesCount()
+  return auto_template('contact.html', votes_contributed=votesCount)
