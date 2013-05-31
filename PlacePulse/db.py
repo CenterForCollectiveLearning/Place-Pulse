@@ -26,23 +26,28 @@ class database(object):
 #--------------------Studies
     def getStudy(self,study_id):
         return self.studies.find_one(ObjectId(study_id))
-        
+
     # Study objects can get very large (see places_id), so this func just returns the title
     def getStudyQuestion(self,study_id):
         return self.studies.find_one(ObjectId(study_id),{"study_question":1})['study_question']
-            
+
     def getRandomStudy(self):
         count = self.studies.count()
         randomNumber = random.randint(0,count-1)
         return self.studies.find().limit(-1).skip(randomNumber).next()
-        
+
+    def getAnotherStudy(self,study_id):
+        count = self.studies.count()
+        randomNumber = random.randint(0,count-2)
+        return self.studies.find({'_id':{'$ne':ObjectId(study_id)}}).limit(-1).skip(randomNumber).next()
+
     def deleteStudy(self,study_id, owner):
         study_query = { '_id' : ObjectId(study_id), 'owner': owner }
         self.studies.remove(study_query)
         # delete all the qs entries from that study
         self.qs.remove({'study_id': study_id})
         return True
-        
+
     def deleteStudyAdmin(self,study_id):
         self.studies.remove( { '_id' : ObjectId(study_id)})
         # delete all the qs entries from that study
@@ -54,52 +59,52 @@ class database(object):
 
     def getStudies(self,owner):
         return self.studies.find({'owner':owner})
-        
+
     def getStudiesAdmin(self):
         return self.studies.find({}, {'places_id': 0})
-        
+
     def getNewStudies(self,limit):
         return self.studies.find().limit(limit)
-        
+
     def getPopularStudies(self,limit):
         return self.studies.find().limit(limit)
-        
+
     def getInactiveStudies(self,limit):
         return self.studies.find().limit(limit) #Need to add votes_needed field for studies to track how long they have to go.
-        
+
 #--------------------Places
     def getPlaces(self):
         return self.places.find()
-        
+
     def getPlace(self,place_id):
         return self.places.find_one(ObjectId(place_id))
-           
+
     def deletePlace_Locations(self,place_id):
         self.places.remove( { '_id' : ObjectId(place_id) })
         self.locations.remove( { 'place_id' : str(place_id) })
         return True
-        
+
     def getNewCities(self,limit):
         return self.studies.find().limit(limit)
-        
+
 #--------------------Locations
     def getLocations(self,place_id,limit=96):
         return self.locations.find({'place_id': place_id}).limit(limit)
-        
+
     def getLocationsByOwner(self,owner):
         return self.locations.find({'owner': owner})
-        
+
     def getLocation(self,location_id):
         return self.locations.find_one(ObjectId(location_id))
-            
+
     def updateLocation(self,location_id,heading,pitch):
         self.locations.update( { '_id' : ObjectId(location_id) } , { '$set' : { 'heading' : heading, 'pitch' : pitch } } )
         return True
-        
+
     def deleteLocation(self,location_id):
         self.locations.remove( { '_id' : ObjectId(location_id) })
         return True
-        
+
     def getRandomLocationByPlace(self,place_id):
         if isinstance(place_id,ObjectId):
             place_id = str(place_id)
@@ -118,12 +123,12 @@ class database(object):
         return self.users.find_one({
             'email': email
         })
-        
+
     def getUserByVoterID(self,voterID):
         return self.users.find_one({
             'voter_uniqueid': voterID
         })
-    
+
     def add_place(self, data_resolution, location_distribution, polygon, place_name, owner):
         return Database.places.insert({
         'data_resolution': data_resolution,
@@ -148,7 +153,7 @@ class database(object):
               'stds':[trueskill.std0]
             }
         })
-        
+
     # should be called internally, when adding a new location to a place for a given study
     def _add_qs_place(self, place_id, study_id):
         return self.db.qs_place.insert({
@@ -163,14 +168,14 @@ class database(object):
 
     def get_qs_place(self, place_id, study_id):
         return self.db.qs_place.find_one({'place_id': str(place_id),'study_id': str(study_id)})
-    
+
     def add_location(self, lat, lng, place_id, owner, study_id):
         ''' Adding the location consists of several tasks:
             1. create/update the score for the place for the current study
             2. add the new location
             3. add score for the location for the current study
         '''
-        
+
         # 1. add/update score for the place
         qs_place = self.get_qs_place(place_id, study_id)
         if qs_place is None:
@@ -182,7 +187,7 @@ class database(object):
             stds = qs_place['trueskill']['stds']
             old_mu = mus[-1]
             old_std = stds[-1]
-            
+
             # count how many locations are already from that place
             N = Database.locations.find({'place_id': str(place_id)}).count()
             # compute the new scores
@@ -191,7 +196,7 @@ class database(object):
             new_std = math.sqrt(old_std**2 * N**2 + trueskill.std0**2)/(N+1)
             stds[-1] = new_std
             new_score = trueskill.get_score(new_mu, new_std)
-            
+
             # finally, update the qs_place entry
             self.db.qs_place.update({'place_id': str(place_id), 'study_id': str(study_id)}, {
                 '$set': { 'trueskill.score': new_score,
@@ -243,14 +248,14 @@ class database(object):
             return self.votes.find({"study_id": study_id}).count()
         else:
             return self.votes.find().count()
-                  
+
 #--------------------QS
     def getQS(self,study_id, location_id):
-        return self.qs.find_one({ 
-                "study_id": str(study_id), 
-                "location_id": str(location_id) 
+        return self.qs.find_one({
+                "study_id": str(study_id),
+                "location_id": str(location_id)
             })
-     
+
 
     # should be called internally, when update the qs scores of locations/places after a vote
     def _pushQscore(self, qs_row_loc, mu_loc, std_loc, old_mu_loc, old_std_loc):
@@ -289,7 +294,7 @@ class database(object):
     def updateQScores(self, study_id, winner_locid, loser_locid, isDraw):
         ''' Update Q scores consists of several tasks:
             1. update the scores of the two locations
-            2. update the scores of the place/two places where these two locations are from 
+            2. update the scores of the place/two places where these two locations are from
         '''
         # 1. update the scores of the two locations (images)
         winner_qs = self.getQS(study_id, winner_locid)
@@ -318,10 +323,10 @@ class database(object):
       qs = Database.qs.find_one( query )
       if qs is None:
         query['random'] = { '$lte' : rand}
-        qs = Database.qs.find_one(query) 
+        qs = Database.qs.find_one(query)
       if exclude and qs["location_id"] == exclude: return Database.randomQS(study_id, exclude)
       return qs
-    
+
     @property
     def locations(self):
         return self.db.locations
@@ -329,7 +334,7 @@ class database(object):
     @property
     def places(self):
         return self.db.places
-        
+
     @property
     def results(self):
         return self.db.results
@@ -345,7 +350,7 @@ class database(object):
     @property
     def votes(self):
         return self.db.votes
-        
+
     @property
     def voterids(self):
         return self.db.voterids
@@ -357,7 +362,7 @@ class database(object):
     @property
     def qs_place(self):
         return self.db.qs_place
-    
+
     @property
     def db(self):
         if not hasattr(self, '_db'):
@@ -366,7 +371,7 @@ class database(object):
             if os.environ.get('MONGO_USER') and os.environ.get('MONGO_PASSWORD'):
                 self._db.authenticate(os.environ['MONGO_USER'],os.environ['MONGO_PASSWORD'])
         return self._db
-    
+
     @property
     def conn(self):
         if not hasattr(self, '_conn'):
