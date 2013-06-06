@@ -145,7 +145,7 @@ a:hover {
   text-decoration: underline;
 }
 .row {
-  margin-left: -20px;
+/*  margin-left: -20px;*/
   *zoom: 1;
 }
 .row:before,
@@ -164,6 +164,10 @@ a:hover {
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
   width: 940px;
+}
+.span13 {
+  width: 80px;
+  margin-left: 0px;
 }
 .span12 {
   width: 940px;
@@ -184,13 +188,13 @@ a:hover {
   width: 540px;
 }
 .span6 {
-  width: 460px;
+  width: 440px;
 }
 .span5 {
-  width: 380px;
+  width: 420px;
 }
 .span4 {
-  width: 300px;
+  width: 280px;
 }
 .span3 {
   width: 220px;
@@ -3340,7 +3344,7 @@ input[type="submit"].btn.btn-mini {
   margin-bottom: 0;
 }
 .thumbnails {
-  margin-left: -20px;
+  /*margin-left: -20px;*/
   list-style: none;
   *zoom: 1;
 }
@@ -3355,11 +3359,7 @@ input[type="submit"].btn.btn-mini {
 .row-fluid .thumbnails {
   margin-left: 0;
 }
-.thumbnails > li {
-  float: left;
-  margin-bottom: 18px;
-  margin-left: 20px;
-}
+
 .thumbnail {
   display: block;
   padding: 4px;

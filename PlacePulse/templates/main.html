@@ -10,7 +10,6 @@
 
 {% block header %}
 {{ super() }}
-<a href="https://github.com/MacroConnections/Place-Pulse"><img style="position: absolute; top: 0; left: 0; border: 0; z-index: 99;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
 {% endblock %}
 
 {% block nav %}
@@ -20,10 +19,10 @@
 
 {% block body %}
 {% include 'widgets/vote_widget.html' %}
-
+<div class="landing_stats">
 <div class="row" style="margin: 0 auto 0 auto; width: 960px;">
   <div class="span8" style="width:100%; margin-left: 0px;">
-    <h1 class="lead centered" style="margin-bottom: 0px;">
+    <h1 class="lead centered" style="margin-bottom: 0px; padding-top:18px;">
       For the above question, across 56 global cities, current winners &amp; losers:
     </h1>
   </div>
@@ -36,7 +35,7 @@
     <div class="rankrow">
       <div class="floatleft title">RANK</div>
       <div class="floatleft name title">CITY</div>
-      <div class="floatleft score title">SCORE</div>
+      <div class="floatleft score title">VOTES</div>
       <div class="floatleft trend title">TREND</div>
     </div>
     <div class="rankrow">
@@ -62,7 +61,7 @@
     <div class="rankrow">
       <div class=" floatleft title">RANK</div>
       <div class="floatleft name title">CITY</div>
-      <div class="floatleft score title">SCORE</div>
+      <div class="floatleft score title">VOTES</div>
       <div class="floatleft trend title">TREND</div>
     </div>
     <div class="rankrow">
@@ -84,6 +83,7 @@
       <div id="6_trend" class="floatleft trend cell"></div>
     </div>
   </div>
+</div>
 </div>
 {% endblock %}
 
@@ -127,10 +127,10 @@
         for(var i=1; i<=6; i++) {
           var mus_length = topbot[i-1].trueskill.mus.length;
           //if mus array is very large, use only most recent 500 values for scores & sparklines
-          if (mus_length > 500) {
+          /*if (mus_length > 500) {
             topbot[i-1].trueskill.mus = topbot[i-1].trueskill.mus.slice(mus_length-500);
             mus_length = topbot[i-1].trueskill.mus.length;
-          }
+          }*/
           for(var j=0;j<mus_length;j++) {
             topbot[i-1].trueskill.mus[j] = Math.round(norm(topbot[i-1].trueskill.mus[j])*100)/100;
           }
@@ -142,7 +142,8 @@
             lineColor: linecol,
             fillColor: (i<4) ? fillcol_hi : fillcol_lo});
           $("#"+i+"_name").html(topbot[i-1].place_name.split("_")[1]);
-          $("#"+i+"_score").html(Math.round(norm(topbot[i-1].trueskill.score)*100)/100);
+          //$("#"+i+"_score").html(Math.round(norm(topbot[i-1].trueskill.score)*100)/100);
+          $("#"+i+"_score").html(topbot[i-1].num_votes);
         }
       }
   });
