@@ -54,16 +54,22 @@ $.ajax({
 function getallstats(_studies) {
   for(var k=0;k<_studies.length;k++) {
     $('#ongoing_stats').append('<div class="study_stats" id="'+_studies[k]._id+'_stats"></div>');
-    $('#'+_studies[k]._id+'_stats').append('<div class="question_title">Which city looks <b>'+_studies[k].study_question+'</b> ?</div>');
+    $('#'+_studies[k]._id+'_stats').append('<div class="study_header" id="'+_studies[k]._id+'_header"></div>');
+    $('#'+_studies[k]._id+'_header').append('<div class="floatleft question_title">Which city looks <b>'+_studies[k].study_question+'</b> ?</div>');
+    $('#'+_studies[k]._id+'_header').append('<div class="floatleft clickscount" id="'+_studies[k]._id+'_clicks"></div>');
     $('#'+_studies[k]._id+'_stats').append('<div class="rankrow"><div class="floatleft title">RANK</div><div class="floatleft name title">CITY</div><div class="floatleft score title">CLICKS</div></div>');
     $.ajax({
       url:'/study/'+_studies[k]._id+'/getcityrank',
       type:'GET',
       success: function(data) {
+        var total = 0;
+        var this_study = data[0].study_id;
         for(var j=0; j<data.length;j++) {
-          if(data[j].num_votes === undefined) data[j].num_votes = "-";
+          if(data[j].num_votes === undefined) { data[j].num_votes = 0; }
+          total = total + data[j].num_votes
           $('#'+data[j].study_id+'_stats').append('<div class="rankrow"><div class="floatleft ranknum">'+(j+1)+'</div><div class="floatleft name cell">'+data[j].place_name.split("_")[1]+'</div><div class="floatleft score cell">'+data[j].num_votes+'</div></div>');
         }
+        $('#'+this_study+'_clicks').html('[ <b>'+total+'</b> clicks ]');
       }
     });
   }

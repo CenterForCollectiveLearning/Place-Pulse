@@ -242,6 +242,7 @@
 .rankrow {
   width: 450px;
   height: 30px;
+  clear: both;
 }
 
 .cell {
@@ -365,11 +366,22 @@
 
 .question_title {
   font-size: 25px;
-  margin-top: 45px;
-  margin-bottom: 30px;
 }
 
 .study_stats {
   padding-bottom: 40px;
   border-bottom: 2px solid black;
+}
+
+.clickscount {
+  padding-top: 2px;
+  margin-left: 20px;
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: #FA2D1C;
+}
+
+.study_header {
+  margin-top: 45px;
+  margin-bottom: 15px;
 }
