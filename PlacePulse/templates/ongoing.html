@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% set active_page = "ongoing" %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+
+{% endblock %}
+
+{% block header %}
+{{ super() }}
+{% endblock %}
+
+{% block nav %}
+    {% set active_page = 'ongoing' %}
+    {{ super() }}
+{% endblock %}
+
+{% block body %}
+
+<div id="ongoing_stats">
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/libs/imagesloaded.pkgd.min.js"> </script>
+<script src="/static/js/libs/jquery.sparkline.min.js"> </script>
+
+<script type="text/javascript">
+$.ajax({
+    url:'/getstudies/',
+    type: 'GET',
+    success: function(data) {
+      var studies = [];
+      for(var i=0; i<data.length; i++) {
+        studies.push({'study_question':data[i].study_question,'_id':data[i]._id});
+      }
+      getallstats(studies);
+    }
+  });
+
+function getallstats(_studies) {
+  for(var k=0;k<_studies.length;k++) {
+    $('#ongoing_stats').append('<div class="study_stats" id="'+_studies[k]._id+'_stats"></div>');
+    $('#'+_studies[k]._id+'_stats').append('<div class="question_title">Which city looks <b>'+_studies[k].study_question+'</b> ?</div>');
+    $('#'+_studies[k]._id+'_stats').append('<div class="rankrow"><div class="floatleft title">RANK</div><div class="floatleft name title">CITY</div><div class="floatleft score title">CLICKS</div></div>');
+    $.ajax({
+      url:'/study/'+_studies[k]._id+'/getcityrank',
+      type:'GET',
+      success: function(data) {
+        for(var j=0; j<data.length;j++) {
+          if(data[j].num_votes === undefined) data[j].num_votes = "-";
+          $('#'+data[j].study_id+'_stats').append('<div class="rankrow"><div class="floatleft ranknum">'+(j+1)+'</div><div class="floatleft name cell">'+data[j].place_name.split("_")[1]+'</div><div class="floatleft score cell">'+data[j].num_votes+'</div></div>');
+        }
+      }
+    });
+  }
+}
+
+</script>
+{% endblock %}
