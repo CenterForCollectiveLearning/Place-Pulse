@@ -13,6 +13,11 @@ def load_about():
   votesCount = Database.getVotesCount()
   return auto_template('about.html', votes_contributed=votesCount)
 
+@root.route("/ongoing/")
+def load_ongoing():
+  votesCount = Database.getVotesCount()
+  return auto_template('ongoing.html', votes_contributed=votesCount)
+
 @root.route("/data/")
 def load_data():
   votesCount = Database.getVotesCount()

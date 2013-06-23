@@ -34,7 +34,7 @@
   <!-- Navigation -->
 {% set navigation_bar = [
     ('/about/', 'about', 'About'),
-    ('/', 'current', 'Ongoing Study Rankings'),
+    ('/ongoing/', 'ongoing', 'Ongoing Study Rankings'),
     ('/results/', 'results', '2012 Study Results'),
     ('/data/', 'data', 'Data')
 ] -%}
@@ -50,7 +50,7 @@
           <a class="brand" href="/">
             <b>PLACE</b> PULSE
           </a>
-          <a href="/" class="btn btn-large btn-primary votes" style="cursor:default; margin-top: 20px; margin-left: 20px;"><b>{{votes_contributed}}</b> votes</a>
+          <a href="/" class="btn btn-large btn-primary votes" style="cursor:default; margin-top: 20px; margin-left: 20px;"><b>{{votes_contributed}}</b> clicks</a>
           <div class="nav-collapse fr">
             <ul class="nav">
             {% for href, id, caption in navigation_bar %}

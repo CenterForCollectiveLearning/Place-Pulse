@@ -362,3 +362,14 @@
 #equal {
   font-size: 45px;
 }
+
+.question_title {
+  font-size: 25px;
+  margin-top: 45px;
+  margin-bottom: 30px;
+}
+
+.study_stats {
+  padding-bottom: 40px;
+  border-bottom: 2px solid black;
+}
