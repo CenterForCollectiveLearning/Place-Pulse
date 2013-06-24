@@ -10,6 +10,18 @@ import os
 #from werkzeug.contrib.fixers import ProxyFix
 #app.wsgi_app = ProxyFix(app.wsgi_app)
 
+is_maintenance_mode = False
+ 
+# Always throw a 503 during maintenance: http://is.gd/DksGDm
+ 
+@app.before_request
+def check_for_maintenance():
+    if is_maintenance_mode:
+        return 'Sorry, off for maintenance! We\'ll be back online in 10min', 503
+
+
+
+
 http_server = HTTPServer(WSGIContainer(app))
 port = int(os.environ.get("PORT", 8000))
 http_server.listen(port)

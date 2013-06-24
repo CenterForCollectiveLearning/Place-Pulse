@@ -145,7 +145,7 @@ class database(object):
             'location_id': str(location_id),
             'study_id': str(study_id),
             'place_id': str(place_id),
-            'num_votes':0,
+            'num_votes': 0,
             'random':random.random(),
             'trueskill': {
               'score':trueskill.get_score(trueskill.mu0, trueskill.std0),
@@ -159,6 +159,7 @@ class database(object):
         return self.db.qs_place.insert({
             'place_id': str(place_id),
             'study_id': str(study_id),
+            'num_votes':0,
             'trueskill': {
               'score':trueskill.get_score(trueskill.mu0, trueskill.std0),
               'mus':[trueskill.mu0],
