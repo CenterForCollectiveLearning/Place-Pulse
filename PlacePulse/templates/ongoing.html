@@ -67,9 +67,9 @@ function getallstats(_studies) {
         for(var j=0; j<data.length;j++) {
           if(data[j].num_votes === undefined) { data[j].num_votes = 0; }
           total = total + data[j].num_votes
-          $('#'+data[j].study_id+'_stats').append('<div class="rankrow"><div class="floatleft ranknum">'+(j+1)+'</div><div class="floatleft name cell">'+data[j].place_name.split("_")[1]+'</div><div class="floatleft score cell">'+data[j].num_votes+'</div></div>');
+          $('#'+data[j].study_id+'_stats').append('<div class="rankrow"><div class="floatleft ranknum">'+(j+1)+'</div><div class="floatleft name cell">'+data[j].place_name+'</div><div class="floatleft score cell">'+data[j].num_votes+'</div></div>');
         }
-        $('#'+this_study+'_clicks').html('[ <b>'+total+'</b> clicks ]');
+        $('#'+this_study+'_clicks').html('[ <b>'+(total/2)+'</b> clicks ]');
       }
     });
   }

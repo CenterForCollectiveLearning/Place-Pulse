@@ -141,7 +141,7 @@
             height: sp_height,
             lineColor: linecol,
             fillColor: (i<4) ? fillcol_hi : fillcol_lo});
-          $("#"+i+"_name").html(topbot[i-1].place_name.split("_")[1]);
+          $("#"+i+"_name").html(topbot[i-1].place_name);
           //$("#"+i+"_score").html(Math.round(norm(topbot[i-1].trueskill.score)*100)/100);
           $("#"+i+"_score").html(topbot[i-1].num_votes);
         }
