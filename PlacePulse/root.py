@@ -38,6 +38,11 @@ def load_papers():
   votesCount = Database.getVotesCount()
   return auto_template('papers.html', votes_contributed=votesCount)
 
+@root.route("/contact/")
+def load_contactus():
+  votesCount = Database.getVotesCount()
+  return auto_template('contact.html', votes_contributed=votesCount)
+
 @root.route("/another/<study_id>")
 def load_another_study(study_id):
   studyObj = Database.getAnotherStudy(study_id)
