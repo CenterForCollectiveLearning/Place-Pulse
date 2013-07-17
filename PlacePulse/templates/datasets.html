@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% set active_page = "data" %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+{% endblock %}
+
+{% block body %}
+<div id="explore">
+    <div class="row">
+      <div class="span6" style="width:100%;">
+        <div style="margin-bottom:30px;">
+          <h2 style="color:#EA4839">Datasets</h2>
+          <p><b>Limitations: </b>The data of these studies should be interpreted in the narrow context defined by the data collection method. This is data on images captured from a vehicle, and hence, represent the way cities look from a car. Moreover, most of the images were captured early in the morning, and hence, show images of cities with empty sidewalks, little traffic, and many of the shops closed. Also, the images of each city were chosen randomly within a boundary defined manually. The boundary was chosen to include a large portion of a city, but keeping in mind that more images would demand a larger number of clicks. Ideally, images should not be collected randomly within a boundary, but following the distribution of pedestrian or vehicle traffic, since this represents a better reflection of how many people are experiencing each part of a city. Unfortunately, this data was not available at the time of image selection.</p>
+        </div>
+      </div>
+  </div>
+  <div class="row" style="border-bottom:1px solid black">
+    <div class="span6" style="width:100%;">
+      <div style="margin-bottom:10px;">
+        <!--<h2 style="color:#EA4839; margin-bottom:10px;">Experiments</h2>-->
+        <h2 style="color:black">Place Pulse 1.0: The Pilot Study (2010-2012)</h2>
+      </div>
+      <div style="margin-bottom:30px;">
+        <p><b>Published as: </b><i>The Collaborative Image of The City: Mapping the Inequality of Urban Perception</i><br>
+          Philip Salesses, Katja Schechtner, César A. Hidalgo. PLOS ONE, In Press (2013)</p>
+          <p><b>Dataset includes: </b><br>&#10004; Scores for safety, class and uniqueness for 4,136 geotagged images for the cities of New York, Boston, Linz and Salzburg.<br>&#10004; Preferences collected from 208,738 from 7,872 participants.<br>&#10004; Clicks collected between August 2011 and November 2011.</p>
+          <span><a class="btn btn-success btn-large" href="/static/data/consolidated_data_jsonformatted.json" target="_blank">&#8675;&nbsp;Download Pilot Study Data</a></span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span6" style="width:100%;">
+      <div style="margin-bottom:10px; margin-top: 40px;">
+        <!--<h2 style="color:#EA4839; margin-bottom:10px;">Experiments</h2>-->
+        <h2 style="color:black">Place Pulse 2.0: A Global Map</h2>
+      </div>
+      <div>
+        <p><b>Published as: </b><i>In preparation...</i><br>
+          <p><b>Dataset includes: </b>Scores for the perception of safety, wealth, liveliness, boredom, and depressiveness of 111,390 geotagged images for 56 cities around the world.</p>
+          <span><a class="btn btn-success btn-large disabled" style="background-color:#ea4839"></i>&#8635;&nbsp;In Preparation</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+{% endblock %}

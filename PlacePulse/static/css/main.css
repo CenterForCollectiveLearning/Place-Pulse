@@ -385,3 +385,77 @@
   margin-top: 45px;
   margin-bottom: 15px;
 }
+
+#rankings_table {
+  width:90%;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#rankings_table th {
+  font-size: 16px;
+  height: 50px;
+  border-bottom: 1px solid black;
+}
+
+.rankingrow {
+  width: 100%;
+  text-align: center;
+}
+
+.rankingrow:hover {
+  background-color: #F6F6F6;
+}
+
+.citycell {
+  width: 20%;
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.scorecell {
+  padding: 10px;
+  width: 16%;
+}
+
+th.header {
+    background-image: url(/static/img/table-assets/bg.gif);
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+th.headerSortUp {
+    background-image: url(/static/img/table-assets/asc.gif);
+    background-color: #AAFF56;
+}
+
+th.headerSortDown {
+    background-image: url(/static/img/table-assets/desc.gif);
+    background-color: #FFB6B6;
+}
+
+p {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.cityinfo {
+  float: left;
+  margin-left: 10px;
+}
+
+img.citypic {
+  margin-left: 50px;
+  padding-left: 50px;
+  float: left;
+  width: 500px;
+}
+
+.cityname {
+  font-weight: 200;
+  font-size: 24px;
+}

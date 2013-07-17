@@ -5,10 +5,10 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html class="not-ie" lang="en"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Place Pulse | The Collaborative Image of the City</title>
+  <title>Place Pulse | Mapping Urban Perception</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Place Pulse quantitatively measures urban perception by turning visual preference surveys into crowdsourced games.">
-  <meta name="author" content="Macro Connections | The Media Lab | Massachusetts Institute of Technology">
+  <meta name="author" content="Macro Connections | The MIT Media Lab">
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/img/customize/apple/touch-icon-iphone4.png">
   <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/img/customize/apple/touch-icon-ipad.png">
   <link rel="apple-touch-icon-precomposed" href="/static/img/customize/apple/apple-touch-icon.png">
@@ -33,10 +33,12 @@
 <body>
   <!-- Navigation -->
 {% set navigation_bar = [
-    ('/about/', 'about', 'About'),
-    ('/ongoing/', 'ongoing', 'Ongoing Study Rankings'),
-    ('/results/', 'results', '2012 Study Results'),
-    ('/data/', 'data', 'Data')
+    ('/vision/', 'vision', 'Vision'),
+    ('/rankings/', 'rankings', 'Rankings'),
+    ('/data/', 'data', 'Data'),
+    ('/experiments/', 'experiments', 'Experiments'),
+    ('/papers/', 'papers', 'Papers'),
+    ('/about/', 'about', 'About')
 ] -%}
 {% set active_page = active_page|default('index') -%}
       <div class="navbar">
@@ -80,16 +82,15 @@
 
   <!-- Javascript -->
   {% block js %}
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-42539808-1', 'mit.edu');
+      ga('send', 'pageview');
+    </script>
   {% endblock %}
-
-  {#
-  <script>
-    var _gaq=[["_setAccount","UA-21313433-1"],["_trackPageview"],["_trackPageLoadTime"]];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-    g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-    s.parentNode.insertBefore(g,s)}(document,"script"));
-  </script>
-  #}
 
 </body>
 </html>
