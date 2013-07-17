@@ -87,10 +87,6 @@
 </div>
 {% endblock %}
 
-{% block footer %}
-{{ super() }}
-{% endblock %}
-
 {% block js %}
 <script src="/static/js/libs/jquery-1.7.2.min.js"></script>
 <script src="/static/js/libs/bootstrap.js"></script>
@@ -152,6 +148,5 @@
     return (s-min)/(max-min);
   }
 </script>
-
 <script src="/static/js/main.js"></script>
 {% endblock %}
