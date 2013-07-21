@@ -389,11 +389,24 @@
 #rankings_table {
   width:90%;
   margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 #rankings_table th {
+  font-size: 16px;
+  height: 50px;
+  border-bottom: 1px solid black;
+}
+
+#rankings_table th:hover {
+  background-color: #F6F6F6;
+}
+
+#serialnum_table {
+  width:6%;
+  margin-top: 30px;
+}
+
+#serialnum_table th {
   font-size: 16px;
   height: 50px;
   border-bottom: 1px solid black;
@@ -409,7 +422,7 @@
 }
 
 .citycell {
-  width: 20%;
+  width: 15%;
   padding: 10px;
   text-align: left;
   font-weight: bold;
@@ -418,6 +431,12 @@
 .scorecell {
   padding: 10px;
   width: 16%;
+}
+
+.numcell {
+  padding: 10px;
+  width: 5%;
+  text-align: right;
 }
 
 th.header {
@@ -458,4 +477,8 @@ img.citypic {
 .cityname {
   font-weight: 200;
   font-size: 24px;
+}
+
+.fl {
+  float: left;
 }
