@@ -12,13 +12,14 @@ from util import *
 login = Module(__name__)
 oauth = OAuth()
 
+
 facebook = oauth.remote_app('facebook',
     base_url='https://graph.facebook.com/',
     request_token_url=None,
     access_token_url='/oauth/access_token',
     authorize_url='https://www.facebook.com/dialog/oauth',
-    consumer_key=os.environ['FACEBOOK_APP_ID'],
-    consumer_secret=os.environ['FACEBOOK_APP_SECRET'],
+    consumer_key="178485798938752",
+    consumer_secret="3fc3c9f171bbb5221403307113662fe5",
     request_token_params={'scope': 'email,user_likes,friends_likes,user_location'}
 )
 

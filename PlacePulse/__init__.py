@@ -32,7 +32,7 @@ app.register_module(matching)
 app.register_module(results)
 app.register_module(study)
 
-app.secret_key = os.environ['COOKIE_SECRET_KEY']
+app.secret_key = "a10ad1a40b754a4d9b663fac60556a78"
 
 @app.route("/")
 def main():
