@@ -180,7 +180,15 @@ def get_places():
 
 @study.route("/study/<study_id>/getcityrank/",methods=['GET'])
 def get_city_rank(study_id):
-    qs_places = list(Database.qs_place.find({'study_id': study_id}).sort('trueskill.score', direction=-1))
+    projection = {'place_id':1,
+                  'study_id':1,
+                  'num_votes':1,
+                  'place_name':1,
+                  'trueskill.score':1,
+                  'trueskill.mus': {'$slice': -25},
+                  'trueskill.stds': {'$slice': -25}
+    }
+    qs_places = list(Database.qs_place.find({'study_id': study_id} , projection).sort('trueskill.score', direction=-1))
     for qs_place in qs_places:
         place = Database.getPlace(qs_place['place_id'])
         qs_place['place_name'] = place['place_name']
