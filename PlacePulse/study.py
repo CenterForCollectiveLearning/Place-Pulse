@@ -134,12 +134,18 @@ def post_new_vote(study_id):
     isDraw = request.form['choice'] == 'equal'
     Database.updateQScores(study_id, winner_locid, loser_locid, isDraw)
 
+    if not request.headers.getlist("X-Forwarded-For"):
+       ip = request.remote_addr
+    else:
+       ip = request.headers.getlist("X-Forwarded-For")[0]
+
     newVoteObj = {
         'study_id' : request.form['study_id'],
         'left' : request.form['left'],
         'right' : request.form['right'],
         'choice' : request.form['choice'],
-        'timestamp': datetime.now()
+        'timestamp': datetime.now(),
+        'ip': ip
     }
     # If there is no userObj, create one now
     if not session.get('userObj'):
