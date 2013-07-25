@@ -32,30 +32,15 @@ function getallstats(_studies) {
 
 function consolidate_results(_results, _studies) {
   var rows = {};
-
-  for(var i=0;i<_results.length;i++) {
+  for(var i=0;i <_results.length; i++) {
     var len = _results[i].data.length;
-    var min = _results[i].data[len-1]['trueskill']['score'];
-    var max = _results[i].data[0]['trueskill']['score'];
     for(var j=0;j<len;j++) {
-      if(i==0) {
-        rows[_results[i].data[j].place_name] = {};
-      }
+      if (rows[_results[i].data[j].place_name] === undefined) { rows[_results[i].data[j].place_name] = {};}
       var this_study = _studies[_results[i].study];
-      rows[_results[i].data[j].place_name][this_study] = {};
+      if (rows[_results[i].data[j].place_name][this_study] === undefined) { rows[_results[i].data[j].place_name][this_study] = {}; }
       var stdev_l = _results[i].data[j]['trueskill']['stds'].length;
-      if(max!=min) {
-        // normalizing scores between 1-10
-        rows[_results[i].data[j].place_name][this_study]['score'] = (((_results[i].data[j]['trueskill']['score'] - min) / (max-min))*9)+1;
-        var new_stdev = _results[i].data[j]['trueskill']['stds'][stdev_l-1]*rows[_results[i].data[j].place_name][this_study]['score']/_results[i].data[j]['trueskill']['score'];
-        rows[_results[i].data[j].place_name][this_study]['stdev'] = parseFloat(new_stdev).toFixed(3);
-        rows[_results[i].data[j].place_name][this_study]['score'] = parseFloat(rows[_results[i].data[j].place_name][this_study]['score']).toFixed(3);
-      }
-      else {
-        rows[_results[i].data[j].place_name][this_study]['score'] = 1;
-        var new_stdev = _results[i].data[j]['trueskill']['stds'][stdev_l-1]/_results[i].data[j]['trueskill']['score'];
-        rows[_results[i].data[j].place_name][this_study]['stdev'] = parseFloat(new_stdev).toFixed(3);
-      }
+      rows[_results[i].data[j].place_name][this_study]['score'] = _results[i].data[j]['trueskill']['mean'].toFixed(2)
+      rows[_results[i].data[j].place_name][this_study]['stdev'] = _results[i].data[j]['trueskill']['std'].toFixed(2)
     }
   }
   var k=1;

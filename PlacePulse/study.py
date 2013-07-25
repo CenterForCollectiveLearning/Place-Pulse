@@ -191,6 +191,8 @@ def get_city_rank(study_id):
                   'num_votes':1,
                   'place_name':1,
                   'trueskill.score':1,
+                  'trueskill.mean':1,
+                  'trueskill.std':1,
                   'trueskill.mus': {'$slice': -25},
                   'trueskill.stds': {'$slice': -25}
     }
