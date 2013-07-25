@@ -392,9 +392,10 @@
 }
 
 #rankings_table th {
-  font-size: 16px;
-  height: 50px;
+  font-size: 14px;
+  height: 60px;
   border-bottom: 1px solid black;
+  font-weight: bold;
 }
 
 #rankings_table th:hover {
@@ -408,7 +409,7 @@
 
 #serialnum_table th {
   font-size: 16px;
-  height: 50px;
+  height: 60px;
   border-bottom: 1px solid black;
 }
 
@@ -430,31 +431,32 @@
 
 .scorecell {
   padding: 10px;
-  width: 16%;
+  width: 7%;
 }
 
 .numcell {
   padding: 10px;
-  width: 5%;
+  width: 3%;
   text-align: right;
 }
 
 th.header {
     background-image: url(/static/img/table-assets/bg.gif);
     background-repeat: no-repeat;
-    background-position: center right;
+    background-position: 50% 90%;
     cursor: pointer;
-    font-weight: bold;
 }
 
 th.headerSortUp {
     background-image: url(/static/img/table-assets/asc.gif);
     background-color: #AAFF56;
+    background-position: 50% 90%;
 }
 
 th.headerSortDown {
     background-image: url(/static/img/table-assets/desc.gif);
     background-color: #FFB6B6;
+    background-position: 50% 90%;
 }
 
 p {
