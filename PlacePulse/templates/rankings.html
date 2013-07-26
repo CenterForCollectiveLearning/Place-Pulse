@@ -6,17 +6,32 @@
 <link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
 <link rel="stylesheet" href="/static/css/style.css"/>
 <link rel="stylesheet" href="/static/css/main.css"/>
+<style>
+
+line {
+  stroke:#333;
+}
+
+.citylabel {
+  font: 12px sans-serif;
+}
+
+.sidelabel {
+  font-size:20px;
+}
+
+</style>
 {% endblock %}
 
 {% block js %}
 <script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="/static/js/libs/bootstrap.js"></script>
 <script src="/static/js/libs/jquery.isotope.min.js"></script>
 <script src="/static/js/libs/jquery.touchSwipe.js"></script>
 <script src="/static/js/base_ui.js"></script>
 <script src="/static/js/libs/imagesloaded.pkgd.min.js"> </script>
 <script src="/static/js/libs/jquery.sparkline.min.js"> </script>
-<script src="/static/js/libs/jquery.tablesorter.min.js"> </script>
 <script src="/static/js/render_current_rankings.js"> </script>
 {% endblock %}
 
@@ -32,27 +47,6 @@
 {% block body %}
 
 <div id="ongoing_stats">
-  <table id="serialnum_table" class="fl">
-    <thead><tr><th style="text-align:right; padding-right:10px;">#</th></tr></thead>
-    <tbody></tbody>
-  </table>
-  <table id="rankings_table" class="tablesorter fl">
-    <thead><tr>
-      <th style="text-align:left; padding-left:10px;">City</th>
-      <th>Boring</th>
-      <th>Bor +/-</th>
-      <th>Depressing</th>
-      <th>Depr +/-</th>
-      <th>Livelier</th>
-      <th>Liv +/-</th>
-      <th>Safer</th>
-      <th>Saf +/-</th>
-      <th>Wealthier</th>
-      <th>Weal +/-</th>
-    </tr></thead>
-    <tbody>
-    </tbody>
-  </table>
 </div>
 
 {% endblock %}
