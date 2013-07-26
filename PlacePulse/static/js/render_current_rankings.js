@@ -16,13 +16,13 @@ function plotLine(container, width, height, data, question) {
   sidelabel.text("More " + question).attr("class", "sidelabel")
   var bBox = sidelabel[0][0].getBBox();
   var rightMargin = bBox.width;
-  sidelabel.attr("x", width-bBox.width).attr("y", height/2).attr("dy", "-15px");
+  sidelabel.attr("x", width-bBox.width).attr("y", height/2).attr("dy", "-50px");
   //left label
   sidelabel = svg.append("text");
   sidelabel.text("Less " + question).attr("class", "sidelabel")
   var bBox = sidelabel[0][0].getBBox();
   var leftMargin = bBox.width;
-  sidelabel.attr("x", 0).attr("y", height/2).attr("dy", "-15px");
+  sidelabel.attr("x", 0).attr("y", height/2).attr("dy", "-50px");
 
 
   // add the middle line
@@ -40,7 +40,7 @@ function plotLine(container, width, height, data, question) {
 
   var g = svg.append("g")
   var yshift = function(d, i, isText) {
-    var tmp = height/2 + Math.pow(-1,i%2)*((i%7)+1)*15;
+    var tmp = height/2 + Math.pow(-1,i%2)*((i%9)+1)*13;
     if(isText) {
       if(i%2) { tmp += 3; }
       else { tmp-=10; }
@@ -80,7 +80,7 @@ function plotLine(container, width, height, data, question) {
 
 
 var width = 940;
-var height = 270;
+var height = 280;
 
 var studyid2question = {
   "50a68a51fdc9f05596000002": "safe",
