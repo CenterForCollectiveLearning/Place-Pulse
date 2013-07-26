@@ -12,17 +12,17 @@ function plotLine(container, width, height, data, question) {
   //first add the labels on the side
   
   // right label
-  var text = svg.append("text");
-  text.text("More " + question).attr("class", "sidelabel")
-  var bBox = text[0][0].getBBox();
+  var sidelabel = svg.append("text");
+  sidelabel.text("More " + question).attr("class", "sidelabel")
+  var bBox = sidelabel[0][0].getBBox();
   var rightMargin = bBox.width;
-  text.attr("x", width-bBox.width).attr("y", height/2).attr("dy", "-15px");
+  sidelabel.attr("x", width-bBox.width).attr("y", height/2).attr("dy", "-15px");
   //left label
-  text = svg.append("text");
-  text.text("Less " + question).attr("class", "sidelabel")
-  var bBox = text[0][0].getBBox();
+  sidelabel = svg.append("text");
+  sidelabel.text("Less " + question).attr("class", "sidelabel")
+  var bBox = sidelabel[0][0].getBBox();
   var leftMargin = bBox.width;
-  text.attr("x", 0).attr("y", height/2).attr("dy", "-15px");
+  sidelabel.attr("x", 0).attr("y", height/2).attr("dy", "-15px");
 
 
   // add the middle line
@@ -82,16 +82,31 @@ function plotLine(container, width, height, data, question) {
 var width = 940;
 var height = 270;
 
-studyid2question = {
+var studyid2question = {
   "50a68a51fdc9f05596000002": "safe",
   "50f62c41a84ea7c5fdd2e454": "lively",
   "50f62c68a84ea7c5fdd2e456": "boring",
   "50f62cb7a84ea7c5fdd2e458": "wealthy",
   "50f62ccfa84ea7c5fdd2e459": "depressing"
 }
+var studyid2data = {};
+var loaded = 0;
 
-for (studyid in studyid2question) {
-  d3.json("/study/" + studyid + "/getcityrank/", function(error, data) {
-    plotLine(d3.select("#ongoing_stats"), width, height, data, studyid2question[studyid]);
-  });
+//load all the data
+for (var studyid in studyid2question) {
+  (function(studyid) {
+    d3.json("/study/" + studyid + "/getcityrank/", function(error, data) {
+      studyid2data[studyid] = data;
+      loaded+=1;
+      if (loaded == 5) {
+        render();
+      }
+    });
+  })(studyid);
+}
+
+function render() {
+  for (var studyid in studyid2question) {
+    plotLine(d3.select("#ongoing_stats"), width, height, studyid2data[studyid], studyid2question[studyid]);
+  }
 }
