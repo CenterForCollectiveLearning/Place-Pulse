@@ -39,6 +39,12 @@ function scrollBottom() {
   $('html, body').animate({
     scrollTop: document.body.scrollHeight}, 1000);
 }
+
+function scrollToTable() {
+  $('html, body').animate({
+    scrollTop: $('table').offset().top}, 1000);
+}
+
 //window.scrollTo(0,document.body.scrollHeight);
 </script>
 {% endblock %}
@@ -53,7 +59,7 @@ function scrollBottom() {
 {% endblock %}
 
 {% block body %}
-<h3>See <a href="#" onclick="scrollBottom();">Interpreting these rankings</a></h3>
+<h3>See <a href="#" onclick="scrollToTable();">Rankings table</a> | <a href="#" onclick="scrollBottom();">Interpreting these rankings</a></h3>
 <p>Legend: larger circle radius corresponds to higher within-city variance.</p>
 <div id="ongoing_stats">
 </div>
