@@ -25,14 +25,22 @@ line {
 
 {% block js %}
 <script src="/static/js/libs/jquery-1.7.2.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="/static/js/libs/d3.min.js"></script>
 <script src="/static/js/libs/bootstrap.js"></script>
 <script src="/static/js/libs/jquery.isotope.min.js"></script>
 <script src="/static/js/libs/jquery.touchSwipe.js"></script>
 <script src="/static/js/base_ui.js"></script>
 <script src="/static/js/libs/imagesloaded.pkgd.min.js"> </script>
 <script src="/static/js/libs/jquery.sparkline.min.js"> </script>
+<script src="/static/js/libs/jquery.tablesorter.min.js"> </script>
 <script src="/static/js/render_current_rankings.js"> </script>
+<script>
+function scrollBottom() {
+  $('html, body').animate({
+    scrollTop: document.body.scrollHeight}, 1000);
+}
+//window.scrollTo(0,document.body.scrollHeight);
+</script>
 {% endblock %}
 
 {% block header %}
@@ -45,9 +53,45 @@ line {
 {% endblock %}
 
 {% block body %}
-
+<h3>See <a href="#" onclick="scrollBottom();">Interpreting these rankings</a></h3>
+<p>Legend: larger circle radius corresponds to higher within-city variance.</p>
 <div id="ongoing_stats">
 </div>
+<div>
+  <table id="serialnum_table" class="fl">
+    <thead><tr><th style="text-align:right; padding-right:10px;">#</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <table id="rankings_table" class="tablesorter fl">
+    <thead>
+      <tr>
+        <th style="text-align:left; padding-left:10px;">City</th>
+        <th>Boring</th>
+        <th>Bor +/-</th>
+        <th>Depressing</th>
+        <th>Depr +/-</th>
+        <th>Livelier</th>
+        <th>Liv +/-</th>
+        <th>Safer</th>
+        <th>Saf +/-</th>
+        <th>Wealthier</th>
+        <th>Weal +/-</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+<a id="interpret-ranking"><h2>Interpreting these rankings</h2></a>
+<p>
+  Place Pulse is to computation what a trireme is to a powerboat. Place Pulse is not an algorithm that runs on a computer, but an algorithm that runs on society, being powered by the clicks of each user. But how many clicks does it need to converge?
+</p>
+<p>
+The current experiment is based on ~100,000 images from 56 cities. It is also based on 5 different questions. Each click gives us information about two images, so we need ~250,000 clicks to have one information per image and question. 
+</p>
+<p>
+For our algorithm to give reproducible results at the image level, we need at least 7 to 10 clicks per image. This is roughly 2,000,000 clicks. Certainly, the algorithm converges faster at the aggregate city level, but any result being shown with a small number of clicks (&lt;1,000,000) should be interpreted at best as a rough estimate.
+</p>
 
 {% endblock %}
 
