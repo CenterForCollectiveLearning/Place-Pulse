@@ -193,12 +193,14 @@ def get_city_rank(study_id):
                   'trueskill.score':1,
                   'trueskill.mean':1,
                   'trueskill.std':1,
-                  'trueskill.mus': {'$slice': -25},
-                  'trueskill.stds': {'$slice': -25}
+                  'trueskill.mus': {'$slice': -300},
+                  'trueskill.stds': {'$slice': -300}
     }
     qs_places = list(Database.qs_place.find({'study_id': study_id} , projection).sort('trueskill.score', direction=-1))
     for qs_place in qs_places:
         place = Database.getPlace(qs_place['place_id'])
+        qs_place['trueskill']['mus'] = qs_place['trueskill']['mus'][::12]
+        qs_place['trueskill']['stds'] = qs_place['trueskill']['stds'][::12]
         qs_place['place_name'] = place['place_name']
     return jsonifyResponse(qs_places)
 
