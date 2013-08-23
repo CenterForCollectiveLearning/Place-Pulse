@@ -60,7 +60,7 @@ var citydata = [
 for(var i=0; i<citydata.length; i++) {
   var htmlstr = '<div class="row" style="padding-bottom:30px; border-bottom: 1px dashed black; padding-top:30px;">'
       +'<div class="span6" style="width:100%;"><div class="cityinfo"><p class="cityname">'+citydata[i][0]+'</p>'
-      +'<br><br><p><b>Area: '+citydata[i][1]+' sq km</b></p><br><p><b>Images: 1617</b></p><br>'
+      +'<br><br><p><b>Area: '+citydata[i][1]+' sq km</b></p><br><p><b>Images: '+citydata[i][2]+'</b></p><br>'
       +'<p><b>Images per sq km: '+(citydata[i][2]/citydata[i][1]).toFixed(2)+'</b></p></div><img class="citypic" src="/static/img/map_bounds/'+
       citydata[i][0].replace(/ /g,'')+'.png"/></div></div>';
     $('#newcities').append(htmlstr);
