@@ -1,9 +1,20 @@
+var studyid2question = {
+  "50a68a51fdc9f05596000002": ["Less safe", "More safe", 1],
+  "50f62c41a84ea7c5fdd2e454": ["Less lively", "More lively", 1],
+  "50f62c68a84ea7c5fdd2e456": ["More boring", "Less boring", -1],
+  "50f62cb7a84ea7c5fdd2e458": ["Less wealthy", "More wealthy", 1],
+  "50f62ccfa84ea7c5fdd2e459": ["More depressing", "Less depressing", -1]
+}
+
 $.ajax({
     url:'/getstudies/',
     type: 'GET',
     success: function(data) {
       var studies = [];
       for(var i=0; i<data.length; i++) {
+        if(studyid2question[data[i]['_id']] === undefined) {
+          continue;
+        }
         var abbr_q = data[i].study_question.split(" ");
         if(abbr_q.length > 1)
           studies[data[i]._id] = abbr_q[1];
@@ -164,14 +175,6 @@ function plotLine(container, width, height, data, question) {
 
 var width = 940;
 var height = 280;
-
-var studyid2question = {
-  "50a68a51fdc9f05596000002": ["Less safe", "More safe", 1],
-  "50f62c41a84ea7c5fdd2e454": ["Less lively", "More lively", 1],
-  "50f62c68a84ea7c5fdd2e456": ["More boring", "Less boring", -1],
-  "50f62cb7a84ea7c5fdd2e458": ["Less wealthy", "More wealthy", 1],
-  "50f62ccfa84ea7c5fdd2e459": ["More depressing", "Less depressing", -1]
-}
 
 function render() {
   for (var studyid in studyid2question) {
