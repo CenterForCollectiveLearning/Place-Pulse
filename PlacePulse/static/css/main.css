@@ -522,7 +522,6 @@ img.citypic {
 
 #menu ul li {
   font-size: 18px;
-  padding: 10px;
 }
 
 #menu ul li:hover {
@@ -551,7 +550,10 @@ img.citypic {
 }
 
 #menu a {
+  display: inline-block;
+  padding: 10px;
   text-decoration: none;
+  width: 100%;
 }
 
 #menudown {
