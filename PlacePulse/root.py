@@ -48,3 +48,9 @@ def load_another_study(study_id):
   studyObj = Database.getAnotherStudy(study_id)
   votesCount = Database.getVotesCount()
   return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
+
+@root.route("/loadstudy/<study_id>")
+def load_another_study(study_id):
+  studyObj = Database.getStudy(study_id)
+  votesCount = Database.getVotesCount()
+  return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
