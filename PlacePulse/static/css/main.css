@@ -484,3 +484,85 @@ img.citypic {
 .fl {
   float: left;
 }
+
+#menu {
+  width: 70%;
+  border: 1px solid #ea484b;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#current_question {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-image: linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
+  background-image: -o-linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
+  background-image: -moz-linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
+  background-image: -webkit-linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
+  background-image: -ms-linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
+
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.29, rgb(214,214,214)),
+    color-stop(0.62, rgb(247,247,247))
+  );
+}
+
+#menu ul {
+  list-style: none;
+  display: none;
+  cursor: pointer;
+  margin: 0;
+  width: 100%;
+}
+
+#menu ul li {
+  font-size: 18px;
+  padding: 10px;
+}
+
+#menu ul li:hover {
+  background-color: #F6F6F6;
+  color: black;
+}
+
+#menu:hover ul {
+  display: inline-block;
+}
+
+#menu:hover #current_question {
+  background-image: linear-gradient(bottom, rgb(250,235,227) 29%, rgb(255,245,242) 62%);
+  background-image: -o-linear-gradient(bottom, rgb(250,235,227) 29%, rgb(255,245,242) 62%);
+  background-image: -moz-linear-gradient(bottom, rgb(250,235,227) 29%, rgb(255,245,242) 62%);
+  background-image: -webkit-linear-gradient(bottom, rgb(250,235,227) 29%, rgb(255,245,242) 62%);
+  background-image: -ms-linear-gradient(bottom, rgb(250,235,227) 29%, rgb(255,245,242) 62%);
+
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.29, rgb(250,235,227)),
+    color-stop(0.62, rgb(255,245,242))
+  );
+}
+
+#menu a {
+  text-decoration: none;
+}
+
+#menudown {
+  float: right;
+  margin-top: 12px;
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+}

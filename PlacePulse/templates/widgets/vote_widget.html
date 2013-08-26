@@ -1,6 +1,8 @@
  <div class="hero-unit">
-    <div class="ac">
-      <h1>Which place looks <b>{{ study_prompt }}</b> ?&nbsp;&nbsp;<a href='/another/{{ study_id }}'><image height="26" width="30" src="/static/img/question_refresh_icon.png" class="q_ref_icon" alt="another question" title="Get another question"/></a></h1>
+    <div class="ac" id="menu">
+      <h1 id="current_question">Which place looks <b>{{ study_prompt }}</b> ?<div id="menudown" class="arrow"></div></h1>
+      <ul id="other_questions">
+      </ul>
     </div>
   </div>
 <div class="row">
@@ -10,7 +12,6 @@
       <li class="span5 vote">
         <div id="pano_left" class="left thumbnail streetViewChoice"><a><img class="place"/></a></div>
         <div id="pano_left_buffer" class="buffer"><img class="place" /></div>
-        <!--<image id="key_1" height="70" width="67" class="keys" src="/static/img/key_1.png" alt="Button 1" />-->
         <div class="clear"></div>
       </li>
     <li class="span13">
@@ -29,11 +30,9 @@
       <li class="span5 vote">
         <div id="pano_right" class="right thumbnail streetViewChoice"><a><img class="place"/></a></div>
         <div id="pano_right_buffer" class="buffer"><img class="place" /></div>
-        <!--<image id="key_2" height="70" width="67" class="keys" src="/static/img/key_2.png" alt="Button 2" />-->
         <div class="clear"></div>
       </li>
     </ul>
-  </div><!--/span-->
-</div><!--/row-->
+  </div>
+</div>
 <hr style="margin:0px;"/>
-
