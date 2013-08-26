@@ -98,6 +98,20 @@
 
 <script> var study_id = "{{ study_id }}"; </script>
 <script type="text/javascript">
+
+  $.ajax({
+    url:'/getstudies/',
+    type: 'GET',
+    success: function(data) {
+      for(var i=0; i<data.length; i++) {
+        //var q = 'Which place looks '+ data[i].study_question+ '?';
+        var q = data[i].study_question;
+        var loadlink = '/loadstudy/'+data[i]._id;
+        $('#other_questions').append('<li><a href="'+loadlink+'">'+'Which place looks <b>'+q+'</b>?</a></li>')
+      }
+    }
+  });
+
   var linecol = '#191919';
   var fillcol_hi = '#aaff56';
   var fillcol_lo = '#ff5656'
