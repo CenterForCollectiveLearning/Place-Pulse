@@ -42,7 +42,7 @@ def main():
 	if studyObj is None:
 		return "Uh oh.. no study found in database."
 	votesCount = Database.getVotesCount()
-	return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
+	return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount, votes_for_study=studyObj['num_votes'])
 
 def buildIndices():
     Database.qs.ensure_index([('study_id', pymongo.ASCENDING), ('location_id', pymongo.ASCENDING)]) # for updating the q scores after every vote

@@ -19,6 +19,11 @@
 
 {% block body %}
 {% include 'widgets/vote_widget.html' %}
+<div id="progressbar" style="color:#333;font-size:20px; height:30px;width:100%;">
+  <div style="float:left;text-align:right;line-height: 30px; border:1px solid #ccc; border-radius:5px; height:100%;width:100%">
+    <div id="progress-fill" style="float:left;background-color:#ea4839;height:100%;text-align:left;border-radius:5px;"><span style="padding:10px;white-space:nowrap;" id="progress-number"></span></div><span style="padding:10px;">Goal: <b>500,000</b> clicks</span>
+  </div>
+</div>
 <div class="landing_stats">
 <div class="row" style="margin: 0 auto 0 auto; width: 960px;">
   <div class="span8" style="width:100%; margin-left: 0px;">
@@ -27,9 +32,9 @@
 </div>
 
 <hr style="margin:0px;"/>
-<h2 class="lead centered" style="margin:15px 0px;">
+<!-- <h2 class="lead centered" style="margin:15px 0px;">
       For the above question, current winners &amp; losers across 56 global cities:
-</h2>
+</h2> -->
 <div class="row" style="margin: 0 auto 0 auto; width: 960px;">
   <div class="ranker floatleft">
     <div class="rankrow">
@@ -168,4 +173,12 @@
   }
 </script>
 <script src="/static/js/main.js"></script>
+<script>
+  $(document).ready(function () {
+    var votes_for_study = {{votes_for_study}};
+    $('#progress-fill').css("width", (100*votes_for_study/500000) + '%');
+    $('#progress-number').html('<b>' + numberWithCommas(votes_for_study) + "</b> clicks");
+  });
+
+</script>
 {% endblock %}

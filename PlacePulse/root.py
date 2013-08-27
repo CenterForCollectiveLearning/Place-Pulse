@@ -47,10 +47,10 @@ def load_contactus():
 def load_another_study(study_id):
   studyObj = Database.getAnotherStudy(study_id)
   votesCount = Database.getVotesCount()
-  return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
+  return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount, votes_for_study=studyObj['num_votes'])
 
 @root.route("/loadstudy/<study_id>")
 def load_another_study(study_id):
   studyObj = Database.getStudy(study_id)
   votesCount = Database.getVotesCount()
-  return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount)
+  return auto_template('main.html',study_id=studyObj.get('_id'),study_prompt=studyObj.get('study_question'), votes_contributed=votesCount, votes_for_study=studyObj['num_votes'])

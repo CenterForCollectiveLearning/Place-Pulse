@@ -60,7 +60,7 @@
           <a class="brand" href="/">
             <b>PLACE</b> PULSE
           </a>
-          <a href="/" class="btn btn-large btn-primary votes" style="cursor:default; margin-top: 20px; margin-left: 20px;"><b>{{votes_contributed}}</b> clicks</a>
+          <a href="/" class="btn btn-large btn-primary votes" style="cursor:default; margin-top: 20px; margin-left: 20px;"><b><span id="votes_contributed"></span></b> clicks</a>
           <div class="nav-collapse fr">
             <ul class="nav">
             {% for href, id, caption in navigation_bar %}
@@ -91,6 +91,17 @@
   <!-- Javascript -->
   {% block js %}
   {% endblock %}
+  <script>
+    function numberWithCommas(x) {
+      var parts = x.toString().split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
+    }
+    $(document).ready(function() {
+      var nvotes = {{votes_contributed}};
+      $("#votes_contributed").html(numberWithCommas(nvotes));
+    });
 
+  </script>
 </body>
 </html>
