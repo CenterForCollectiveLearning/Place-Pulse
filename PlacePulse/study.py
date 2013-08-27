@@ -10,7 +10,6 @@ from uuid import uuid4
 from trueskill import trueskill
 
 study = Module(__name__)
-
 from db import Database
 
 #--------------------Create
@@ -261,23 +260,10 @@ def get_bottom_n_place(study_id, place_id, n):
 
 @study.route("/study/getpair/<study_id>/",methods=['GET'])
 def get_study_pairing(study_id):
-    # get location 1
-    qs1 = Database.randomQS(study_id)
-    if qs1 is None:
-        return jsonifyResponse({
-            'error': "Could not get location 1 from QS collection."
-        })
-    #get location 2
-    loc_id = qs1['location_id']
-    qs2 = Database.randomQS(study_id, exclude=loc_id)
-    if qs2 is None:
-        return jsonifyResponse({
-            'error': "Could not get location 2 from QS collection."
-        })
-
+    location1, location2 = Database.randomLocPair(study_id)
     # convert to location objects
-    location1 = Database.getLocation(qs1['location_id'])
-    location2 = Database.getLocation(qs2['location_id'])
+    #location1 = Database.getLocation(qs1['location_id'])
+    #location2 = Database.getLocation(qs2['location_id'])
     locationsToDisplay = [location1, location2]
     if location1 is None or location2 is None:
         return jsonifyResponse({

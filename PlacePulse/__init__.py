@@ -10,7 +10,9 @@ from util import *
 from random import random
 from trueskill import trueskill
 import json
-
+import time
+import tornado.ioloop
+import numpy as np
 """
 Add a places field to each study.
 On populating, use mongodb's update append to add it
@@ -57,4 +59,40 @@ def buildIndices():
     #})
 
 
+def buildRandomPairs():
+    print 'building random pair list...'
+    start = time.time()
+    locid2idx = Database.locid2idx
+    locs = Database.locs
+    studyid2prob = {}
+    for study in Database.studies.find():
+        studyid = str(study['_id'])
+        prob = [0.0] * len(locs)
+        for qs in Database.qs.find({'study_id': studyid}):
+            idx = locid2idx[qs['location_id']]
+            prob[idx] = 1.0/(qs['num_votes'] + 1)
+        prob = np.array(prob)
+        prob /= np.sum(prob)
+        studyid2prob[studyid] = prob
+    Database.studyid2prob = studyid2prob
+    end = time.time()
+    print 'done building random pair list:', (end-start), 'sec'
+
+def initRandomPairs():
+  locid2idx = {}
+  locs = [None] * Database.locations.count()
+  i = 0
+  for loc in Database.locations.find():
+    locs[i] = loc
+    locid2idx[str(loc['_id'])] = i
+    i += 1
+  Database.locid2idx = locid2idx
+  Database.locs = locs
+  
+  # rebuild random pairs every 30min
+  buildRandomPairs()
+  tornado.ioloop.PeriodicCallback(buildRandomPairs, 30*60*1000).start()
+
+
 buildIndices()
+initRandomPairs()

@@ -9,12 +9,17 @@ import math
 from random import choice
 from random import randint
 from trueskill import trueskill
-
+import numpy.random as rnd
 # FIXME: We can't get away with silencing all errors in these methods.
 # They've made too many bugs hard to find. Let's add a real error logging system.
 
 class database(object):
 #--------------------Results
+    
+    locid2idx = None
+    locs = None
+    studyid2prob = None
+
     def getResultsForStudy(self,studyID):
         # FIXME: Normalize use of ObjectId/str for _id's.
         return self.results.find_one({
@@ -318,15 +323,10 @@ class database(object):
         self._pushQscore(loser_qs, mu_loser, std_loser, old_mu_loser, old_std_loser)
         return True
 
-    def randomQS(self, study_id, exclude=None):
-      rand = random.random()
-      query = { 'study_id' : study_id, 'random' : { '$gte' : rand}}
-      qs = Database.qs.find_one( query )
-      if qs is None:
-        query['random'] = { '$lte' : rand}
-        qs = Database.qs.find_one(query)
-      if exclude and qs["location_id"] == exclude: return Database.randomQS(study_id, exclude)
-      return qs
+    def randomLocPair(self, study_id):
+      prob = self.studyid2prob[study_id]
+      a, b = rnd.choice(len(prob), size=2, replace=False, p=prob)
+      return self.locs[a], self.locs[b]
 
     @property
     def locations(self):
