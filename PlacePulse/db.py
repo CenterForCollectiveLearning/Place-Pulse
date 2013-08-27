@@ -301,6 +301,7 @@ class database(object):
         ''' Update Q scores consists of several tasks:
             1. update the scores of the two locations
             2. update the scores of the place/two places where these two locations are from
+            3. increment the vote count for the study
         '''
         # 1. update the scores of the two locations (images)
         winner_qs = self.getQS(study_id, winner_locid)
@@ -321,6 +322,9 @@ class database(object):
         # 2. push and scores of the locations to the db and update the scores of the places where these locations are from
         self._pushQscore(winner_qs, mu_winner, std_winner, old_mu_winner, old_std_winner)
         self._pushQscore(loser_qs, mu_loser, std_loser, old_mu_loser, old_std_loser)
+        
+        # 3. increment vote count for the study
+        self.studies.update({'_id': ObjectId(study_id)}, { '$inc' : { 'num_votes': 1 }})
         return True
 
     def randomLocPair(self, study_id):
