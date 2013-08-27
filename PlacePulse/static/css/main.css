@@ -529,9 +529,11 @@ img.citypic {
   color: black;
 }
 
-#menu:hover ul {
+#menu:hover ul,
+#menu.touch ul {
   display: inline-block;
 }
+
 
 #menu:hover #current_question {
   background-image: linear-gradient(bottom, rgb(250,235,227) 29%, rgb(255,245,242) 62%);

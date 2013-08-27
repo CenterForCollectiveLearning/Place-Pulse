@@ -112,6 +112,11 @@
     }
   });
 
+  $('#menu').on("click", toggleMenu);
+  function toggleMenu(evt) {
+    $(this).toggleClass('touch');
+  }
+
   var linecol = '#191919';
   var fillcol_hi = '#aaff56';
   var fillcol_lo = '#ff5656'
