@@ -60,8 +60,23 @@ def buildIndices():
 
 
 def buildRandomPairs():
-    print 'building random pair list...'
+    print 'Rebuilding random pairs probability...'
     start = time.time()
+    ### build study probabilities ###
+    study_prob = []
+    for study in Database.studs:
+        nvotes = 0
+        studyid = str(study['_id'])
+        for qs_place in Database.qs_place.find({'study_id': studyid}): nvotes += qs_place['num_votes']
+        print study['study_question'], nvotes
+        study_prob.append(1.0/(nvotes+1))
+    
+    study_prob = np.array(study_prob)
+    study_prob /= np.sum(study_prob)
+    Database.study_prob = study_prob
+    ### END build study probabilities ###
+     
+    ### build location probabilities ###
     locid2idx = Database.locid2idx
     locs = Database.locs
     studyid2prob = {}
@@ -76,9 +91,11 @@ def buildRandomPairs():
         studyid2prob[studyid] = prob
     Database.studyid2prob = studyid2prob
     end = time.time()
-    print 'done building random pair list:', (end-start), 'sec'
+    print 'Done rebuilding random pairs:', (end-start), 'sec'
 
 def initRandomPairs():
+  print 'Initializing random pairs...'
+  start = time.time()
   locid2idx = {}
   locs = [None] * Database.locations.count()
   i = 0
@@ -86,9 +103,12 @@ def initRandomPairs():
     locs[i] = loc
     locid2idx[str(loc['_id'])] = i
     i += 1
+  
+  Database.studs = [study for study in Database.studies.find()]
   Database.locid2idx = locid2idx
   Database.locs = locs
-  
+  end = time.time()
+  print 'Done Initializing random pairs:', (end-start), 'sec'
   # rebuild random pairs every 30min
   buildRandomPairs()
   tornado.ioloop.PeriodicCallback(buildRandomPairs, 30*60*1000).start()
