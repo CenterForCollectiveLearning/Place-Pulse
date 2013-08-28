@@ -39,7 +39,7 @@ class database(object):
         return self.studies.find_one(ObjectId(study_id),{"study_question":1})['study_question']
 
     def getRandomStudy(self):
-        return self.studs[rnd.choice(len(self.studs), p=self.study_prob)]
+        return self.getStudy(self.studs[rnd.choice(len(self.studs), p=self.study_prob)]['_id'])
 
     def getAnotherStudy(self,study_id):
         count = self.studies.count()
