@@ -19,15 +19,19 @@
 
 {% block body %}
 {% include 'widgets/vote_widget.html' %}
-<div id="progressbar" style="color:#333;font-size:20px; height:30px;width:100%;">
-  <div style="float:left;text-align:right;line-height: 30px; border:1px solid #ccc; border-radius:5px; height:100%;width:100%">
-    <div id="progress-fill" style="float:left;background-color:#ea4839;height:100%;text-align:left;border-radius:5px;"><span style="padding:10px;white-space:nowrap;" id="progress-number"></span></div><span style="padding:10px;">Goal: <b>500,000</b> clicks</span>
+<div id="progressbar">
+  <div id="progressbar_inside">
+    <div id="progress-fill"></div>
+  </div>
+  <div>
+    <span id="progress-number"></span>
+    <span id="progress-goal">Goal: <b>500,000</b> clicks</span>
   </div>
 </div>
 <div class="landing_stats">
 <div class="row" style="margin: 0 auto 0 auto; width: 960px;">
-  <div class="span8" style="width:100%; margin-left: 0px;">
-    <a href="/rankings"><h2 style="text-align:center;margin:5px 0px;">See real-time rankings</h2></a>
+  <div class="span8" id="show_rankings">
+    <a href="/rankings" style="text-align:center;margin:5px 0px;">SEE REAL-TIME RANKINGS</a>
   </div>
 </div>
 
@@ -176,8 +180,8 @@
 <script>
   $(document).ready(function () {
     var votes_for_study = {{votes_for_study}};
-    $('#progress-fill').css("width", (100*votes_for_study/500000) + '%');
-    $('#progress-number').html('<b>' + numberWithCommas(votes_for_study) + "</b> clicks");
+    $('#progress-fill').css("width", (100*votes_for_study/50000) + '%');
+    $('#progress-number').html('For this question: '+'<b>' + numberWithCommas(votes_for_study) + "</b> clicks collected");
   });
 
 </script>

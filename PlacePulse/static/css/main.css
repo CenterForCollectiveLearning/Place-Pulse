@@ -497,19 +497,6 @@ img.citypic {
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
-  background-image: linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
-  background-image: -o-linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
-  background-image: -moz-linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
-  background-image: -webkit-linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
-  background-image: -ms-linear-gradient(bottom, rgb(214,214,214) 29%, rgb(247,247,247) 62%);
-
-  background-image: -webkit-gradient(
-    linear,
-    left bottom,
-    left top,
-    color-stop(0.29, rgb(214,214,214)),
-    color-stop(0.62, rgb(247,247,247))
-  );
 }
 
 #menu ul {
@@ -529,11 +516,13 @@ img.citypic {
   color: black;
 }
 
-#menu:hover ul,
-#menu.touch ul {
+#menu:hover ul {
   display: inline-block;
 }
 
+#menu.touch ul {
+  display: inline-block;
+}
 
 #menu:hover #current_question {
   background-image: linear-gradient(bottom, rgb(250,235,227) 29%, rgb(255,245,242) 62%);
@@ -569,4 +558,74 @@ img.citypic {
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid black;
+}
+
+#question_box {
+  padding: 20px 0 0 0;
+  margin-bottom: 20px;
+}
+
+#progressbar {
+ color:#333;
+ font-size:20px;
+ height:30px;
+ width:100%;
+}
+
+#progressbar_inside {
+  float:left;
+  text-align:right;
+  border:1px solid #ccc;
+  height:30%;
+  width:100%;
+  background-color: #F6F6F6;
+}
+
+#progress-fill {
+  float:left;
+  background-color:black;
+  text-align:left;
+  height: 100%;
+}
+
+#progress-number {
+  padding:0px;
+  padding-top:5px;
+  white-space:nowrap;
+  font-size: 14px;
+  float: left;
+}
+
+#progress-goal {
+  padding:0px;
+  padding-top:5px;
+  white-space:nowrap;
+  font-size: 14px;
+  float: right;
+}
+
+#show_rankings {
+  width: 40%;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 0px;
+  border: 1px #C6C6C6 solid;
+  border-radius: 3px;
+}
+
+.votespan {
+  width: 420px;
+  float: left;
+}
+
+.votelist {
+  list-style: none;
+  margin: 0 auto;
+  width: -webkit-fit-content;
+    width: -moz-fit-content;
+      width: fit-content;
 }

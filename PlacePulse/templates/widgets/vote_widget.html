@@ -1,4 +1,4 @@
- <div class="hero-unit">
+ <div class="hero-unit" id="question_box">
     <div class="ac" id="menu">
       <h1 id="current_question">Which place looks <b>{{ study_prompt }}</b> ?<div id="menudown" class="arrow"></div></h1>
       <ul id="other_questions">
@@ -7,9 +7,9 @@
   </div>
 <div class="row">
   <div class="votebox">
-    <div class="loadingmsg centered">Fetching next pair..</div>
-    <ul class="thumbnails" style="opacity:0.1; margin-left:0px;">
-      <li class="span5 vote">
+    <div class="loadingmsg centered">Fetching next pair...</div>
+    <ul class="votelist" style="opacity:0.1;">
+      <li class="votespan vote">
         <div id="pano_left" class="left thumbnail streetViewChoice"><a><img class="place"/></a></div>
         <div id="pano_left_buffer" class="buffer"><img class="place" /></div>
         <div class="clear"></div>
@@ -27,7 +27,7 @@
         </a>
       </div>
     </li>
-      <li class="span5 vote">
+      <li class="votespan vote">
         <div id="pano_right" class="right thumbnail streetViewChoice"><a><img class="place"/></a></div>
         <div id="pano_right_buffer" class="buffer"><img class="place" /></div>
         <div class="clear"></div>

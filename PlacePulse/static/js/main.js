@@ -104,7 +104,7 @@ function loadingDone() {
     $('#equal').on("click", function() { onStreetViewChoice('equal'); });
 
     $('.loadingmsg').css("display","none");
-    $("ul.thumbnails").css("opacity", 1.0);
+    $("ul.votelist").css("opacity", 1.0);
     $(".equalbutton").css("opacity", 1.0);
 }
 
