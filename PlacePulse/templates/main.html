@@ -180,7 +180,7 @@
 <script>
   $(document).ready(function () {
     var votes_for_study = {{votes_for_study}};
-    $('#progress-fill').css("width", (100*votes_for_study/50000) + '%');
+    $('#progress-fill').css("width", (100*votes_for_study/500000) + '%');
     $('#progress-number').html('For this question: '+'<b>' + numberWithCommas(votes_for_study) + "</b> clicks collected");
   });
 
