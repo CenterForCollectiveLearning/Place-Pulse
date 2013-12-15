@@ -33,15 +33,15 @@ def getUserStudyResultsData(study_id):
     results = Database.getResultsForStudy(study_id).get('results')
     return jsonifyResponse(results)
     
-@results.route('/study/top_results_data/<study_id>/',methods = ['GET'])
-def getUserStudyResultsData(study_id):
-    # Just get the top and bottom 8 for each city
-    results = Database.getResultsForStudy(study_id).get('results')
-    for place in results['ranking']:
-        place['top'] = place['rankings'][0:8]
-        place['bottom'] = place['rankings'][-8:]
-        del place['rankings']
-    return jsonifyResponse(results)
+#@results.route('/study/top_results_data/<study_id>/',methods = ['GET'])
+#def getUserStudyResultsData(study_id):
+#    # Just get the top and bottom 8 for each city
+#    results = Database.getResultsForStudy(study_id).get('results')
+#    for place in results['ranking']:
+#        place['top'] = place['rankings'][0:8]
+#        place['bottom'] = place['rankings'][-8:]
+#        del place['rankings']
+#    return jsonifyResponse(results)
 
 @results.route('/study/results/<study_id>/<place_name_slug>/',methods = ['GET'])
 def showPlaceResultsForStudy(study_id,place_name_slug):
