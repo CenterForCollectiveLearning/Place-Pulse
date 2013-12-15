@@ -1,42 +1,43 @@
-var studyid2question = {
-  "50a68a51fdc9f05596000002": ["Less safe", "More safe", 1],
-  "50f62c41a84ea7c5fdd2e454": ["Less lively", "More lively", 1],
-  "50f62c68a84ea7c5fdd2e456": ["More boring", "Less boring", -1],
-  "50f62cb7a84ea7c5fdd2e458": ["Less wealthy", "More wealthy", 1],
-  "50f62ccfa84ea7c5fdd2e459": ["More depressing", "Less depressing", -1]
+var studyname2question = {
+  "safer_multicity": ["Less safe", "More safe", 1],
+  "livelier_multicity": ["Less lively", "More lively", 1],
+  "cleaner_multicity": ["More boring", "Less boring", -1],
+  "wealthy_multicity": ["Less wealthy", "More wealthy", 1],
+  "depressing_multicity": ["More depressing", "Less depressing", -1],
+  "more beautiful": ["Less beautiful", "More beautiful", 1]
 }
 
 $.ajax({
     url:'/getstudies/',
     type: 'GET',
     success: function(data) {
-      var studies = [];
+      var studies = {};
       for(var i=0; i<data.length; i++) {
-        if(studyid2question[data[i]['_id']] === undefined) {
+        if(studyname2question[data[i]['study_name']] === undefined) {
           continue;
         }
         var abbr_q = data[i].study_question.split(" ");
         if(abbr_q.length > 1)
-          studies[data[i]._id] = abbr_q[1];
+          studies[data[i]._id] = [abbr_q[1], data[i]['study_name']];
         else
-          studies[data[i]._id] = abbr_q[0];
+          studies[data[i]._id] = [abbr_q[0], data[i]['study_name']];
       }
       getallstats(studies);
     }
   });
 
-var studyid2data = {};
+var studyname2data = {};
 function getallstats(_studies) {
   var results = [];
-
   for(var key in _studies) {
     $.ajax({
+      context: {'key': key},
       url:'/study/'+key+'/getcityrank',
       type:'GET',
       success: function(data) {
         results.push({'study': data[0].study_id, 'data': data});
-        studyid2data[data[0].study_id] = data;
-        if(results.length == 5) {
+        studyname2data[_studies[this.key][1]] = data;
+        if(results.length == 6) {
           consolidate_results(results, _studies);
           render();
         }
@@ -51,7 +52,7 @@ function consolidate_results(_results, _studies) {
     var len = _results[i].data.length;
     for(var j=0;j<len;j++) {
       if (rows[_results[i].data[j].place_name] === undefined) { rows[_results[i].data[j].place_name] = {};}
-      var this_study = _studies[_results[i].study];
+      var this_study = _studies[_results[i].study][0];
       if (rows[_results[i].data[j].place_name][this_study] === undefined) { rows[_results[i].data[j].place_name][this_study] = {}; }
       var stdev_l = _results[i].data[j]['trueskill']['stds'].length;
       rows[_results[i].data[j].place_name][this_study]['score'] = _results[i].data[j]['trueskill']['mean'].toFixed(2)
@@ -71,7 +72,9 @@ function consolidate_results(_results, _studies) {
       '<td class="scorecell">'+rows[key]["safer"]["score"]+'</td>'+
       '<td class="scorecell">'+rows[key]["safer"]["stdev"]+'</td>'+
       '<td class="scorecell">'+rows[key]["wealthier"]["score"]+'</td>'+
-      '<td class="scorecell">'+rows[key]["wealthier"]["stdev"]+'</td>'+'</tr>';
+      '<td class="scorecell">'+rows[key]["wealthier"]["stdev"]+'</td>'+
+      '<td class="scorecell">'+rows[key]["beautiful"]["score"]+'</td>'+
+      '<td class="scorecell">'+rows[key]["beautiful"]["stdev"]+'</td>'+'</tr>';
     $('#rankings_table > tbody:last').append(newrow);
 
     var newserial = '<tr><td class="numcell">'+k+'. </td></tr>';
@@ -79,7 +82,7 @@ function consolidate_results(_results, _studies) {
     k++;
   }
 
-  $('#rankings_table').tablesorter({ sortList: [[5,1]] });
+  $('#rankings_table').tablesorter({ sortList: [[6,1]] });
 }
 
 function hoverOverCity(d) {
@@ -177,7 +180,7 @@ var width = 940;
 var height = 280;
 
 function render() {
-  for (var studyid in studyid2question) {
-    plotLine(d3.select("#ongoing_stats"), width, height, studyid2data[studyid], studyid2question[studyid]);
+  for (var studyname in studyname2data) {
+    plotLine(d3.select("#ongoing_stats"), width, height, studyname2data[studyname], studyname2question[studyname]);
   }
 }
