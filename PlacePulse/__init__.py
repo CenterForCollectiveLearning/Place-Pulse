@@ -93,9 +93,8 @@ def buildRandomPairs():
     end = time.time()
     print 'Done rebuilding random pairs:', (end-start), 'sec'
 
-def initRandomPairs():
-  print 'Initializing random pairs...'
-  start = time.time()
+def initDB():
+  Database.studs = [study for study in Database.studies.find()]
   locid2idx = {}
   locs = [None] * Database.locations.count()
   i = 0
@@ -104,15 +103,9 @@ def initRandomPairs():
     locid2idx[str(loc['_id'])] = i
     i += 1
   
-  Database.studs = [study for study in Database.studies.find()]
   Database.locid2idx = locid2idx
   Database.locs = locs
-  end = time.time()
-  print 'Done Initializing random pairs:', (end-start), 'sec'
-  # rebuild random pairs every 30min
-  buildRandomPairs()
-  tornado.ioloop.PeriodicCallback(buildRandomPairs, 30*60*1000).start()
-
+  print 'Done initializing db...'
 
 buildIndices()
-initRandomPairs()
+initDB()

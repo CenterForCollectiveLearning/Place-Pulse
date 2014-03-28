@@ -18,9 +18,7 @@ class database(object):
     
     locid2idx = None
     locs = None
-    studyid2prob = None
     studs = None
-    study_prob = None
 
     def getResultsForStudy(self,studyID):
         # FIXME: Normalize use of ObjectId/str for _id's.
@@ -39,7 +37,7 @@ class database(object):
         return self.studies.find_one(ObjectId(study_id),{"study_question":1})['study_question']
 
     def getRandomStudy(self):
-        return self.getStudy(self.studs[rnd.choice(len(self.studs), p=self.study_prob)]['_id'])
+        return self.getStudy(self.studs[rnd.choice(len(self.studs))]['_id'])
 
     def getAnotherStudy(self,study_id):
         count = self.studies.count()
@@ -237,7 +235,7 @@ class database(object):
         if extra_data is not None:
             userObj.update(extra_data)
         newID = self.users.insert(userObj)
-        userObj['_id'] = newID
+        userObj['_id'] = str(newID)
         return userObj
 #--------------------Votes
     def getVotes(self,study_id):
@@ -328,8 +326,7 @@ class database(object):
         return True
 
     def randomLocPair(self, study_id):
-      prob = self.studyid2prob[study_id]
-      a, b = rnd.choice(len(prob), size=2, replace=False, p=prob)
+      a, b = rnd.choice(len(self.locs), size=2, replace=False)
       return self.locs[a], self.locs[b]
 
     @property

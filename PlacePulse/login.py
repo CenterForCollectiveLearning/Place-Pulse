@@ -32,6 +32,7 @@ def cookieUser(email,extra_data=None):
     userObjData.update(extra_data)
     def saveAndSet(_userObj):
         Database.users.save(_userObj)
+        _userObj['_id'] = str(_userObj['_id'])
         session['userObj'] = _userObj
     # TODO: Find out why session['userObj'] sometimes persists after logout
     # if session.get('userObj'):
@@ -43,10 +44,10 @@ def cookieUser(email,extra_data=None):
     # Look for existing userObjs for this e-mail or a user's voterID
     emailUserObj = Database.getUserByEmail(email)
     voterIDUserObj = Database.getUserByVoterID(session['voterID']) if session.get('voterID') else None
-    
+    emailUserObj['_id'] = str(emailUserObj['_id'])
     if voterIDUserObj:
         if emailUserObj:
-            if emailUserObj.get('voter_uniqueid'):
+            if emailUserObj.get('voter_uniqueid'):            
                 session['userObj'] = emailUserObj
             else:
                 emailUserObj['voter_uniqueid'] = session['voterID']
