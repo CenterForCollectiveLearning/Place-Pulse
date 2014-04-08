@@ -82,7 +82,7 @@ function consolidate_results(_results, _studies) {
     k++;
   }
 
-  $('#rankings_table').tablesorter({ sortList: [[6,1]] });
+  $('#rankings_table').tablesorter({ sortList: [[1,1]] });
 }
 
 function hoverOverCity(d) {
