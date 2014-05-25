@@ -1,7 +1,7 @@
 import os
 
 from PlacePulse import app
-
+from datetime import datetime
 from flask import render_template,request,session,url_for
 from bson.objectid import ObjectId
 
@@ -36,8 +36,10 @@ def jsonifyResponse(obj):
     def default_handler(_obj):
         if isinstance(_obj,ObjectId):
             return str(_obj)
+        if isinstance(_obj, datetime):
+            return int(_obj.strftime('%s'))
         raise TypeError,"Unknown obj in JSON, %s, %s" % (type(_obj),_obj)
-    resp = app.make_response(json.dumps(obj,default=default_handler))
+    resp = app.make_response(json.dumps(obj, default=default_handler))
     resp.mimetype = 'application/json'
     return resp
 

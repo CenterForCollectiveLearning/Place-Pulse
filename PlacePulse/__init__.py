@@ -1,6 +1,5 @@
 from flask import Flask,redirect,request
 app = Flask(__name__)
-
 import os
 import logging
 import re
@@ -13,6 +12,8 @@ import json
 import time
 import tornado.ioloop
 import numpy as np
+
+
 """
 Add a places field to each study.
 On populating, use mongodb's update append to add it

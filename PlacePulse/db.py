@@ -29,6 +29,22 @@ class database(object):
                 ]
         })
 #--------------------Studies
+
+    def getAllStudies(self):
+        return self.studies.find()
+
+    def getAllLocations(self):
+        return self.locations.find()
+
+    def getAllQS(self):
+        return self.qs.find()
+
+    def getAllVotes(self):
+        return self.votes.find()
+
+    def getAllPlaces(self):
+        return self.places.find()
+
     def getStudy(self,study_id):
         return self.studies.find_one(ObjectId(study_id))
 

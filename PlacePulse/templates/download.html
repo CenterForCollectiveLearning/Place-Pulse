@@ -1,0 +1,14 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    $( document ).ajaxComplete(function( event, xhr, settings ) {
+      console.log("ajax complete!!");
+    });
+    console.log("asdfasdf");
+
+</script>
+This is where you download the data
+<p><a href="/getstudies" download="studies.json" id="studies" >Download studies</a> (eg. Safer, Livelier)</p>
+<p><a href="/getplaces" download="places.json" id="places" >Download places</a> (eg. Boston, New York)</p>
+<p><a href="/getlocations" download="locations.json" id="locations" >Download locations</a> (latitude and longitude for each image)</p>
+<p><a href="/getqscores" download="qscores.json" id="qscores" >Download q scores</a> (q score for each [study, location] pair)</p>
+<p><a href="/getvotes" download="votes.json" id="votes" >Download votes</a></p>

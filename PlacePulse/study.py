@@ -1,14 +1,14 @@
 from flask import Module
 
-from flask import redirect,render_template,request,session,url_for
-
+from flask import redirect,render_template,request,session,url_for, Response
+from functools import wraps
 from util import *
 
 from datetime import datetime
 from random import random,randint
 from uuid import uuid4
 from trueskill import trueskill
-
+from bson.json_util import dumps
 study = Module(__name__)
 from db import Database
 
@@ -289,3 +289,72 @@ def get_location(location_id):
     lat = locationCursor['loc'][0]
     lng = locationCursor['loc'][1]
     return "<img src='http://maps.googleapis.com/maps/api/streetview?size=404x296&location=" + lat + "," + lng + "&sensor=false'/>"
+
+
+def check_auth(username, password):
+    """This function is called to check if a username /
+    password combination is valid.
+    """
+    return username == 'admin' and password == 'Macroconnect!ons'
+
+def authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
+@app.route('/downloaddata')
+@requires_auth
+def downloaddata():
+  return render_template('download.html')
+
+
+@app.route('/getqscores')
+@requires_auth
+def getqscores():
+    def generate():
+        for row in Database.getAllQS():
+            yield dumps(row) + '\n'
+    return Response(generate(), mimetype='application/octet-stream')
+
+@app.route('/getstudies')
+@requires_auth
+def getstudies():
+    def generate():
+        for row in Database.getAllStudies():
+            yield dumps(row) + '\n'
+    return Response(generate(), mimetype='application/octet-stream')
+
+@app.route('/getlocations')
+@requires_auth
+def getlocations():
+    def generate():
+        for row in Database.getAllLocations():
+            yield dumps(row) + '\n'
+    return Response(generate(), mimetype='application/octet-stream')
+
+@app.route('/getplaces')
+@requires_auth
+def getplaces():
+    def generate():
+        for row in Database.getAllPlaces():
+            yield dumps(row) + '\n'
+    return Response(generate(), mimetype='application/octet-stream')
+
+@app.route('/getvotes')
+@requires_auth
+def getvotes():
+    def generate():
+        for row in Database.getAllVotes():
+            yield dumps(row) + '\n'
+    return Response(generate(), mimetype='application/octet-stream')

@@ -1,6 +1,5 @@
 from flask import Module
 from flask import redirect,request
-
 from random import sample
 from util import *
 
