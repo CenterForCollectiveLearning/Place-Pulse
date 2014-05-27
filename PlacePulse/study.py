@@ -11,6 +11,12 @@ from trueskill import trueskill
 from bson.json_util import dumps
 study = Module(__name__)
 from db import Database
+import json
+
+settings_file = open('PlacePulse/settings.json','r')
+settings = json.load(settings_file)
+settings_file.close()
+
 
 #--------------------Create
 @study.route("/study/create/")
@@ -295,7 +301,7 @@ def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == 'admin' and password == 'Macroconnect!ons'
+    return username == settings['username'] and password == settings['password']
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
@@ -303,6 +309,8 @@ def authenticate():
     'Could not verify your access level for that URL.\n'
     'You have to login with proper credentials', 401,
     {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+
 
 def requires_auth(f):
     @wraps(f)
@@ -313,6 +321,27 @@ def requires_auth(f):
         return f(*args, **kwargs)
     return decorated
 
+
+def generate(outputFormat, rows, columns):
+    if outputFormat == 'tsv':
+        yield '\t'.join(columns) + '\n'
+        for row in rows:
+            attributes = []
+            for column in columns:
+                keys = column.split('.')
+                attribute = row
+                for key in keys:
+                    try:
+                        key = int(key)
+                    except:
+                        pass
+                    attribute = attribute[key]
+                attributes.append(str(attribute))
+            yield "\t".join(attributes) + '\n'
+    else:
+        for row in rows:
+            yield dumps(row) + '\n'
+
 @app.route('/downloaddata')
 @requires_auth
 def downloaddata():
@@ -322,39 +351,30 @@ def downloaddata():
 @app.route('/getqscores')
 @requires_auth
 def getqscores():
-    def generate():
-        for row in Database.getAllQS():
-            yield dumps(row) + '\n'
-    return Response(generate(), mimetype='application/octet-stream')
+    columns = ['_id', 'location_id', 'num_votes', 'place_id', 'random', 'study_id', 'trueskill.score', 'trueskill.stds.-1']
+    return Response(generate(request.args.get('format'), Database.getAllQS(), columns), mimetype='application/octet-stream')
 
 @app.route('/getstudies')
 @requires_auth
 def getstudies():
-    def generate():
-        for row in Database.getAllStudies():
-            yield dumps(row) + '\n'
-    return Response(generate(), mimetype='application/octet-stream')
+    columns = ['_id', 'num_votes', 'owner', 'study_name', 'study_public', 'study_question']
+    return Response(generate(request.args.get('format'), Database.getAllStudies(), columns), mimetype='application/octet-stream')
 
 @app.route('/getlocations')
 @requires_auth
 def getlocations():
-    def generate():
-        for row in Database.getAllLocations():
-            yield dumps(row) + '\n'
-    return Response(generate(), mimetype='application/octet-stream')
+    columns = ['_id', 'heading', 'loc.0', 'loc.1', 'owner', 'pitch', 'place_id', 'type', 'votes']
+    return Response(generate(request.args.get('format'), Database.getAllLocations(), columns), mimetype='application/octet-stream')
 
 @app.route('/getplaces')
 @requires_auth
 def getplaces():
-    def generate():
-        for row in Database.getAllPlaces():
-            yield dumps(row) + '\n'
-    return Response(generate(), mimetype='application/octet-stream')
+    columns = ['_id', 'data_resolution', 'location_distribution', 'owner', 'place_name', 'polygon']
+    return Response(generate(request.args.get('format'), Database.getAllPlaces(), columns), mimetype='application/octet-stream')
 
 @app.route('/getvotes')
 @requires_auth
 def getvotes():
-    def generate():
-        for row in Database.getAllVotes():
-            yield dumps(row) + '\n'
-    return Response(generate(), mimetype='application/octet-stream')
+    columns = ['_id', 'choice', 'left', 'right', 'study_id', 'timestamp','voter_uniqueid']
+    return Response(generate(request.args.get('format'), Database.getAllVotes(), columns), mimetype='application/octet-stream')
+

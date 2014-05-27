@@ -1,14 +1,26 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
-    $( document ).ajaxComplete(function( event, xhr, settings ) {
-      console.log("ajax complete!!");
-    });
-    console.log("asdfasdf");
-
+	format = 'json'
+	$(document).ready(function(){
+		$(':radio[name="format"]').change(function() {
+  			var newformat = $(this).filter(':checked').val();
+  			$('a').attr("href", function(i, val) {
+  				return val.replace(format, newformat);
+  			});
+  			$('a').attr("download", function(i, val) {
+  				return val.replace(format, newformat);
+  			});
+  			format = newformat;
+		});
+	});
 </script>
 This is where you download the data
-<p><a href="/getstudies" download="studies.json" id="studies" >Download studies</a> (eg. Safer, Livelier)</p>
-<p><a href="/getplaces" download="places.json" id="places" >Download places</a> (eg. Boston, New York)</p>
-<p><a href="/getlocations" download="locations.json" id="locations" >Download locations</a> (latitude and longitude for each image)</p>
-<p><a href="/getqscores" download="qscores.json" id="qscores" >Download q scores</a> (q score for each [study, location] pair)</p>
-<p><a href="/getvotes" download="votes.json" id="votes" >Download votes</a></p>
+<h3>Output format:</h3>
+<input type="radio" name="format" value="json" checked="true">json<br>
+<input type="radio" name="format" value="tsv">tsv
+<hr/>
+<p><a href="/getstudies?format=json" download="studies.json" id="studies" >Download studies</a> (eg. Safer, Livelier)</p>
+<p><a href="/getplaces?format=json" download="places.json" id="places" >Download places</a> (eg. Boston, New York)</p>
+<p><a href="/getlocations?format=json" download="locations.json" id="locations" >Download locations</a> (latitude and longitude for each image)</p>
+<p><a href="/getqscores?format=json" download="qscores.json" id="qscores" >Download q scores</a> (q score for each [study, location] pair)</p>
+<p><a href="/getvotes?format=json" download="votes.json" id="votes" >Download votes</a></p>
