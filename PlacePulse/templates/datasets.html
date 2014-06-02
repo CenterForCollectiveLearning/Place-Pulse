@@ -3,48 +3,44 @@
 
 {% block css %}
 <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
 <link rel="stylesheet" href="/static/css/style.css"/>
 <link rel="stylesheet" href="/static/css/main.css"/>
 {% endblock %}
 
 {% block body %}
 <div id="explore">
-    <div class="row">
+    <div class="row" style="border-bottom:1px solid black">
       <div class="span6" style="width:100%;">
-        <div style="margin-bottom:30px;">
-          <h2 style="color:#EA4839">Datasets</h2>
+        <div style="margin-bottom:10px;">
+          <h2 style="color:#EA4839">Place Pulse 1.0: The Pilot Study <span style="font-weight:200; font-size:20px">(2010-2012)</span></h2>
+        </div>
+        <div style="margin-bottom:40px;">
+          <p><b>Summary: </b><br>The objective of the Pilot Study was to validate the data collection technique. This involved exploring the number of clicks required to obtain a stable ranking, explore whether the orthogonal components between similar evaluative question—such as which place looks safer, or more upper class—contained relevant information, and study the ability of the method to characterize cities. We find that the method is able to provide an stable ranking with nearly 30 clicks per image, and that it provides a good characterization of cities. Interestingly, we find that the cities in the pilot studied exhibited larger difference when comparing their variances than averages, indicating that the method is a good way to estimate the contrast or inequality of cities. We validated the information contained in the measures of urban perception with data on violent crime for NYC, finding that the measures of urban perception captured in the study correlate with the location of violate crime after controlling for the income, area, population and average age of each NYC zip code.</p>
+          <p><b>Questions: </b><br> Which Place Looks Safer? <br>Which Place Looks More Upper-Class? <br>Which Place Looks More Unique?<br></p>
+          <p><b>Cities Involved: </b><br>New York City (incl. Manhattan and parts of Queens, Brooklyn &amp; The Bronx), Boston (incl. parts of Cambridge), Linz and Salzburg.</p>
+          <p><b>More Info: </b><i>The Collaborative Image of The City: Mapping the Inequality of Urban Perception</i><br>Philip Salesses, Katja Schechtner, César A. Hidalgo. PLOS ONE (2013)&nbsp;&nbsp;&nbsp;<a href="http://www.plosone.org/article/fetchObject.action?uri=info%3Adoi%2F10.1371%2Fjournal.pone.0068400&representation=PDF" target="_blank" style="color:#EA4839;"><b>> Download PDF</b></a></p>
           <p><b>Limitations: </b>The data of these studies should be interpreted in the narrow context defined by the data collection method. This is data on images captured from a vehicle, and hence, represent the way cities look from a car. Moreover, most of the images were captured early in the morning, and hence, show images of cities with empty sidewalks, little traffic, and many of the shops closed. Also, the images of each city were chosen randomly within a boundary defined manually. The boundary was chosen to include a large portion of a city, but keeping in mind that more images would demand a larger number of clicks. Ideally, images should not be collected randomly within a boundary, but following the distribution of pedestrian or vehicle traffic, since this represents a better reflection of how many people are experiencing each part of a city. Unfortunately, this data was not available at the time of image selection.</p>
+          <p><b>Dataset Includes: </b><br>&#10004; Scores for safety, class and uniqueness for 4,136 geotagged images for the cities of New York, Boston, Linz and Salzburg.<br>&#10004; Preferences collected from 208,738 votes by 7,872 unique participants.<br>&#10004; Clicks collected between August 2011 and November 2011.</p>
+          <p><span><a class="btn btn-success btn-large" href="/static/data/consolidated_data_jsonformatted.json" target="_blank">&#8675;&nbsp;Download Pilot Study Data</a></span></p>
         </div>
       </div>
-  </div>
-  <div class="row" style="border-bottom:1px solid black">
-    <div class="span6" style="width:100%;">
-      <div style="margin-bottom:10px;">
-        <!--<h2 style="color:#EA4839; margin-bottom:10px;">Experiments</h2>-->
-        <h2 style="color:black">Place Pulse 1.0: The Pilot Study (2010-2012)</h2>
-      </div>
-      <div style="margin-bottom:30px;">
-        <p><b>Published as: </b><i>The Collaborative Image of The City: Mapping the Inequality of Urban Perception</i><br>
-          Philip Salesses, Katja Schechtner, César A. Hidalgo. PLOS ONE (2013)</p>
-          <p><b>Dataset includes: </b><br>&#10004; Scores for safety, class and uniqueness for 4,136 geotagged images for the cities of New York, Boston, Linz and Salzburg.<br>&#10004; Preferences collected from 208,738 votes by 7,872 unique participants.<br>&#10004; Clicks collected between August 2011 and November 2011.</p>
-          <span><a class="btn btn-success btn-large" href="/static/data/consolidated_data_jsonformatted.json" target="_blank">&#8675;&nbsp;Download Pilot Study Data</a></span>
+    </div>
+    <div class="row" style="margin-top:30px;">
+      <div class="span6" style="width:100%;">
+        <div style="margin-bottom:10px;">
+          <h2 style="color:#EA4839">Place Pulse 2.0: A Global Map <span style="font-weight:200;font-size:20px;">(2013-present)</span></h2>
+        </div>
+        <div style="margin-bottom:10px;">
+          <p><b>Summary: </b><br>The objective of the second study is to extend the data collection to 56 cities and 5 new evaluative questions. The data from this second study will help develop a dataset that can be used to train machine learning algorithms that can help us identify the features determining the evaluative responses elicited by the images, and also, infer the score of an image, and hence, extend the method to new cities.</p>
+          <p><b>Questions: </b><br> Which Place Looks Safer? <br>Which Place Looks Wealthier? <br>Which Place Looks More Boring?<br>Which Place Looks Livelier?<br>Which Place Looks More Depressing?<br></p>
+          <p><b>Cities Involved: </b>56 cities listed below with information about area, number of images and image density. <i>[Images courtesy Google Maps]</i></p>
+        </div>
       </div>
     </div>
+    <div id="newcities"></div>
   </div>
-  <div class="row">
-    <div class="span6" style="width:100%;">
-      <div style="margin-bottom:10px; margin-top: 40px;">
-        <!--<h2 style="color:#EA4839; margin-bottom:10px;">Experiments</h2>-->
-        <h2 style="color:black">Place Pulse 2.0: A Global Map</h2>
-      </div>
-      <div>
-        <p><b>Published as: </b><i>In preparation...</i><br>
-          <p><b>Dataset includes: </b>Scores for the perception of safety, wealth, liveliness, boredom, and depressiveness of 111,390 geotagged images for 56 cities around the world.</p>
-          <span><a class="btn btn-success btn-large disabled" style="background-color:#ea4839"></i>&#8635;&nbsp;In Preparation</a></span>
-      </div>
-    </div>
-  </div>
-</div>
+
 {% endblock %}
 
 {% block footer %}
@@ -58,4 +54,5 @@
 <script src="/static/js/libs/jquery.touchSwipe.js"></script>
 <script src="/static/js/base_ui.js"></script>
 <script src="/static/js/functions.min.js"></script>
+<script src="/static/js/citydata.js"></script>
 {% endblock %}

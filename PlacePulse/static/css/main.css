@@ -629,3 +629,17 @@ img.citypic {
     width: -moz-fit-content;
       width: fit-content;
 }
+
+.paper {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #C6C6C6;
+}
+
+.imglink {
+  border: 1px solid white;
+  margin-bottom: 10px;
+}
+
+.imglink:hover {
+  border: 1px dotted #ea484b;
+}
