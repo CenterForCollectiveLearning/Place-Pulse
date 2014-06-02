@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% set active_page = "maps" %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap/bootstrap.css"/>
+<link rel="stylesheet" href="/static/css/font-awesome/font-awesome.css"/>
+<link rel="stylesheet" href="/static/css/style.css"/>
+<link rel="stylesheet" href="/static/css/main.css"/>
+{% endblock %}
+
+{% block body %}
+<div id="explore">
+    <div class="row" style="border-bottom:1px solid black">
+      <div class="span6" style="width:100%;">
+        <div style="margin-bottom:10px;">
+          <h2 style="color:#EA4839">StreetScore<span style="font-weight:200; font-size:20px; margin-left:10px;">(2014)</span></h2>
+        </div>
+        <div style="margin-bottom:40px;">
+          <p>StreetScore is a collection of map visualizations of perceived safety of street views from cities in the United States. The maps are made by feeding a subset of the votes from the Place Pulse dataset -- 'Which place looks safer?' -- as input to a machine learning algorithm which is designed to predict how safe a street view looks to a human observer (see <a href="http://streetscore.media.mit.edu/faq.html" target="_blank"> StreetScore FAQ).</a></p>
+          <h2 style="font-size:14px;"><a href="http://streetscore.media.mit.edu" target="_blank">> Visit StreetScore</a></h2>
+          <a href="http://streetscore.media.mit.edu" target="_blank"><img class="imglink" src="/static/img/streetscore_image.png"/></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+{{ super() }}
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/libs/jquery-1.7.2.min.js"></script>
+<script src="/static/js/libs/bootstrap.js"></script>
+<script src="/static/js/libs/jquery.isotope.min.js"></script>
+<script src="/static/js/libs/jquery.touchSwipe.js"></script>
+<script src="/static/js/base_ui.js"></script>
+<script src="/static/js/functions.min.js"></script>
+<script src="/static/js/citydata.js"></script>
+{% endblock %}
