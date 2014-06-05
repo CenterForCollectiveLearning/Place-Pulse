@@ -27,10 +27,10 @@ def load_rankings():
   votesCount = Database.getVotesCount()
   return auto_template('rankings.html', votes_contributed=votesCount)
 
-@root.route("/experiments/")
-def load_experiments():
+@root.route("/maps/")
+def load_maps():
   votesCount = Database.getVotesCount()
-  return auto_template('experiments.html', votes_contributed=votesCount)
+  return auto_template('maps.html', votes_contributed=votesCount)
 
 @root.route("/papers/")
 def load_papers():
