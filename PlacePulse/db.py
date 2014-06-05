@@ -19,6 +19,7 @@ class database(object):
     locid2idx = None
     locs = None
     studs = None
+    biased_studs = None
 
     def getResultsForStudy(self,studyID):
         # FIXME: Normalize use of ObjectId/str for _id's.
@@ -53,7 +54,7 @@ class database(object):
         return self.studies.find_one(ObjectId(study_id),{"study_question":1})['study_question']
 
     def getRandomStudy(self):
-        return self.getStudy(self.studs[rnd.choice(len(self.studs))]['_id'])
+        return self.getStudy(self.biased_studs[rnd.choice(len(self.biased_studs))]['_id'])
 
     def getAnotherStudy(self,study_id):
         count = self.studies.count()

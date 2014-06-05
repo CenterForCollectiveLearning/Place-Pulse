@@ -96,6 +96,7 @@ def buildRandomPairs():
 
 def initDB():
   Database.studs = [study for study in Database.studies.find()]
+  Database.biased_studs = [study for study in Database.studs if study['study_question'] in  ['safer','livelier']]
   locid2idx = {}
   locs = [None] * Database.locations.count()
   i = 0
