@@ -8,8 +8,6 @@ from flask import Flask
 from PlacePulse import app, buildIndices, initDB
 
 if __name__ == '__main__':
-    buildIndices()
-    initDB()
     port = int(os.environ.get("PORT", 8000))
     app.logger.setLevel(logging.DEBUG)
     app.config.update(DEBUG=True,PROPAGATE_EXCEPTIONS=True)

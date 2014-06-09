@@ -70,3 +70,6 @@ def initDB():
         activeLocID[qs['location_id']] = True
     print study_id, '# of active locations', len(activeLocID)
   print 'Done initializing db...'
+
+buildIndices()
+initDB()
