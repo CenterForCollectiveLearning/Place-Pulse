@@ -351,7 +351,7 @@ def downloaddata():
 @app.route('/getqscores')
 @requires_auth
 def getqscores():
-    columns = ['_id', 'location_id', 'num_votes', 'place_id', 'random', 'study_id', 'trueskill.score', 'trueskill.stds.-1']
+    columns = ['_id', 'location_id', 'num_votes', 'place_id', 'study_id', 'trueskill.score', 'trueskill.stds.-1']
     return Response(generate(request.args.get('format'), Database.getAllQS(), columns), mimetype='application/octet-stream')
 
 @app.route('/getstudies')

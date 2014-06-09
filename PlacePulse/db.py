@@ -15,11 +15,10 @@ import numpy.random as rnd
 
 class database(object):
 #--------------------Results
-    
-    locid2idx = None
-    locs = None
     studs = None
+    locs = None
     biased_studs = None
+    study2activeLocID = None
 
     def getResultsForStudy(self,studyID):
         # FIXME: Normalize use of ObjectId/str for _id's.
@@ -166,7 +165,6 @@ class database(object):
             'study_id': str(study_id),
             'place_id': str(place_id),
             'num_votes': 0,
-            'random':random.random(),
             'trueskill': {
               'score':trueskill.get_score(trueskill.mu0, trueskill.std0),
               'mus':[trueskill.mu0],
@@ -340,10 +338,22 @@ class database(object):
         
         # 3. increment vote count for the study
         self.studies.update({'_id': ObjectId(study_id)}, { '$inc' : { 'num_votes': 1 }})
+
+        # 4. If voted equal, bind the score of the image with less # of votes to the score of the other image and mark it inactive
+        if isDraw:
+            winner_nvotes = winner_qs['num_votes']
+            loser_nvotes = loser_qs['num_votes']
+            if winner_nvotes > loser_nvotes:
+                self.qs.update({'_id': loser_qs['_id']}, {'$set': { 'active': 0, 'equal_to': winner_qs['_id']}})
+                del self.study2activeLocID[study_id][loser_qs['location_id']]
+            else:
+                self.qs.update({'_id': winner_qs['_id']}, {'$set': { 'active': 0, 'equal_to': loser_qs['_id']}})
+                del self.study2activeLocID[study_id][winner_qs['location_id']]
         return True
 
     def randomLocPair(self, study_id):
-      a, b = rnd.choice(len(self.locs), size=2, replace=False)
+      activeLocID = self.study2activeLocID[study_id]
+      a, b = rnd.choice(activeLocID.keys(), size=2, replace=False)
       return self.locs[a], self.locs[b]
 
     @property
