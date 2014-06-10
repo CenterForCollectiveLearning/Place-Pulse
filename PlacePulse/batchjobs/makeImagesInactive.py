@@ -9,12 +9,17 @@ for vote in Database.votes.find():
   if vote['choice'] == 'equal':
     a_qs = Database.getQS(study_id, vote['left'])
     b_qs = Database.getQS(study_id, vote['right'])
-    if 'active' not in a_qs and 'active' not in b_qs: # if both images are active, make one inactive
-      a_nvotes = a_qs['num_votes']
-      b_nvotes = b_qs['num_votes']
-      if a_nvotes > b_nvotes: # make B inactive
-        Database.qs.update({'_id': b_qs['_id']}, {'$set': { 'active': 0, 'equal_to': a_qs['_id']}})
-      else: # make A inactive
+    a_nvotes = a_qs['num_votes']
+    b_nvotes = b_qs['num_votes']
+      
+    if 'active' not in a_qs: # if A is still active
+      # if A has less votes then B, and B doesn't point back to A
+      if a_nvotes < b_nvotes and ('equal_to' not in b_qs or b_qs['equal_to'] != a_qs['_id']):
         Database.qs.update({'_id': a_qs['_id']}, {'$set': { 'active': 0, 'equal_to': b_qs['_id']}})
+
+    if 'active' not in b_qs: # if B is still active
+      # if B has less votes then A, and A doesn't point back to B
+      if a_nvotes > b_nvotes and ('equal_to' not in a_qs or a_qs['equal_to'] != b_qs['_id']):
+        Database.qs.update({'_id': b_qs['_id']}, {'$set': { 'active': 0, 'equal_to': a_qs['_id']}})
   count += 1
   if count % 1000 == 0: print count
